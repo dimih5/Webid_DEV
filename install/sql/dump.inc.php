@@ -1742,7 +1742,7 @@ $query[] = "CREATE TABLE `" . $DBPrefix . "users` (
 
 $query[] = "DROP TABLE IF EXISTS `" . $DBPrefix . "useraccounts`;";
 $query[] = "CREATE TABLE `" . $DBPrefix . "useraccounts` (
-  `useracc_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `auc_id` int(15) NOT NULL default '0',
   `user_id` int(15) NOT NULL default '0',
   `date` int(15) NOT NULL default '0',

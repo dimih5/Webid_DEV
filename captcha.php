@@ -15,7 +15,7 @@
 include 'common.php';
 include $include_path . 'captcha/securimage.php';
 
-$img = new securimage();
+$img = new Securimage();
 
 $img->show();
 ?>

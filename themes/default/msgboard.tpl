@@ -32,8 +32,18 @@
 				<input type="hidden" name="board_id" value="{BOARD_ID}">
 				<textarea name="newmessage" cols="60" rows="5"></textarea>
 				<br>
-				<input type="submit" name="Submit" value="{L_5057}" class="button">
+				<input type="submit" name="Submit" value="{L_5057}" class="button"> <br>		
+				<form name="emailboard" action="" method="post">
+					<!-- IF CHECKSTATE eq 'falser' -->
+					<input type="checkbox" name="emailcheckbox" value="0" onClick="this.form.submit()">{L_CM_2026_0001}
+					<!-- ENDIF -->
+					<!-- IF CHECKSTATE eq 'truer' -->
+					<input type="hidden" name="emailcheckbox" value="1">
+					<input type="checkbox" name="emailcheckbox" value="0" onClick="this.form.submit()" checked>{L_CM_2026_0001}
+					<!-- ENDIF -->
+				</form>
 			</form>
+
 			</td>
 		</tr>
 		</table>

@@ -12,8 +12,9 @@
 <!-- IF ERROR ne '' -->
 					<div class="error-box"><b>{ERROR}</b></div>
 <!-- ENDIF -->
-                    Your Version: <b>{MYVERSION}</b><br>
-                    Current Version: {REALVERSION}<br>
+                    Your Version: {MYVERSION}<br>
+					Most Recent Development Build: {DEVELOPMENTVERSION}<br>
+                    Most Recent Release: {REALVERSION}<br>
                     {TEXT}
 				</form>
             </div>

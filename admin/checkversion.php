@@ -24,7 +24,18 @@ if (!($realversion = load_file_from_url('http://www.webidsupport.com/version.txt
 	$realversion = 'Unknown';
 }
 
-if ($realversion != $system->SETTINGS['version'])
+if ($system->SETTINGS['development'] == 1)
+{
+	$myversion = '<span style="color:#00ae00;">' . $system->SETTINGS['version'] . '</span>';
+	$text = $MSG['30_02112'];
+
+}
+else if ($system->SETTINGS['version'] > $realversion && $system->SETTINGS['development'] == 0)
+{
+	$myversion = '<span style="color:#00ae00;">' . $system->SETTINGS['version'] . '</span>';
+	$text = $MSG['30_02112'];
+}
+else if ($system->SETTINGS['version'] < $realversion && $system->SETTINGS['development'] == 0)
 {
 	$myversion = '<span style="color:#ff0000;">' . $system->SETTINGS['version'] . '</span>';
 	$text = $MSG['30_0211'];
@@ -35,11 +46,13 @@ else
 	$text = $MSG['30_0212'];
 }
 
+
 $template->assign_vars(array(
 		'ERROR' => (isset($ERR)) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TEXT' => $text,
 		'MYVERSION' => $myversion,
+		'DEVELOPMENTVERSION' => $system->SETTINGS['developmentversion'],
 		'REALVERSION' => $realversion
 		));
 

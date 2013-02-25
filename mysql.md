@@ -7,8 +7,10 @@ ADD MYSQL LINES ETC
 
 **ADD THESE LINES FROM TOP TO BOTTOM
 
-**GROUPS
+**SETTINGS(for contract uploading
+ALTER TABLE `webid_settings`  ADD `contractsmap` int(2) NOT NULL DEFAULT '1' AFTER `maxpictures`
+**GROUPS (for group email notifications)
 ALTER TABLE `webid_groups`  ADD `excludeuser` varchar(30000) NOT NULL DEFAULT '' AFTER `auto_join`
-**SETTINGS
+**SETTINGS (for development versions)
 ALTER TABLE `webid_settings`  ADD `development` INT(2) NOT NULL DEFAULT '0' AFTER `version`
 ALTER TABLE `webid_settings`  ADD `developmentversion` varchar(6) NOT NULL DEFAULT '1.0.6' AFTER `development`

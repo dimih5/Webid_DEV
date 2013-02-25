@@ -268,6 +268,15 @@ $(document).ready(function(){
 					</tr>
 	<!-- ENDIF -->
 					<tr>
+						<td align="right" width="25%" valign="middle" class="leftpan">&nbsp;</td>
+						<td valign="top" class="rightpan">
+							<h3>{L_663}</h3>
+							<p>{MAXPICS}</p>
+							[<a href="upldcontract.php" alt="contract" class="new-window">{L_677}</a>]
+                            <input type="hidden" name="numcontracts" value="{NUMCONTRACTS}" id="numcontracts">
+                        </td>
+					</tr>
+					<tr>
 						<th colspan="2" align="center" valign="middle" class="leftpan">
 							{L_640}
 						</th>

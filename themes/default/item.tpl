@@ -311,6 +311,23 @@ $(document).ready(function() {
 		</div>
 	</div>
 <!-- ENDIF -->
+<!-- IF B_HASCONTRACTS -->
+		<div class="tableContent2">
+		<div class="titTable4">
+			<a name="contracts"></a>{L_CM_2026_0002}
+		</div>
+		<div class="table2" style="text-align:center; overflow-y:auto;" id="contracts">
+		<table>
+			<tr>
+				<td>
+				<a href="{SITEURL}{UPLOADEDPATH}download.php?file={SITEURL}{CONTR_URL}&filename=AUCTION_{TITLE}_AUCTION_ID_{ID}" >{L_CM_2026_0003}
+				</a>
+				</td>
+			</tr>
+		</table>
+		</div>
+	</div>
+<!-- ENDIF -->
 	<br>
 	<div class="titTable4">
 	  {L_724}

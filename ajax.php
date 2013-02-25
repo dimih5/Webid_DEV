@@ -23,6 +23,9 @@ switch ($_GET['do'])
 	case 'uploadaucimages':
 		include $main_path . 'inc/plupload/examples/upload.php';
 		break;
+	case 'uploadauccontracts':
+		include $main_path . 'inc/plupload/examples/uploadcontracts.php';
+		break;
 	case 'getupldtable':
 		getupldtable();
 		break;

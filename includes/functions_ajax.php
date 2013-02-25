@@ -65,4 +65,22 @@ function getupldtable()
 		</tr>';
 	}
 }
+function getupldtablecontracts()
+{
+	global $_SESSION, $uploaded_path;
+	foreach ($_SESSION['UPLOADED_CONTRACTS'] as $k => $v)
+	{
+		echo '<tr>
+			<td>
+				<img src="' . $uploaded_path . session_id() . '/contracts/' . $v . '" width="60" border="0">
+			</td>
+			<td width="46%">
+				' . $v . '
+			</td>
+			<td align="center">
+				<a href="?action=delete&img=' . $k . '"><IMG SRC="images/trash.gif" border="0"></a>
+			</td>
+		</tr>';
+	}
+}
 ?>

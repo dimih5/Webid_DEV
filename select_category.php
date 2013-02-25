@@ -96,8 +96,10 @@ if (isset($_GET['change']) && $_GET['change'] == 'yes')
 elseif (count($_POST) == 0 && !isset($_GET['cat_no']))
 {
     unset($_SESSION['UPLOADED_PICTURES_SIZE']);
+	unset($_SESSION['UPLOADED_CONTRACTS_SIZE']);
 	$_SESSION['SELL_starts'] = '';
 	$_SESSION['UPLOADED_PICTURES'] = array();
+	$_SESSION['UPLOADED_CONTRACTS'] = array();
     $_SESSION['SELL_with_reserve'] = '';
     $_SESSION['SELL_reserve_price'] = '';
     $_SESSION['SELL_minimum_bid'] = '';
@@ -107,6 +109,8 @@ elseif (count($_POST) == 0 && !isset($_GET['cat_no']))
     $_SESSION['SELL_description'] = '';
     $_SESSION['SELL_pict_url'] = '';
 	$_SESSION['SELL_pict_url_temp'] = '';
+	$_SESSION['SELL_contr_url'] = '';
+	$_SESSION['SELL_contr_url_temp'] = '';
     $_SESSION['SELL_atype'] = '';
     $_SESSION['SELL_iquantity'] = '';
     $_SESSION['SELL_with_buy_now'] = '';

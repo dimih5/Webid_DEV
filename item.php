@@ -415,7 +415,7 @@ if ($total_rate > 0)
 	}
 }
 
-// Pictures Gellery
+// Pictures Gallery
 $K = 0;
 $UPLOADED_PICTURES = array();
 if (file_exists($uploaded_path . $id))
@@ -437,9 +437,9 @@ if (file_exists($uploaded_path . $id))
 
 	if (is_array($UPLOADED_PICTURES))
 	{
-		foreach ($UPLOADED_PICTURES as $k => $v)
+		foreach ($UPLOADED_PICTURES as $ka => $va)
 		{
-			$TMP = @getimagesize($uploaded_path . $id . '/' . $v);
+			$TMP = @getimagesize($uploaded_path . $id . '/' . $va);
 			if ($TMP[2] >= 1 && $TMP[2] <= 3)
 			{
 				$template->assign_block_vars('gallery', array(
@@ -448,6 +448,27 @@ if (file_exists($uploaded_path . $id))
 			}
 		}
 	}
+}
+
+// Contracts
+$K = 0;
+$UPLOADED_CONTRACTS = array();
+if (file_exists($uploaded_path . $id . "/contracts"))
+{
+	$dir = @opendir($uploaded_path . $id . "/contracts");
+	if ($dir)
+	{
+		while ($file = @readdir($dir))
+		{
+			if ($file != '.' && $file != '..' && strpos($file, 'thumb-') === false)
+			{
+				$UPLOADED_CONTRACTS[$K] = $file;
+				$K++;
+			}
+		}
+		@closedir($dir);
+	}
+	$CONTRACT_DIR = $id;
 }
 
 // payment methods
@@ -517,6 +538,7 @@ $template->assign_vars(array(
 		'SUBTITLE' => $auction_data['subtitle'],
 		'AUCTION_DESCRIPTION' => stripslashes($auction_data['description']),
 		'PIC_URL' => $uploaded_path . $id . '/' . $auction_data['pict_url'],
+		'CONTR_URL' => $uploaded_path . $id . '/contracts/' . $auction_data['contr_url'],
 		'SHIPPING_COST' => $system->print_money($auction_data['shipping_cost']),
 		'ADDITIONAL_SHIPPING_COST' => $system->print_money($auction_data['shipping_cost_additional']),
 		'COUNTRY' => $auction_data['country'],
@@ -547,6 +569,7 @@ $template->assign_vars(array(
 		'SECCATSPATH' => $secondcat_value,
 		'CAT_ID' => $auction_data['category'],
 		'UPLOADEDPATH' => $uploaded_path,
+		'UPLOADEDCONTRACTSPATH' => "/contracts/",
 		'BNIMG' => get_lang_img('buy_it_now.gif'),
 
 		'SELLER_REG' => $seller_reg,
@@ -573,6 +596,7 @@ $template->assign_vars(array(
 		'B_HASRESERVE' => ($auction_data['reserve_price'] > 0 && $auction_data['reserve_price'] > $auction_data['current_bid']),
 		'B_BNENABLED' => ($system->SETTINGS['buy_now'] == 2),
 		'B_HASGALELRY' => (count($UPLOADED_PICTURES) > 0),
+		'B_HASCONTRACTS' => (count($UPLOADED_CONTRACTS) > 0),
 		'B_SHOWHISTORY' => (isset($_GET['history']) && $num_bids > 0),
 		'B_BUY_NOW' => ($auction_data['buy_now'] > 0 && ($auction_data['bn_only'] == 'y' || $auction_data['bn_only'] == 'n' && ($auction_data['num_bids'] == 0 || ($auction_data['reserve_price'] > 0 && $auction_data['current_bid'] < $auction_data['reserve_price'])))),
 		'B_BUY_NOW_ONLY' => ($auction_data['bn_only'] == 'y'),

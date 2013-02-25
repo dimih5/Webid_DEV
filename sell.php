@@ -196,6 +196,7 @@ switch ($_SESSION['action'])
 			}
 
 			$UPLOADED_PICTURES = (isset($_SESSION['UPLOADED_PICTURES'])) ? $_SESSION['UPLOADED_PICTURES'] : array();
+			$UPLOADED_CONTRACTS = (isset($_SESSION['UPLOADED_CONTRACTS'])) ? $_SESSION['UPLOADED_CONTRACTS'] : array();
 			// remove old images if any
 			if (is_dir($upload_path . $auction_id))
 			{
@@ -239,6 +240,56 @@ switch ($_SESSION['action'])
 					}
 					closedir($dir);
 				}
+				if ($system->SETTINGS['contractsmap'] == 1 && count($UPLOADED_CONTRACTS) < 1)
+				{
+				rmdir($upload_path . session_id());
+				}
+			}
+			
+			// remove old contracts if any
+			if (is_dir($upload_path . $auction_id . "/contracts"))
+			{
+				if ($dir = opendir($upload_path . $auction_id . "/contracts"))
+				{
+					while (($file = readdir($dir)) !== false)
+					{
+						if (is_file($upload_path . $auction_id . '/contracts/' . $file))
+							unlink($upload_path . $auction_id . '/contracts/' . $file);
+					}
+					closedir($dir);
+				}
+			}
+			// Create contract map if any
+			if ($system->SETTINGS['contractsmap'] == 1 && count($UPLOADED_CONTRACTS) > 0)
+			{
+				// Create dirctory
+				umask();
+				if (!is_dir($upload_path . $auction_id . "/contracts"))
+				{
+					mkdir($upload_path . $auction_id . "/contracts", 0777);
+				}
+				// Copy files
+				foreach ($UPLOADED_CONTRACTS as $k => $v)
+				{
+					$system->move_file($upload_path . session_id() . '/contracts/' . $v, $upload_path . $auction_id . '/contracts/' . $v);
+					chmod($upload_path . $auction_id . '/contracts/' . $v, 0777);
+				}
+				if (!empty($contr_url))
+				{
+					$system->move_file($upload_path . session_id() . '/contracts/' . $contr_url, $upload_path . $auction_id . '/contracts/' . $contr_url);
+					chmod($upload_path . $auction_id . '/contracts/' . $contr_url, 0777);
+				}
+				// Delete files, using dir (to eliminate eventual odd files)
+				if ($dir = opendir($upload_path . session_id() . "/contracts"))
+				{
+					while (($file = readdir($dir)) !== false)
+					{
+						if (!is_dir($upload_path . session_id() . '/contracts/' . $file))
+							unlink($upload_path . session_id() . '/contracts/' . $file);
+					}
+					closedir($dir);
+				}
+				rmdir($upload_path . session_id() . "/contracts");
 				rmdir($upload_path . session_id());
 			}
 			if (!isset($_SESSION['SELL_action']) || empty($_SESSION['SELL_action']))
@@ -665,6 +716,7 @@ switch ($_SESSION['action'])
 				'IS_HIGHLIGHTED' => ($is_highlighted == 'y') ? 'checked' : '',
 				'IS_FEATURED' => ($is_featured == 'y') ? 'checked' : '',
 				'NUMIMAGES' => count($_SESSION['UPLOADED_PICTURES']),
+				'NUMCONTRACTS' => count($_SESSION['UPLOADED_CONTRACTS']),
 				'RELIST' => $relist_options,
 				'MAXRELIST' => $system->SETTINGS['autorelist_max'],
 				'TAX_Y' => (intval($is_taxed) == 'y') ? 'checked' : '',

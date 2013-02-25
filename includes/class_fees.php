@@ -331,6 +331,7 @@ class fees
 				$title = $auc_data['title'];
 				$atype = $auc_data['auction_type'];
 				$pict_url = $auc_data['pict_url'];
+				$contr_url = $auc_data['contr_url'];
 				$minimum_bid = $auc_data['minimum_bid'];
 				$reserve_price = $auc_data['reserve_price'];
 				$buy_now_price = $auc_data['buy_now'];

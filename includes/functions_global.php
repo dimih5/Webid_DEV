@@ -31,7 +31,7 @@ class global_class
 		$this->ctime = time() + (($this->SETTINGS['timecorrection'] + gmdate('I')) * 3600);
 		$this->tdiff = ($this->SETTINGS['timecorrection'] + gmdate('I')) * 3600;
 		// check install directory
-		if (is_dir($main_path . 'install'))
+		if (is_dir($main_path . 'install') && $this->SETTINGS['development'] == 0)
 		{
 			if (!$this->check_maintainance_mode()) // check maint mode
 			{

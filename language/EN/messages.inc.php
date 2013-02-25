@@ -1699,4 +1699,5 @@ $MSG['350_1009'] = "Additional Shipping Cost";
 $MSG['CM_2026_0001'] = "Do you want to receive email from this group?";
 $MSG['CM_2026_0002'] = "Contracts";
 $MSG['CM_2026_0003'] = "Download the included contract";
+$MSG['CM_2026_0004'] = "You've got a new message from the following group:";
 ?>

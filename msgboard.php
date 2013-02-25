@@ -56,84 +56,133 @@ if (isset($_POST['action']) && empty($_POST['newmessage']))
 $TOTALMSGS = mysql_num_rows($res);
 
 // Update exclude user ADDON BY MAIKELB
-
-if (isset($_POST['emailcheckbox']))
+if(!isset($_SESSION['checkstate']))
 {
+	$_SESSION['checkstate'] = array();
+}
+if (isset($_POST['emailcheckbox']))
+{	
 	$queryser = "SELECT excludeuser FROM " . $DBPrefix . "groups WHERE id = '" . $board_id . "'"; 
 	$resser = mysql_query($queryser) or die(mysql_error());
 	$system->check_mysql($resser, $queryser, __LINE__, __FILE__);
-		if(isset($_POST['emailcheckbox']) && $_POST['emailcheckbox'] == 1)
+	
+		if($_POST['emailcheckbox'] == 1)
 		{
-
-			
 			while ($evalser = mysql_fetch_row($resser))
 			{
-				$test = implode($evalser);
-				$test = explode(",", $test);
-				if(!empty($test))
+				$excludeuser = implode($evalser);
+				$excludeuser = explode(",", $excludeuser);
+				if(!empty($excludeuser))
 				{
-					if(!in_array($user->user_data['id'], $test))
+					if(!in_array($user->user_data['id'], $excludeuser))
 					{
-						array_push($test, $user->user_data['id']);
-						$evalinput = implode(",", $test);					
+						array_push($excludeuser, $user->user_data['id']);
+						$evalinput = implode(",", $excludeuser);					
 					}
 				}
 				else
 				{
-					array_push($test, $user->user_data['id']);
-					$evalinput = implode(",", $test);
+					array_push($excludeuser, $user->user_data['id']);
+					$evalinput = implode(",", $excludeuser);
 				}
 				$query = "UPDATE " . $DBPrefix . "groups SET excludeuser = '" . $evalinput . "' WHERE " . $DBPrefix . "groups.id = '" . $board_id . "'";
 				$resser = mysql_query($query);
 				$system->check_mysql($resser, $query, __LINE__, __FILE__);
 			}
+			if(!isset($_SESSION['checkstate']))
+			{
+				$_SESSION['checkstate'] = array();
+			}
+				$COU = 'falser';
+				$queryser = "SELECT excludeuser FROM " . $DBPrefix . "groups WHERE id = '" . $board_id . "'"; 
+				$resser = mysql_query($queryser);
+				$system->check_mysql($resser, $queryser, __LINE__, __FILE__);
+				while ($evalser = mysql_fetch_assoc($resser))
+				{
+					$excludeuser = implode($evalser);
+					$excludeuser = explode(",", $excludeuser);
+				}
+				if(!empty($excludeuser))
+				{
+					if (in_array($user->user_data['id'], $excludeuser)) 
+					{	
+						$COU = 'falser';
+						$_SESSION['checkstate'] = 'falser';
+					}
+					else
+					{
+						$COU = 'truer';
+						$_SESSION['checkstate'] = 'truer';
+					}
+				}
+				else
+				{			
+					$COU = 'truer';
+					$_SESSION['checkstate'] = 'truer';
+				}
 		}
-		else
+		else if($_POST['emailcheckbox'] == 0)
 		{
+		if(!isset($_SESSION['checkstate']))
+		{
+			$_SESSION['checkstate'] = array();
+		}
 			while ($evalser = mysql_fetch_row($resser))
 			{
-				$test = implode($evalser);
-				$test = explode(",", $test);
-				if(!empty($test))
+				$excludeuser = implode($evalser);
+				$excludeuser = explode(",", $excludeuser);
+				if(!empty($excludeuser))
 				{
-					if(in_array($user->user_data['id'], $test))
+					if(in_array($user->user_data['id'], $excludeuser))
 					{
-							$inhoud = array_diff($test, array($user->user_data['id']));
+							$inhoud = array_diff($excludeuser, array($user->user_data['id']));
 							$evalinput = implode(",", $inhoud);
 							$queryser = "UPDATE " . $DBPrefix . "groups SET excludeuser = '" . $evalinput . "' WHERE " . $DBPrefix . "groups.id = '" . $board_id . "'";
-							$resser = mysql_query($queryser);
+							$resser = mysql_query($queryser);							
 					}
 				}
 			}
+				$COU = 'false';
+				$queryser = "SELECT excludeuser FROM " . $DBPrefix . "groups WHERE id = '" . $board_id . "'"; 
+				$resser = mysql_query($queryser);
+				$system->check_mysql($resser, $queryser, __LINE__, __FILE__);
+				while ($evalser = mysql_fetch_assoc($resser))
+				{
+					$excludeuser = implode($evalser);
+					$excludeuser = explode(",", $excludeuser);
+				}
+				if(!empty($excludeuser))
+				{
+					if (in_array($user->user_data['id'], $excludeuser)) 
+					{	
+						$COU = 'falser';
+						$_SESSION['checkstate'] = 'falser';
+					}
+					else
+					{
+						$COU = 'truer';
+						$_SESSION['checkstate'] = 'truer';
+					}
+				}
+				else
+				{			
+					$COU = 'truer';
+					$_SESSION['checkstate'] = 'truer';
+				}
 		}
 	}
 
-// Retrieve excluded state from user (by checking the email adress in the database
-$COU = 'false';
-$queryser = "SELECT excludeuser FROM " . $DBPrefix . "groups WHERE id = '" . $board_id . "'"; 
-$resser = mysql_query($queryser);
-$system->check_mysql($resser, $queryser, __LINE__, __FILE__);
-while ($evalser = mysql_fetch_assoc($resser))
-{
-	$test = implode($evalser);
-	$test = explode(",", $test);
-}
-if(!empty($test))
-{
-	if (in_array($user->user_data['id'], $test)) 
-	{	
-		$COU = 'falser';
-	}
-	else
-	{
-		$COU = 'truer';
-	}
-}
-else
-{			
-	$COU = 'truer';
-}
+// Retrieve excluded state from user (by checking the uid in the database)
 
+
+// retrieve message board title
+$query = "SELECT name, active, msgstoshow FROM " . $DBPrefix . "community WHERE id = " . $board_id;
+$res = mysql_query($query);
+$system->check_mysql($res, $query, __LINE__, __FILE__);
+
+$BOARD_TITLE = mysql_result($res, 0, 'name');
+$BOARD_ACTIVE = mysql_result($res, 0, 'active');
+$BOARD_LIMIT = mysql_result($res, 0, 'msgstoshow');
 
 // Insert new message in the database
 if (isset($_POST['action']) && $_POST['action'] == 'insertmessage' && !empty($_POST['newmessage'])) {
@@ -158,14 +207,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'insertmessage' && !empty($_P
 	$system->check_mysql($resser, $queryser, __LINE__, __FILE__);
 	
 	$evalser = mysql_fetch_row($resser);
-	if(!empty($test))
+	if(!empty($excludeuser))
 	{
-		$test = implode($evalser);
-		$test = explode(",", $test);
+		$excludeuser = implode($evalser);
+		$excludeuser = explode(",", $excludeuser);
 	}
 	else 
 	{
-		$test = array();
+		$excludeuser = array();
 	}
 	
 	$query = "SELECT id,email  FROM " . $DBPrefix . "users WHERE groups LIKE '%" . $board_id . "%'";
@@ -175,7 +224,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'insertmessage' && !empty($_P
 	$emailholder = array();
 			while($eval = mysql_fetch_row($res))
 			{
-				if (!in_array($eval[0], $test)) 
+				if (!in_array($eval[0], $excludeuser)) 
 				{	
 					array_push($emailholder, $eval[1]);
 				}
@@ -183,8 +232,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'insertmessage' && !empty($_P
 			if(!empty($emailholder))
 			{
 				$emailer = new email_handler();
-				$subject = "testemail";
-				$emailer->email_basic($subject, $emailholder, "You've received a message from the following user: " . $user->user_data['name'] . ", \n\n\n" . $message, $system->SETTINGS['adminmail']);
+				$emailer->assign_vars(array(
+				'SITENAME' => $system->SETTINGS['sitename'],
+				'SITEURL' => $system->SETTINGS['siteurl'],
+				'ADMINMAIL' => $system->SETTINGS['adminmail'],
+				'GROUP' => $BOARD_TITLE,
+				'MESSAGE' => $message,
+				'GROUPLINK' => $system->SETTINGS['siteurl'] . 'msgboard.php?board_id=' . $board_id,
+				'USER' => $user['name']
+				));
+				$emailer->email_sender($emailholder, 'groupmail_custom_message.php', $_MSG['CM_2026_0004'] . $BOARD_TITLE);
 			}
 		}
 		
@@ -196,16 +253,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'insertmessage' && !empty($_P
 			SET messages = messages + 1, lastmessage = '$NOW' WHERE id = " . $board_id;
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	
-
-// retrieve message board title
-$query = "SELECT name, active, msgstoshow FROM " . $DBPrefix . "community WHERE id = " . $board_id;
-$res = mysql_query($query);
-$system->check_mysql($res, $query, __LINE__, __FILE__);
-
-$BOARD_TITLE = mysql_result($res, 0, 'name');
-$BOARD_ACTIVE = mysql_result($res, 0, 'active');
-$BOARD_LIMIT = mysql_result($res, 0, 'msgstoshow');
-
 if (!isset($_GET['PAGE']))
 {
 	$OFFSET = 0;
@@ -282,7 +329,7 @@ $template->assign_vars(array(
 		'NEXT' => ($PAGE < $PAGES) ? '<a href="' . $system->SETTINGS['siteurl'] . 'msgboard.php?PAGE=' . $NEXT . '&board_id=' . $board_id . '"><u>' . $MSG['5120'] . '</u></a>' : '',
 		'PAGE' => $PAGE,
 		'PAGES' => $PAGES,
-		'CHECKSTATE' => $COU
+		'CHECKSTATE' => $_SESSION['checkstate']
 		));
 // Build the bottom navigation line for the template
 if ($COUNT > $BOARD_LIMIT && (!isset($_GET['show']) || $_GET['show'] != 'all'))

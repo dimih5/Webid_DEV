@@ -1647,6 +1647,14 @@ $MSG['30_0030'] = "Categories to show: ";
 $MSG['30_0031'] = "Clear Cache";
 $MSG['30_0032'] = "Delete all the template cache files, you will need to do this each time you edit a template file";
 $MSG['30_0033'] = "Cache cleared";
+$MSG['30_0034'] = "Site in development";
+$MSG['30_0035'] = "Switch from development version to normal version";
+$MSG['30_0036'] = "Make development version current WARNING! THIS CANNOT BE UNDONE";
+$MSG['30_0037'] = "Fix the version";
+$MSG['30_0038'] = "You are not in development mode or the versions are already the same";
+$MSG['30_0039'] = "Set the development number";
+$MSG['30_0040'] = "SET";
+$MSG['30_0041'] = "Revert changes";
 $MSG['30_0049'] = "Newsletter Settings Updated";
 $MSG['30_0053'] = "<p>Some free e-mail services have been banned from this website. Please do not enter e-mail addresses belonging to the following domains:</p>";
 $MSG['30_0055'] = "The newsletter sent through WeBid will be sent automatically in <b>HTML</b>, so, it is necessary to add a tag <code>&lt;BR&gt;</code> tags for each new line you are going to add. Otherwise, the message will look like a single line of text without format.";
@@ -1678,6 +1686,7 @@ $MSG['30_0208'] = "Place bid >>";
 $MSG['30_0209'] = "Meet the seller";
 $MSG['30_0210'] = "*When items relating to these key words are listed you will be notified via email";
 $MSG['30_0211'] = "You are running an old version you can download the latest version from <a href='http://sourceforge.net/project/showfiles.php?group_id=181393'>here</a>";
+$MSG['30_02112'] = "You are running a development version";
 $MSG['30_0212'] = "You are running the latest version";
 $MSG['30_0213'] = "No feedback needs leaving";
 $MSG['30_0214'] = "WeBid Version";
@@ -1685,4 +1694,9 @@ $MSG['30_0110'] = "Shipping";
 $MSG['350_1004'] = "Quantity";
 $MSG['350_1008'] = "Additional Shipping";
 $MSG['350_1009'] = "Additional Shipping Cost";
+
+//custom messages
+$MSG['CM_2026_0001'] = "Do you want to receive email from this group?";
+$MSG['CM_2026_0002'] = "Contracts";
+$MSG['CM_2026_0003'] = "Download the included contract";
 ?>

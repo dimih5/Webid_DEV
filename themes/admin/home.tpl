@@ -15,17 +15,21 @@
         </div>
     	<div style="width:75%; float:right;">
             <div class="main-box">
-<!-- IF THIS_VERSION eq CUR_VERSION -->
+<!-- IF DEVELOPMENT eq 1 -->
+				<div class="info-box">{L_30_02112}</div>
+<!-- ELSEIF THIS_VERSION eq CUR_VERSION -->
+            	<div class="info-box">{L_30_0212}</div>
+<!-- ELSEIF DEVELOPMENT_VERSION neq CUR_VERSION -->
             	<div class="info-box">{L_30_0212}</div>
 <!-- ELSE -->
-            	<div class="error-box">{L_30_0211}</div>
+				<div class="error-box">{L_30_02112}</div>
 <!-- ENDIF -->
 <!-- IF ERROR ne '' -->
 				<div class="error-box"><b>{ERROR}</b></div>
 <!-- ENDIF -->
             	<table width="98%" cellpadding="1" cellspacing="0">
 					<tr>
-						<th colspan="2">{L_25_0025}</th>
+						<th colspan="3">{L_25_0025}</th>
 					</tr>
 					<tr>
 						<td width="172"><strong>{L_528}</strong></td>
@@ -75,12 +79,47 @@
 <!-- END langs -->
                         </td>
 					</tr>
+<!-- IF DEVELOPMENT eq 1 -->
 					<tr class="bg">
 						<td><strong>{L_30_0214}</strong></td>
-						<td>{THIS_VERSION} ({CUR_VERSION})</td>
+						<td>DEV: {DEVELOPMENT_VERSION} LAST FIXED VERSION: ({THIS_VERSION}) MOST RECENT: ({CUR_VERSION})</td>
 					</tr>
-				</table>
-            	<table width="98%" cellpadding="1" cellspacing="0">
+					<tr>
+						<td>{L_30_0036}</td>
+						<td>
+                            <form action="?action=makecurrent" method="post">
+                            	<input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
+								<input type="submit" name="submit" value="{L_30_0037}">
+								<input type="submit" name="submit_r" value="{L_30_0041}">
+                            </form>
+                        </td>
+						<td>
+						<tr>
+						<td>{L_30_0039}</td>
+						<td>
+                            <form action="?action=setdevelopment" method="post">
+                            	<input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
+								<input type="text" name="text_" value="1.">
+								<input type="submit" name="submit" value="{L_30_0040}">
+                            </form>
+                        </td>
+					</tr>
+					</tr>					
+<!-- ELSEIF THIS_VERSION neq CUR_VERSION  -->
+					<tr class="bg">
+						<td><strong>{L_30_0214}</strong></td>
+						<td>DEV: {DEVELOPMENT_VERSION} LAST FIXED VERSION: ({THIS_VERSION}) MOST RECENT: ({CUR_VERSION})</td>
+					</tr>
+<!-- ELSE -->
+					<tr class="bg">
+						<td><strong>{L_30_0214}</strong></td>
+						<td>DEV: {DEVELOPMENT_VERSION} LAST FIXED VERSION: ({THIS_VERSION}) MOST RECENT: ({CUR_VERSION})</td>
+					</tr>
+				
+<!-- ENDIF -->	
+
+            	</table>
+				<table width="98%" cellpadding="1" cellspacing="0">
 					<tr>
 						<th colspan="4">{L_25_0031}</th>
 					</tr>
@@ -133,6 +172,15 @@
                             <form action="?action=updatecounters" method="post">
                             	<input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
                             	<input type="submit" name="submit" value="{L_1031}">
+                            </form>
+                        </td>
+					</tr>
+					<tr>
+						<td>{L_30_0035}</td>
+						<td>
+                            <form action="?action=development" method="post">
+                            	<input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
+								<input type="submit" name="submit" value="{L_30_0034}">
                             </form>
                         </td>
 					</tr>

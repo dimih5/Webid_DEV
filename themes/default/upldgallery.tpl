@@ -22,7 +22,7 @@ $(function() {
 		// General settings
 		runtimes : 'html5,gears,flash,silverlight,browserplus',
 		url : '{SITEURL}ajax.php?do=uploadaucimages',
-		max_file_size : '{MAXPICSIZE}kb',
+		max_file_size : '{MAXCONTRSIZE}kb',
 		chunk_size : '1mb',
 		unique_names : true,
 
@@ -49,7 +49,7 @@ $(function() {
 
 			QueueChanged: function(up) {
 				// Called when the files in queue are changed by adding/removing files
-				if (up.files.length > ({MAXPICS} - {UPLOADED}))
+				if (up.files.length > ({MAXCONS} - {UPLOADED}))
 				{
 					for (var key in up.files) {
 						if (up.files.length > ({MAXPICS} - {UPLOADED})) {

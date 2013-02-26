@@ -270,9 +270,8 @@ $(document).ready(function(){
 					<tr>
 						<td align="right" width="25%" valign="middle" class="leftpan">&nbsp;</td>
 						<td valign="top" class="rightpan">
-							<h3>{L_663}</h3>
-							<p>{MAXPICS}</p>
-							[<a href="upldcontract.php" alt="contract" class="new-window">{L_677}</a>]
+							<h3>{L_CM_2026_0002}</h3>
+							[<a href="upldcontract.php" alt="contract" class="new-window">{L_CM_2026_0005}</a>]
                             <input type="hidden" name="numcontracts" value="{NUMCONTRACTS}" id="numcontracts">
                         </td>
 					</tr>

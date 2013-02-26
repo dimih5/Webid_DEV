@@ -19,6 +19,7 @@ header("Pragma: no-cache");
 // Settings
 //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
 $targetDir = $upload_path . session_id() . "/contracts";
+$storageDir = $upload_path . session_id();
 
 //$cleanupTargetDir = false; // Remove old files
 //$maxFileAge = 60 * 60; // Temp file age in seconds
@@ -50,7 +51,9 @@ if ($chunks < 2 && file_exists($targetDir . DIRECTORY_SEPARATOR . $fileName)) {
 	$fileName = $fileName_a . '_' . $count . $fileName_b;
 }
 
-// Create target dir
+// Create sessiondir
+if (!is_dir($storageDir))
+	@mkdir($storageDir);
 if (!file_exists($targetDir))
 	@mkdir($targetDir);
 

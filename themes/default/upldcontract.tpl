@@ -22,7 +22,7 @@ $(function() {
 		// General settings
 		runtimes : 'html5,gears,flash,silverlight,browserplus',
 		url : '{SITEURL}ajax.php?do=uploadauccontracts',
-		max_file_size : '{MAXPICSIZE}kb',
+		max_file_size : '{MAXCONTRSIZE}kb',
 		chunk_size : '1mb',
 		unique_names : true,
 
@@ -49,10 +49,10 @@ $(function() {
 
 			QueueChanged: function(up) {
 				// Called when the files in queue are changed by adding/removing files
-				if (up.files.length > ({MAXPICS} - {UPLOADED}))
+				if (up.files.length > ({MAXCONTR} - {UPLOADED}))
 				{
 					for (var key in up.files) {
-						if (up.files.length > ({MAXPICS} - {UPLOADED})) {
+						if (up.files.length > ({MAXCONTR} - {UPLOADED})) {
 							up.removeFile(up.files[key]);
 						}
 					}
@@ -109,11 +109,8 @@ $(function() {
 			<td width="76%" colspan="2">
 				<b>{L_684}</b>
 			</td>
-			<td width="12%" align="center">
+			<td width="24%" align="center">
 				<b>{L_008}</b>
-			</td>
-			<td width="12%" align="center">
-				<b>{L_686}</b>
 			</td>
 		</tr>
 		<tbody id="uploaded">
@@ -126,14 +123,12 @@ $(function() {
 				{contracts.CTRNAME}
 			</td>
 			<td align="center">
-				<a href="?action=delete&img={contracts.ID}"><IMG SRC="images/trash.gif" border="0"></a>
+				<a href="?action=delete&contr={contracts.ID}"><IMG SRC="images/trash.gif" border="0"></a>
 			</td>
 		</tr>
 <!-- END contracts -->
 		</tbody>
 	</table>
-	<p>{PICINFO}</p>
-	<p>{IMAGE_COST}</p>
 	<div id="uploader">
 		<p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
 	</div>

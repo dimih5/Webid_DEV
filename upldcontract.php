@@ -23,16 +23,16 @@ if (!$user->is_logged_in())
 unset($ERR);
 
 // Process delete
-if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['img']))
+if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['contr']))
 {
-	if ($_SESSION['SELL_contr_url_temp'] == $_SESSION['UPLOADED_CONTRACTS'][intval($_GET['img'])])
+	if ($_SESSION['SELL_contr_url_temp'] == $_SESSION['UPLOADED_CONTRACTS'][intval($_GET['contr'])])
 	{
 		unlink($upload_path . session_id() . '/contracts/' . $_SESSION['SELL_contr_url']);
 		unset($_SESSION['SELL_contr_url']);
 	}
-	unlink($upload_path . session_id() . '/contracts/' . $_SESSION['UPLOADED_CONTRACTS'][intval($_GET['img'])]);
-	unset($_SESSION['UPLOADED_CONTRACTS'][intval($_GET['img'])]);
-	unset($_SESSION['UPLOADED_CONTRACTS_SIZE'][intval($_GET['img'])]);
+	unlink($upload_path . session_id() . '/contracts/' . $_SESSION['UPLOADED_CONTRACTS'][intval($_GET['contr'])]);
+	unset($_SESSION['UPLOADED_CONTRACTS'][intval($_GET['contr'])]);
+	unset($_SESSION['UPLOADED_CONTRACTS_SIZE'][intval($_GET['contr'])]);
 }
 
 // close window
@@ -79,8 +79,15 @@ if (isset($_POST['uploadpicture']))
 			if (!file_exists($upload_path . session_id() . "/contracts/"))
 			{
 				umask(0);
+				if(!is_dir($upload_path . session_id())) //If there are no pics uploaded yet
+				{
+					mkdir($upload_path . session_id(), 0777);
+					chmod($upload_path . session_id(), 0777); //incase mkdir fails
+				}
+				
 				mkdir($upload_path . session_id() . "/contracts", 0777);
 				chmod($upload_path . session_id() . "/contracts", 0777); //incase mkdir fails
+				
 			}
 			// Move uploaded file into TMP directory & rename
 			if ($system->move_file($_FILES['userfile']['tmp_name'], $upload_path . session_id() . '/contracts/' . $newname))
@@ -100,7 +107,7 @@ foreach ($_SESSION['UPLOADED_CONTRACTS'] as $k => $v)
 			'CTRNAME' => $v,
 			'ID' => $k,
 			'DEFAULT' => ($v == $_SESSION['SELL_contr_url_temp']) ? 'selected.gif' : 'unselected.gif',
-			'CONTRACT' => $uploaded_path . session_id() . '/contracts/' . $v
+			'CONTRACT' => "images/document.png"
 			));
 }
 
@@ -127,10 +134,9 @@ $template->assign_vars(array(
 		'SITENAME' => $system->SETTINGS['sitename'],
 		'THEME' => $system->SETTINGS['theme'],
 		'ERROR' => (isset($ERR)) ? $ERR : '',
-		'PICINFO' => sprintf($MSG['673'], $system->SETTINGS['maxcontracts'], $system->SETTINGS['maxuploadsize']),
 		'ERRORMSG' => sprintf($MSG['674'], $system->SETTINGS['maxcontracts']),
-		'MAXPICS' => $system->SETTINGS['maxcontracts'],
-		'MAXPICSIZE' => $system->SETTINGS['maxuploadsize'],
+		'MAXCONTR' => $system->SETTINGS['maxcontracts'],
+		'MAXCONTRSIZE' => $system->SETTINGS['maxuploadsize'],
 		'SESSION_ID' => session_id(),
 		'UPLOADED' => intval(count($_SESSION['UPLOADED_CONTRACTS']))
 		));

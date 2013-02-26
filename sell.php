@@ -724,6 +724,7 @@ switch ($_SESSION['action'])
 				'TAXINC_Y' => (intval($tax_included) == 1 || empty($tax_included)) ? 'checked' : '',
 				'TAXINC_N' => (intval($tax_included) == 2) ? 'checked' : '',
 				'MAXPICS' => sprintf($MSG['673'], $system->SETTINGS['maxpictures'], $system->SETTINGS['maxuploadsize']),
+				'MAXCONS' => sprintf($MSG['CM_2026_0006'], $system->SETTINGS['maxcontracts'], $system->SETTINGS['maxuploadsize']),
 
 				'FEE_VALUE' => get_fee($minimum_bid),
 				'FEE_VALUE_F' => number_format(get_fee($minimum_bid), $system->SETTINGS['moneydecimals']),

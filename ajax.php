@@ -29,5 +29,8 @@ switch ($_GET['do'])
 	case 'getupldtable':
 		getupldtable();
 		break;
+	case 'getupldtablecontracts':
+		getupldtablecontracts();
+		break;
 }
 ?>

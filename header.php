@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -15,12 +15,49 @@
 if (!defined('InWeBid')) exit();
 
 include $include_path . 'maintainance.php';
-include $include_path . 'functions_banners.php';
+include $include_path . 'banners.inc.php';
+include $main_path . 'language/' . $language . '/categories.inc.php';
 if (basename($_SERVER['PHP_SELF']) != 'error.php')
 	include $include_path . 'stats.inc.php';
 
 $jsfiles = 'js/jquery.js;js/jquery.lightbox.js;';
 $jsfiles .= (basename($_SERVER['PHP_SELF']) == 'sell.php') ? ';js/calendar.php' : '';
+
+// added by Luc
+// from index
+// prepare categories list for templates/template 
+// Prepare categories sorting
+if ($system->SETTINGS['catsorting'] == 'alpha')
+{
+	$catsorting = ' ORDER BY cat_name ASC';
+}
+else
+{
+	$catsorting = ' ORDER BY sub_counter DESC';
+}
+
+$query = "SELECT cat_id FROM " . $DBPrefix . "categories WHERE parent_id = -1";
+$res = mysql_query($query);
+$system->check_mysql($res, $query, __LINE__, __FILE__);
+
+$query = "SELECT * FROM " . $DBPrefix . "categories
+		  WHERE parent_id = " . mysql_result($res, 0) . "
+		  " . $catsorting . "
+		  LIMIT " . $system->SETTINGS['catstoshow'];
+$res = mysql_query($query);
+$system->check_mysql($res, $query, __LINE__, __FILE__);
+
+while ($row = mysql_fetch_assoc($res))
+{
+	$template->assign_block_vars('cat_list_drop', array(
+			'CATAUCNUM' => ($row['sub_counter'] != 0) ? '(' . $row['sub_counter'] . ')' : '',
+			'ID' => $row['cat_id'],
+			'IMAGE' => (!empty($row['cat_image'])) ? '<img src="' . $row['cat_image'] . '" border=0>' : '',
+			'COLOUR' => (empty($row['cat_colour'])) ? '#FFFFFF' : $row['cat_colour'],
+			'NAME' => $category_names[$row['cat_id']]
+			));
+}
+//added end
 
 // Get users and auctions counters
 $counters = load_counters();
@@ -55,6 +92,7 @@ $template->assign_vars(array(
 		'Q' => (isset($q)) ? $q : '',
 		'SELECTION_BOX' => file_get_contents($main_path . 'language/' . $language . '/categories_select_box.inc.php'),
 		'YOURUSERNAME' => ($user->logged_in) ? $user->user_data['nick'] : '',
+		
 
 		'B_CAN_SELL' => ($user->can_sell || !$user->logged_in),
 		'B_LOGGED_IN' => $user->logged_in,
@@ -65,4 +103,6 @@ $template->set_filenames(array(
 		'header' => 'global_header.tpl'
 		));
 $template->display('header');
+
+
 ?>

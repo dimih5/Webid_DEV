@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,7 +12,7 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'common.php';
+include 'includes/common.inc.php';
 include $main_path . 'language/' . $language . '/categories.inc.php';
 
 // Run cron according to SETTINGS
@@ -43,7 +43,7 @@ function ShowFlags()
 			$flags .= '<br>';
 			$counter = 0;
 		}
-		$flags .= '<a href="?lan=' . $lang . '"><img vspace="2" hspace="2" src="' . $system->SETTINGS['siteurl'] . 'inc/flags/' . $lang . '.gif" border="0" alt="' . $lang . '"></a>';
+		$flags .= '<a href="?lan=' . $lang . '"><img vspace="2" hspace="2" src="' . $system->SETTINGS['siteurl'] . 'includes/flags/' . $lang . '.gif" border="0" alt="' . $lang . '"></a>';
 		$counter++;
 	}
 	return $flags;
@@ -114,7 +114,7 @@ while($row = mysql_fetch_assoc($res))
 }
 
 // get last created auctions
-$query = "SELECT id, title, starts from " . $DBPrefix . "auctions
+$query = "SELECT id, title, pict_url, starts from " . $DBPrefix . "auctions
 		 WHERE closed = 0 AND suspended = 0
 		 AND starts <= " . $NOW . "
 		 ORDER BY starts DESC
@@ -128,6 +128,9 @@ while ($row = mysql_fetch_assoc($res))
 	$template->assign_block_vars('auc_last', array(
 			'BGCOLOUR' => (!($i % 2)) ? '' : 'class="alt-row"',
 			'DATE' => ArrangeDateNoCorrection($row['starts'] + $system->tdiff),
+			//added by L
+			'IMAGE' => (!empty($row['pict_url'])) ? 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'] : 'images/email_alerts/default_item_img.jpg',
+					//
 			'ID' => $row['id'],
 			'TITLE' => $row['title']
 			));
@@ -136,7 +139,7 @@ while ($row = mysql_fetch_assoc($res))
 
 $auc_last = ($i > 0) ? true : false;
 // get ending soon auctions
-$query = "SELECT ends, id, title FROM " . $DBPrefix . "auctions
+$query = "SELECT ends, id, pict_url, title FROM " . $DBPrefix . "auctions
 		 WHERE closed = 0 AND suspended = 0 AND starts <= " . $NOW . "
 		 ORDER BY ends LIMIT " . $system->SETTINGS['endingsoonnumber'];
 $res = mysql_query($query);
@@ -158,6 +161,9 @@ while ($row = mysql_fetch_assoc($res))
 			'BGCOLOUR' => (!($i % 2)) ? '' : 'class="alt-row"',
 			'DATE' => $ends_string,
 			'ID' => $row['id'],
+			//added by L
+			'IMAGE' => (!empty($row['pict_url'])) ? 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'] : 'images/email_alerts/default_item_img.jpg',
+					//
 			'TITLE' => $row['title']
 			));
 	$i++;

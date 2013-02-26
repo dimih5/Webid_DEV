@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,7 +12,7 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'common.php';
+include 'includes/common.inc.php';
 
 $NOW = time();
 $NOWB = gmdate('Ymd');
@@ -161,7 +161,7 @@ if ($PAGES > 1)
 	while ($COUNTER <= $PAGES && $COUNTER < ($PAGE + 6))
 	{
 		$template->assign_block_vars('pages', array(
-				'PAGE' => ($PAGE == $COUNTER) ? '<b>' . $COUNTER . '</b>' : '<a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_p.php?PAGE=' . $COUNTER . '"><u>' . $COUNTER . '</u></a>'
+				'PAGE' => ($PAGE == $COUNTER) ? '<li class="active"><a href="#">' . $COUNTER . '</li></a>' : '<li><a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_p.php?PAGE=' . $COUNTER . '">' . $COUNTER . '</a></li>'
 				));
 		$COUNTER++;
 	}
@@ -173,8 +173,8 @@ $template->assign_vars(array(
 		'ORDERNEXT' => $_SESSION['pa_nexttype'],
 		'ORDERTYPEIMG' => $_SESSION['pa_type_img'],
 
-		'PREV' => ($PAGES > 1 && $PAGE > 1) ? '<a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_p.php?PAGE=' . $PREV . '"><u>' . $MSG['5119'] . '</u></a>&nbsp;&nbsp;' : '',
-		'NEXT' => ($PAGE < $PAGES) ? '<a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_p.php?PAGE=' . $NEXT . '"><u>' . $MSG['5120'] . '</u></a>' : '',
+		'PREV' => ($PAGES > 1 && $PAGE > 1) ? '<li><a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_p.php?PAGE=' . $PREV . '">' . $MSG['5119'] . '</a></li>' : '',
+		'NEXT' => ($PAGE < $PAGES) ? '<li><a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_p.php?PAGE=' . $NEXT . '">' . $MSG['5120'] . '</a></li>' : '',
 		'PAGE' => $PAGE,
 		'PAGES' => $PAGES,
 
@@ -183,7 +183,7 @@ $template->assign_vars(array(
 
 include 'header.php';
 $TMP_usmenutitle = $MSG['25_0115'];
-include $include_path . 'user_cp.php';
+include 'includes/user_cp.php';
 $template->set_filenames(array(
 		'body' => 'yourauctions_p.tpl'
 		));

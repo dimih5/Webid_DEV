@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,7 +12,7 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'common.php';
+include 'includes/common.inc.php';
 
 // If user is not logged in redirect to login page
 if (!$user->is_logged_in())
@@ -199,7 +199,7 @@ if ($PAGES > 1)
 	while ($COUNTER <= $PAGES && $COUNTER < ($PAGE + 6))
 	{
 		$template->assign_block_vars('pages', array(
-				'PAGE' => ($PAGE == $COUNTER) ? '<b>' . $COUNTER . '</b>' : '<a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_sold.php?PAGE=' . $COUNTER . '&id=' . $id . '"><u>' . $COUNTER . '</u></a>'
+				'PAGE' => ($PAGE == $COUNTER) ? '<li class="active"><a href="#">' . $COUNTER . '</a></li>' : '<li><a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_sold.php?PAGE=' . $COUNTER . '&id=' . $id . '">' . $COUNTER . '</a></li>'
 				));
 		$COUNTER++;
 	}
@@ -210,15 +210,15 @@ $template->assign_vars(array(
 		'ORDERNEXT' => $_SESSION['solda_nexttype'],
 		'ORDERTYPEIMG' => $_SESSION['solda_type_img'],
 
-		'PREV' => ($PAGES > 1 && $PAGE > 1) ? '<a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_sold.php?PAGE=' . $PREV . '&id=' . $id . '"><u>' . $MSG['5119'] . '</u></a>&nbsp;&nbsp;' : '',
-		'NEXT' => ($PAGE < $PAGES) ? '<a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_sold.php?PAGE=' . $NEXT . '&id=' . $id . '"><u>' . $MSG['5120'] . '</u></a>' : '',
+		'PREV' => ($PAGES > 1 && $PAGE > 1) ? '<li><a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_sold.php?PAGE=' . $PREV . '&id=' . $id . '">' . $MSG['5119'] . '</a></li>' : '',
+		'NEXT' => ($PAGE < $PAGES) ? '<li><a href="' . $system->SETTINGS['siteurl'] . 'yourauctions_sold.php?PAGE=' . $NEXT . '&id=' . $id . '">' . $MSG['5120'] . '</a></li>' : '',
 		'PAGE' => $PAGE,
 		'PAGES' => $PAGES
 		));
 
 include 'header.php';
 $TMP_usmenutitle = $MSG['25_0119'];
-include $include_path . 'user_cp.php';
+include 'includes/user_cp.php';
 $template->set_filenames(array(
 		'body' => 'yourauctions_sold.tpl'
 		));

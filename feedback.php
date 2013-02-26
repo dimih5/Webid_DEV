@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,7 +12,7 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'common.php';
+include 'includes/common.inc.php';
 include $include_path . 'membertypes.inc.php';
 
 foreach ($membertypes as $idm => $memtypearr)
@@ -66,7 +66,8 @@ if (isset($_POST['addfeedback'])) // submit the feedback
 				{
 					if ($system->SETTINGS['usersauth'] == 'n' || $user->user_data['password'] == md5($MD5_PREFIX . $_POST['TPL_password']))
 					{
-						$secTPL_feedback = $system->cleanvars($_POST['TPL_feedback']);
+						$secTPL_rater_nick = $user->user_data['nick'];
+						$secTPL_feedback = str_replace("\n", '<br>', $_POST['TPL_feedback']);
 						$uid = ($ws == 'w') ? $_REQUEST['sid'] : $_REQUEST['wid'];
 						$sql = "UPDATE " . $DBPrefix . "users SET rate_sum = rate_sum + " . $_POST['TPL_rate'] . ", rate_num = rate_num + 1 WHERE id = " . intval($uid);
 						$system->check_mysql(mysql_query($sql), $sql, __LINE__, __FILE__);
@@ -76,8 +77,8 @@ if (isset($_POST['addfeedback'])) // submit the feedback
 						}
 						$sql = "INSERT INTO " . $DBPrefix . "feedbacks (rated_user_id, rater_user_nick, feedback, rate, feedbackdate, auction_id) VALUES (
 							" . intval($uid) . ",
-							'" . $user->user_data['nick'] . "',
-							'" . $secTPL_feedback . "',
+							'" . $system->cleanvars($secTPL_rater_nick) . "',
+							'" . $system->cleanvars($secTPL_feedback) . "',
 							" . intval($_POST['TPL_rate']) . ", '" . time() . "'," . $auction_id . ")";
 						$system->check_mysql(mysql_query($sql), $sql, __LINE__, __FILE__);
 						if ($ws == 's')
@@ -227,7 +228,7 @@ if (isset($_GET['faction']) && $_GET['faction'] == 'show')
 				break;
 		}
 		$template->assign_block_vars('fbs', array(
-				'BGCOLOUR' => (!($i % 2)) ? '' : 'class="alt-row"',
+				'BGCOLOUR' => (!($i % 2)) ? '' : 'highlighted',
 				'IMG' => $uimg,
 				'USFLINK' => 'profile.php?user_id=' . $arrfeed['uId'] . '&auction_id=' . $arrfeed['auction_id'],
 				'USERID' => $arrfeed['uId'],

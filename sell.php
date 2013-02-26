@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,10 +12,10 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'common.php';
+include 'includes/common.inc.php';
 include $include_path . 'dates.inc.php';
 include $include_path . 'datacheck.inc.php';
-include $include_path . 'functions_sell.php';
+include $include_path . 'functions_sell.inc.php';
 include $main_path . 'language/' . $language . '/categories.inc.php';
 include $main_path . 'ckeditor/ckeditor.php';
 include $include_path . 'htmLawed.php';
@@ -57,24 +57,6 @@ if (isset($_POST['act']) && $_POST['act'] == 'skipexcat')
 	$_SESSION['SELL_sellcat2'] = 0;
 }
 
-// GALLERY FUNCTIONS
-if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['img'])) // Process delete photos
-{
-	if ($_SESSION['SELL_pict_url_temp'] == $_SESSION['UPLOADED_PICTURES'][intval($_GET['img'])])
-	{
-		unlink($upload_path . session_id() . '/' . $_SESSION['SELL_pict_url']);
-		unset($_SESSION['SELL_pict_url']);
-	}
-	unlink($upload_path . session_id() . '/' . $_SESSION['UPLOADED_PICTURES'][intval($_GET['img'])]);
-	unset($_SESSION['UPLOADED_PICTURES'][intval($_GET['img'])]);
-	unset($_SESSION['UPLOADED_PICTURES_SIZE'][intval($_GET['img'])]);
-}
-
-if (isset($_GET['action']) && $_GET['action'] == 'makedefault')
-{
-	$_SESSION['SELL_pict_url_temp'] = $_SESSION['SELL_pict_url'] = $_GET['img'];
-}
-
 // set variables
 setvars();
 
@@ -83,7 +65,7 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'recall')
 
 switch ($_SESSION['action'])
 {
-	case 4: // finalise auction (submit to db)
+	case 3:
 		if ($system->SETTINGS['usersauth'] == 'y' && $system->SETTINGS['https'] == 'y' && $_SERVER['HTTPS'] != 'on')
 		{
 			$sslurl = str_replace('http://', 'https://', $system->SETTINGS['siteurl']);
@@ -104,7 +86,7 @@ switch ($_SESSION['action'])
 			// clean up sell description
 			$conf = array();
 			$conf['safe'] = 1;
-			$conf['deny_attribute'] = 'style';
+			$conf['deny_attribute'] ='style';
 			$_SESSION['SELL_description'] = htmLawed($_SESSION['SELL_description'], $conf);
 
 			$payment_text = implode(', ', $payment);
@@ -112,9 +94,7 @@ switch ($_SESSION['action'])
 			$a_starts = (empty($start_now) || $_SESSION['SELL_action'] == 'edit') ? ($a_starts - $system->tdiff) : time();
 			$a_ends = $a_starts + ($duration * 24 * 60 * 60);
 			// get fee
-			$fee_data = get_fee($minimum_bid, false);
-			$fee = $fee_data[0];
-			$fee_data = $fee_data[1];
+			$fee = get_fee($minimum_bid);
 			// insert auction
 			$query = addauction();
 			if ($_SESSION['SELL_action'] == 'edit')
@@ -142,15 +122,27 @@ switch ($_SESSION['action'])
 			$addcounter = true;
 
 			// work out & add fee
+
 			if ($system->SETTINGS['fees'] == 'y')
 			{
 				$feeupdate = false;
-				// attach the new invoice to users account
-				$query = addoutstanding();
-				$res = mysql_query($query);
-				$system->check_mysql($res, $query, __LINE__, __FILE__);
-
-				// deal with the auction
+				if ($_SESSION['SELL_action'] == 'edit')
+				{
+					$query = "SELECT id FROM " . $DBPrefix . "userfees WHERE auc_id = " . $auction_id;
+					$res = mysql_query($query);
+					$system->check_mysql($res, $query, __LINE__, __FILE__);
+					if (mysql_num_rows($res) == 1)
+					{
+						$feeupdate = true;
+						$query = "UPDATE " . $DBPrefix . "userfees SET amt = amt + " . $fee . " WHERE auc_id = " . $auction_id;
+						$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
+					}
+				}
+				if (!$feeupdate)
+				{
+					$query = "INSERT INTO " . $DBPrefix . "userfees VALUES (NULL, " . $auction_id . ", " . $user->user_data['id'] . ", " . $fee . ", 0)";
+					$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
+				}
 				if ($system->SETTINGS['fee_type'] == 2 && $fee > 0)
 				{
 					$query = "UPDATE " . $DBPrefix . "auctions SET suspended = 9 WHERE id = " . $auction_id;
@@ -196,7 +188,6 @@ switch ($_SESSION['action'])
 			}
 
 			$UPLOADED_PICTURES = (isset($_SESSION['UPLOADED_PICTURES'])) ? $_SESSION['UPLOADED_PICTURES'] : array();
-			$UPLOADED_CONTRACTS = (isset($_SESSION['UPLOADED_CONTRACTS'])) ? $_SESSION['UPLOADED_CONTRACTS'] : array();
 			// remove old images if any
 			if (is_dir($upload_path . $auction_id))
 			{
@@ -240,56 +231,6 @@ switch ($_SESSION['action'])
 					}
 					closedir($dir);
 				}
-				if ($system->SETTINGS['contractsmap'] == 1 && count($UPLOADED_CONTRACTS) < 1)
-				{
-				rmdir($upload_path . session_id());
-				}
-			}
-			
-			// remove old contracts if any
-			if (is_dir($upload_path . $auction_id . "/contracts"))
-			{
-				if ($dir = opendir($upload_path . $auction_id . "/contracts"))
-				{
-					while (($file = readdir($dir)) !== false)
-					{
-						if (is_file($upload_path . $auction_id . '/contracts/' . $file))
-							unlink($upload_path . $auction_id . '/contracts/' . $file);
-					}
-					closedir($dir);
-				}
-			}
-			// Create contract map if any
-			if ($system->SETTINGS['contractsmap'] == 1 && count($UPLOADED_CONTRACTS) > 0)
-			{
-				// Create dirctory
-				umask();
-				if (!is_dir($upload_path . $auction_id . "/contracts"))
-				{
-					mkdir($upload_path . $auction_id . "/contracts", 0777);
-				}
-				// Copy files
-				foreach ($UPLOADED_CONTRACTS as $k => $v)
-				{
-					$system->move_file($upload_path . session_id() . '/contracts/' . $v, $upload_path . $auction_id . '/contracts/' . $v);
-					chmod($upload_path . $auction_id . '/contracts/' . $v, 0777);
-				}
-				if (!empty($contr_url))
-				{
-					$system->move_file($upload_path . session_id() . '/contracts/' . $contr_url, $upload_path . $auction_id . '/contracts/' . $contr_url);
-					chmod($upload_path . $auction_id . '/contracts/' . $contr_url, 0777);
-				}
-				// Delete files, using dir (to eliminate eventual odd files)
-				if ($dir = opendir($upload_path . session_id() . "/contracts"))
-				{
-					while (($file = readdir($dir)) !== false)
-					{
-						if (!is_dir($upload_path . session_id() . '/contracts/' . $file))
-							unlink($upload_path . session_id() . '/contracts/' . $file);
-					}
-					closedir($dir);
-				}
-				rmdir($upload_path . session_id() . "/contracts");
 				rmdir($upload_path . session_id());
 			}
 			if (!isset($_SESSION['SELL_action']) || empty($_SESSION['SELL_action']))
@@ -313,7 +254,7 @@ switch ($_SESSION['action'])
 							$v = trim(strtolower($v));
 							if ((in_array($v, $w_title) || in_array($v, $w_descr) || $v == $w_nick) && !in_array($row['id'], $sent_to))
 							{
-								$emailer = new email_handler();
+								$emailer = new email_class();
 								$emailer->assign_vars(array(
 										'URL' => $system->SETTINGS['siteurl'] . 'item.php?id=' . $_SESSION['SELL_auction_id'],
 										'SITENAME' =>  $system->SETTINGS['sitename'],
@@ -331,7 +272,7 @@ switch ($_SESSION['action'])
 
 				if ($user->user_data['startemailmode'] == 'yes')
 				{
-					include $include_path . 'email_auction_confirmation.php';
+					include $include_path . 'auction_confirmation.inc.php';
 				}
 				if ($system->SETTINGS['bn_only'] == 'y' && $system->SETTINGS['bn_only_disable'] == 'y' && $system->SETTINGS['bn_only_percent'] < 100)
 				{
@@ -370,141 +311,201 @@ switch ($_SESSION['action'])
 			}
 			$template->assign_vars(array(
 					'TITLE' => $MSG['028'],
-					'PAGE' => 3,
-					'AUCTION_ID' => $auction_id,
-					'MESSAGE' => sprintf($MSG['102'], $auction_id, date('D j M \a\t g:ia', $a_ends))
+					'PAGE' => 2,
+					'AUCTION_ID' => $auction_id
 					));
 			break;
 		}
-	case 3: // confirm auction
+	case 2:
 		$noerror = true;
+		$er = false;
 		if ($with_reserve == 'no') $reserve_price = 0;
 		if ($buy_now == 'no') $buy_now_price = 0;
 		// run the word filter
 		if ($system->SETTINGS['wordsfilter'] == 'y')
 		{
 			$title = $system->filter($title);
-			$subtitle = $system->filter($subtitle);
 			$description = $system->filter($description);
 		}
 		// check for errors
 		if ($ERR == 'ERR_')
 		{
-			if (count($_SESSION['UPLOADED_PICTURES']) > $system->SETTINGS['maxpictures'])
-			{
-				$ERR = sprintf($MSG['674'], $system->SETTINGS['maxpictures']);
-			}
 			$ERR = 'ERR_' . CheckSellData();
 			if ($ERR != 'ERR_')
 			{
-				$_SESSION['action'] = 2;
+				$_SESSION['action'] = 1;
 				$noerror = false;
 			}
 		}
 		if ($noerror)
 		{
-			// payment methods
-			$payment_methods = '';
-			$query = "SELECT * FROM " . $DBPrefix . "gateways";
-			$res = mysql_query($query);
-			$system->check_mysql($res, $query, __LINE__, __FILE__);
-			$gateways_data = mysql_fetch_assoc($res);
-			$gateway_list = explode(',', $gateways_data['gateways']);
-			foreach ($gateway_list as $v)
+			$auction_id = generate_id();
+			if ($imgtype == 1 && !empty($_FILES['userfile']['name']) && $_FILES['userfile']['name'] != 'none')
 			{
-				$v = strtolower($v);
-				if ($gateways_data[$v . '_active'] == 1 && _in_array($v, $payment))
+				$inf = getimagesize($_FILES['userfile']['tmp_name']);
+				$er = false;
+				if ($inf)
 				{
-					$payment_methods .= '<p>' . $system->SETTINGS['gatways'][$v] . '</p>';
+					$inf[2] = intval($inf[2]);
+					if ($inf[2] < 1 || $inf[2] > 3)
+					{
+						$er = true;
+						$ERR = 'ERR_602';
+					}
+					elseif (intval($userfile_size) > $system->SETTINGS['maxuploadsize'])
+					{
+						$er = true;
+						$ERR = 'ERR_603';
+					}
+					else
+					{
+						switch ($inf[2])
+						{
+							case 1:
+								$ext = '.gif';
+								break;
+							case 2:
+								$ext = '.jpg';
+								break;
+							case 3:
+								$ext = '.png';
+								break;
+						}
+						$uploaded_filename = $auction_id . $ext;
+						$fname = $upload_path . $uploaded_filename;
+						if (file_exists($fname))
+						{
+							unlink($fname);
+						}
+						move_uploaded_file($_FILES['userfile']['tmp_name'], $fname);
+						chmod($fname, 0777);
+						$pict_url = $uploaded_filename;
+						$_SESSION['SELL_file_uploaded'] = $imgtype;
+					}
+				}
+				else
+				{
+					$ERR = 'ERR_602';
+					$er = true;
 				}
 			}
-
-			$payment_options = unserialize($system->SETTINGS['payment_options']);
-			foreach ($payment_options as $k => $v)
+			elseif ($imgtype == 0 && !empty($pict_url))
 			{
-				if (_in_array($k, $payment))
+				if ($_SESSION['SELL_file_uploaded'])
 				{
-					$payment_methods .= '<p>' . $v . '</p>';
+					unlink($upload_path . $_SESSION['SELL_pict_url']);
+				}
+				$ext = strtolower(substr($pict_url, - 3));
+				if ($ext != 'gif' && $ext != 'jpg' && $ext != 'png')
+				{
+					$ERR = 'ERR_602';
 				}
 			}
-
-			// category name
-			$category_string1 = get_category_string($sellcat1);
-			$category_string2 = get_category_string($sellcat2);
-
-			$query = "SELECT description FROM " . $DBPrefix . "durations WHERE days = " . $duration;
-			$res = mysql_query($query);
-			$system->check_mysql($res, $query, __LINE__, __FILE__);
-			// built gallery
-			if ($system->SETTINGS['picturesgallery'] == 1 && isset($_SESSION['UPLOADED_PICTURES']) && count($_SESSION['UPLOADED_PICTURES']) > 0)
+			if (!$er)
 			{
-				foreach ($_SESSION['UPLOADED_PICTURES'] as $k => $v)
+				// payment methods
+				$payment_methods = '';
+				$query = "SELECT * FROM " . $DBPrefix . "gateways";
+				$res = mysql_query($query);
+				$system->check_mysql($res, $query, __LINE__, __FILE__);
+				$gateways_data = mysql_fetch_assoc($res);
+				$gateway_list = explode(',', $gateways_data['gateways']);
+				foreach ($gateway_list as $v)
 				{
-					$template->assign_block_vars('gallery', array(
-							'K' => $k,
-							'IMAGE' => $uploaded_path . session_id() . '/' . $v
-							));
+					$v = strtolower($v);
+					if ($gateways_data[$v . '_active'] == 1 && _in_array($v, $payment))
+					{
+						$payment_methods .= '<p>' . $system->SETTINGS['gatways'][$v] . '</p>';
+					}
 				}
+
+				$payment_options = unserialize($system->SETTINGS['payment_options']);
+				foreach ($payment_options as $k => $v)
+				{
+					if (_in_array($k, $payment))
+					{
+						$payment_methods .= '<p>' . $v . '</p>';
+					}
+				}
+
+				// category name
+				$category_string1 = get_category_string($sellcat1);
+				$category_string2 = get_category_string($sellcat2);
+
+				$query = "SELECT description FROM " . $DBPrefix . "durations WHERE days = " . $duration;
+				$res = mysql_query($query);
+				$system->check_mysql($res, $query, __LINE__, __FILE__);
+				// built gallery
+				if ($system->SETTINGS['picturesgallery'] == 1 && isset($_SESSION['UPLOADED_PICTURES']) && count($_SESSION['UPLOADED_PICTURES']) > 0)
+				{
+					foreach ($_SESSION['UPLOADED_PICTURES'] as $k => $v)
+					{
+						$template->assign_block_vars('gallery', array(
+								'K' => $k,
+								'IMAGE' => $uploaded_path . session_id() . '/' . $v
+								));
+					}
+				}
+
+				$iquantity = ($atype == 2 || $buy_now_only == 'y') ? $iquantity : 1;
+
+				if (!(strpos($a_starts, '-') === false))
+				{
+					$a_starts = _gmmktime(substr($a_starts, 11, 2),
+						substr($a_starts, 14, 2),
+						substr($a_starts, 17, 2),
+						substr($a_starts, 0, 2),
+						substr($a_starts, 3, 2),
+						substr($a_starts, 6, 4), 0);
+				}
+
+				$template->assign_vars(array(
+						'TITLE' => $title,
+						'SUBTITLE' => $subtitle,
+						'ERROR' => ($ERR == 'ERR_') ? '' : $$ERR,
+						'PAGE' => 1,
+						'MINTEXT' => ($atype == 2) ? $MSG['038'] : $MSG['020'],
+
+						'AUC_DESCRIPTION' => stripslashes($description),
+						'PIC_URL' => (empty($pict_url)) ? $MSG['114'] : '<img src="' . $uploaded_path . session_id() . '/' . $pict_url . '" />',
+						'MIN_BID' => $system->print_money($minimum_bid, false),
+						'RESERVE' => $system->print_money($reserve_price, false),
+						'BN_PRICE' => $system->print_money($buy_now_price, false),
+						'SHIPPING_COST' => $system->print_money($shipping_cost, false),
+						'STARTDATE' => (empty($start_now)) ? FormatDate($a_starts) : FormatDate($system->ctime),
+						'DURATION' => mysql_result($res, 0, 'description'),
+						'INCREMENTS' => ($increments == 1) ? $MSG['614'] : $system->print_money($customincrement, false),
+						'ATYPE' => $system->SETTINGS['auction_types'][$atype],
+						'ATYPE_PLAIN' => $atype,
+						'SHIPPING' => (intval($shipping) == 1) ? $MSG['031'] : $MSG['032'],
+						'INTERNATIONAL' => ($international) ? $MSG['033'] : $MSG['043'],
+						'SHIPPING_TERMS' => nl2br(stripslashes($shipping_terms)),
+						'PAYMENTS_METHODS' => $payment_methods,
+						'CAT_LIST1' => $category_string1,
+						'CAT_LIST2' => $category_string2,
+						'FEE' => number_format(get_fee($minimum_bid), $system->SETTINGS['moneydecimals']),
+
+						'B_USERAUTH' => ($system->SETTINGS['usersauth'] == 'y'),
+						'B_BN_ONLY' => (!($system->SETTINGS['buy_now'] == 2 && $buy_now_only == 'y')),
+						'B_BN' => ($system->SETTINGS['buy_now'] == 2),
+						'B_GALLERY' => ($system->SETTINGS['picturesgallery'] == 1 && isset($_SESSION['UPLOADED_PICTURES']) && count($_SESSION['UPLOADED_PICTURES']) > 0),
+						'B_CUSINC' => ($system->SETTINGS['cust_increment'] == 1),
+						'B_FEES' => ($system->SETTINGS['fees'] == 'y'),
+						'B_SUBTITLE' => ($system->SETTINGS['subtitle'] == 'y')
+						));
+				break;
 			}
-
-			$iquantity = ($atype == 2 || $buy_now_only == 'y') ? $iquantity : 1;
-
-			if (!(strpos($a_starts, '-') === false))
-			{
-				$a_starts = _gmmktime(substr($a_starts, 11, 2),
-					substr($a_starts, 14, 2),
-					substr($a_starts, 17, 2),
-					substr($a_starts, 0, 2),
-					substr($a_starts, 3, 2),
-					substr($a_starts, 6, 4), 0);
-			}
-
-			$shippingtext = '';
-			if ($shipping == 1)
-				$shippingtext = $MSG['033'];
-			elseif ($shipping == 2)
-				$shippingtext = $MSG['032'];
-			elseif ($shipping == 3)
-				$shippingtext = $MSG['867'];
-
-			$template->assign_vars(array(
-					'TITLE' => $title,
-					'SUBTITLE' => $subtitle,
-					'ERROR' => ($ERR == 'ERR_') ? '' : $$ERR,
-					'PAGE' => 2,
-					'MINTEXT' => ($atype == 2) ? $MSG['038'] : $MSG['020'],
-
-					'AUC_DESCRIPTION' => stripslashes($description),
-					'PIC_URL' => (empty($pict_url)) ? $MSG['114'] : '<img src="' . $uploaded_path . session_id() . '/' . $pict_url . '" style="max-width:100%; max-height:100%;">',
-					'MIN_BID' => $system->print_money($minimum_bid, false),
-					'RESERVE' => $system->print_money($reserve_price, false),
-					'BN_PRICE' => $system->print_money($buy_now_price, false),
-					'SHIPPING_COST' => $system->print_money($shipping_cost, false),
-					'ADDITIONAL_SHIPPING_COST' => $system->print_money($additional_shipping_cost, false),
-					'STARTDATE' => (empty($start_now)) ? FormatDate($a_starts) : FormatDate($system->ctime),
-					'DURATION' => mysql_result($res, 0, 'description'),
-					'INCREMENTS' => ($increments == 1) ? $MSG['614'] : $system->print_money($customincrement, false),
-					'ATYPE' => $system->SETTINGS['auction_types'][$atype],
-					'ATYPE_PLAIN' => $atype,
-					'SHIPPING' => $shippingtext,
-					'INTERNATIONAL' => ($international) ? $MSG['033'] : $MSG['043'],
-					'SHIPPING_TERMS' => nl2br(stripslashes($shipping_terms)),
-					'PAYMENTS_METHODS' => $payment_methods,
-					'CAT_LIST1' => $category_string1,
-					'CAT_LIST2' => $category_string2,
-					'FEE' => number_format(get_fee($minimum_bid), $system->SETTINGS['moneydecimals']),
-
-					'B_USERAUTH' => ($system->SETTINGS['usersauth'] == 'y'),
-					'B_BN_ONLY' => (!($system->SETTINGS['buy_now'] == 2 && $buy_now_only == 'y')),
-					'B_BN' => ($system->SETTINGS['buy_now'] == 2),
-					'B_GALLERY' => ($system->SETTINGS['picturesgallery'] == 1 && isset($_SESSION['UPLOADED_PICTURES']) && count($_SESSION['UPLOADED_PICTURES']) > 0),
-					'B_CUSINC' => ($system->SETTINGS['cust_increment'] == 1),
-					'B_FEES' => ($system->SETTINGS['fees'] == 'y'),
-					'B_SUBTITLE' => ($system->SETTINGS['subtitle'] == 'y')
-					));
-			break;
 		}
-	case 1:  // enter auction details
+		if (!(strpos($a_starts, '-') === false))
+		{
+			$a_starts = _gmmktime(substr($a_starts, 11, 2),
+				substr($a_starts, 14, 2),
+				substr($a_starts, 17, 2),
+				substr($a_starts, 0, 2),
+				substr($a_starts, 3, 2),
+				substr($a_starts, 6, 4), 0);
+		}
+	case 1:
 		$category_string1 = get_category_string($sellcat1);
 		$category_string2 = get_category_string($sellcat2);
 
@@ -529,19 +530,6 @@ switch ($_SESSION['action'])
 		}
 		$TPL_durations_list .= '</select>' . "\n";
 
-		// can seller charge tax
-		$can_tax = false;
-		if (!empty($user->user_data['country']))
-		{
-			$query = "SELECT id FROM " . $DBPrefix . "tax WHERE countries_seller LIKE '" . $user->user_data['country'] . "'";
-			$res = mysql_query($query);
-			$system->check_mysql($res, $query, __LINE__, __FILE__);
-			if (mysql_num_rows($res) > 0)
-			{
-				$can_tax = true;
-			}
-		}
-
 		// payments
 		$payment_methods = '';
 		$query = "SELECT * FROM " . $DBPrefix . "gateways";
@@ -555,7 +543,7 @@ switch ($_SESSION['action'])
 			{
 				$v = strtolower($v);
 				$checked = (_in_array($v, $payment)) ? 'checked' : '';
-				$payment_methods .= '<p><input type="checkbox" name="payment[]" value="' . $v . '" ' . $checked . '>' . $system->SETTINGS['gatways'][$v] . '</p>';
+				$payment_methods .= '<label class="checkbox"><input type="checkbox" name="payment[]" value="' . $v . '" ' . $checked . '>' . $system->SETTINGS['gatways'][$v] . '</label>';
 			}
 		}
 
@@ -563,7 +551,7 @@ switch ($_SESSION['action'])
 		foreach ($payment_options as $k => $v)
 		{
 			$checked = (_in_array($k, $payment)) ? 'checked' : '';
-			$payment_methods .= '<p><input type="checkbox" name="payment[]" value="' . $k . '" ' . $checked . '>' . $v . '</p>';
+			$payment_methods .= '<label class="checkbox"><input type="checkbox" name="payment[]" value="' . $k . '" ' . $checked . '>' . $v . '</label>';
 		}
 
 		// make hour
@@ -665,15 +653,16 @@ switch ($_SESSION['action'])
 		}
 		$fee_javascript .= 'var current_fee = ' . ((isset($_SESSION['SELL_current_fee'])) ? $_SESSION['SELL_current_fee'] : '0') . ';';
 		$relist_options = '<select name="autorelist" id="autorelist">';
-		for ($i = 0; $i <= $system->SETTINGS['autorelist_max']; $i++)
+		for ($i = 0; $i < $system->SETTINGS['maxpictures']; $i++)
 		{
-			$relist_options .= '<option value="' . $i . '"' . (($relist == $i) ? ' selected="selected"' : '') . '>' . $i . '</option>';
+			$relist_options .= '<option value="' . $i . '">' . $i . '</option>';
 		}
 		$relist_options .= '</select>';
 
 		$template->assign_vars(array(
 				'TITLE' => $MSG['028'],
 				'ERROR' => ($ERR == 'ERR_') ? '' : $$ERR,
+				'MAXPICS' => $system->SETTINGS['maxpictures'],
 				'CAT_LIST1' => $category_string1,
 				'CAT_LIST2' => $category_string2,
 				'ATYPE' => $TPL_auction_type,
@@ -685,14 +674,13 @@ switch ($_SESSION['action'])
 				'MINTEXT' => ($atype == 2) ? $MSG['038'] : $MSG['020'],
 				'FEE_JS' => $fee_javascript,
 				// auction details
-				'AUC_TITLE' => htmlentities($title, ENT_COMPAT, $CHARSET),
-				'AUC_SUBTITLE' => htmlentities($subtitle, ENT_COMPAT, $CHARSET),
+				'AUC_TITLE' => $title,
+				'AUC_SUBTITLE' => $subtitle,
 				'AUC_DESCRIPTION' => $CKEditor->editor('description', stripslashes($description)),
 				'ITEMQTY' => $iquantity,
 				'MIN_BID' => $system->print_money_nosymbol($minimum_bid, false),
 				'BN_ONLY' => ($buy_now_only == 'y') ? 'disabled' : '',
 				'SHIPPING_COST' => $system->print_money_nosymbol($shipping_cost, false),
-				'ADDITIONAL_SHIPPING_COST' => $system->print_money_nosymbol($additional_shipping_cost, false),
 				'RESERVE_Y' => ($with_reserve == 'yes') ? 'checked' : '',
 				'RESERVE_N' => ($with_reserve == 'yes') ? '' : 'checked',
 				'RESERVE' => $system->print_money_nosymbol($reserve_price, false),
@@ -701,13 +689,13 @@ switch ($_SESSION['action'])
 				'BN_ONLY_N' => ($buy_now_only == 'y') ? '' : 'checked',
 				'BN_Y' => ($buy_now == 'yes') ? 'checked' : '',
 				'BN_N' => ($buy_now == 'yes') ? '' : 'checked',
+				'BN' => ($buy_now == 'yes') ? '' : 'disabled',
 				'BN_PRICE' => $system->print_money_nosymbol($buy_now_price, false),
 				'INCREMENTS1' => ($increments == 1 || empty($increments)) ? 'checked' : '',
 				'INCREMENTS2' => ($increments == 2) ? 'checked' : '',
 				'CUSTOM_INC' => ($customincrement > 0) ? $system->print_money_nosymbol($customincrement, false) : '',
-				'SHIPPING1' => (intval($shipping) == 1) ? 'checked' : '',
-				'SHIPPING2' => (intval($shipping) == 2 || empty($shipping)) ? 'checked' : '',
-				'SHIPPING3' => (intval($shipping) == 3) ? 'checked' : '',
+				'SHIPPING1' => (intval($shipping) == 1 || empty($shipping)) ? 'checked' : '',
+				'SHIPPING2' => (intval($shipping) == 2) ? 'checked' : '',
 				'INTERNATIONAL' => (!empty($international)) ? 'checked' : '',
 				'SHIPPING_TERMS' => $shipping_terms,
 				'ITEMQTYD' => ($atype == 2 || $buy_now_only == 'y') ? '' : 'disabled',
@@ -716,15 +704,7 @@ switch ($_SESSION['action'])
 				'IS_HIGHLIGHTED' => ($is_highlighted == 'y') ? 'checked' : '',
 				'IS_FEATURED' => ($is_featured == 'y') ? 'checked' : '',
 				'NUMIMAGES' => count($_SESSION['UPLOADED_PICTURES']),
-				'NUMCONTRACTS' => count($_SESSION['UPLOADED_CONTRACTS']),
 				'RELIST' => $relist_options,
-				'MAXRELIST' => $system->SETTINGS['autorelist_max'],
-				'TAX_Y' => (intval($is_taxed) == 'y') ? 'checked' : '',
-				'TAX_N' => (intval($is_taxed) == 'n' || empty($is_taxed)) ? 'checked' : '',
-				'TAXINC_Y' => (intval($tax_included) == 1 || empty($tax_included)) ? 'checked' : '',
-				'TAXINC_N' => (intval($tax_included) == 2) ? 'checked' : '',
-				'MAXPICS' => sprintf($MSG['673'], $system->SETTINGS['maxpictures'], $system->SETTINGS['maxuploadsize']),
-				'MAXCONS' => sprintf($MSG['CM_2026_0006'], $system->SETTINGS['maxcontracts'], $system->SETTINGS['maxuploadsize']),
 
 				'FEE_VALUE' => get_fee($minimum_bid),
 				'FEE_VALUE_F' => number_format(get_fee($minimum_bid), $system->SETTINGS['moneydecimals']),
@@ -735,7 +715,6 @@ switch ($_SESSION['action'])
 				'FEE_RELIST' => $relist_fee,
 				'FEE_DECIMALS' => $system->SETTINGS['moneydecimals'],
 
-				'B_CAN_TAX' => $can_tax,
 				'B_GALLERY' => ($system->SETTINGS['picturesgallery'] == 1),
 				'B_BN_ONLY' => ($system->SETTINGS['buy_now'] == 2 && $system->SETTINGS['bn_only'] == 'y' && (($system->SETTINGS['bn_only_disable'] == 'y' && $user->user_data['bn_only'] == 'y') || $system->SETTINGS['bn_only_disable'] == 'n')),
 				'B_BN' => ($system->SETTINGS['buy_now'] == 2),
@@ -760,7 +739,7 @@ $template->set_filenames(array(
 $template->display('body');
 include 'footer.php';
 
-//if ($_SESSION['action'] != 3)
+if ($_SESSION['action'] != 3)
 	makesessions();
 
 ?>

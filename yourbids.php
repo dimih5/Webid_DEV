@@ -1,7 +1,7 @@
 <?php
 
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -13,11 +13,12 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'common.php';
+include 'includes/common.inc.php';
 
 // get active bids for this user
-$query = "SELECT a.current_bid, a.id, a.title, a.ends, b.bid, b.quantity FROM " . $DBPrefix . "bids b
+$query = "SELECT a.current_bid, a.id, a.title, a.ends, b.bid, b.quantity, p.bid As proxybid FROM " . $DBPrefix . "bids b
 		LEFT JOIN " . $DBPrefix . "auctions a ON (a.id = b.auction)
+		LEFT JOIN " . $DBPrefix . "proxybid p ON (p.itemid = a.id)
 		WHERE a.closed = 0 AND b.bidder = " . $user->user_data['id'] . "
 		AND a.bn_only = 'n' ORDER BY a.ends ASC, b.bidwhen DESC";
 $res = mysql_query($query);
@@ -33,7 +34,7 @@ while ($row = mysql_fetch_assoc($res))
 		$bgColor = (!($auctions_count % 2)) ? '' : 'class="alt-row"';
 
 		// Outbidded or winning bid
-		if ($row['current_bid'] != $row['bid']) $bgColor = 'style="background-color:#FFFF00;"';
+		if ($row['current_bid'] != $row['bid']) $bgColor = 'class="alert"';
 
 		$auctions_count++;
 		$idcheck[] = $row['id'];
@@ -45,7 +46,7 @@ while ($row = mysql_fetch_assoc($res))
 				'BID' => $system->print_money($row['bid']),
 				'QTY' => $row['quantity'],
 				'TIMELEFT' => FormatTimeLeft($row['ends'] - time()),
-				'CBID' => $system->print_money($row['current_bid'])
+				'PROXYBID' => (isset($row['proxybid']) && $row['proxybid'] > $row['bid']) ? $system->print_money($row['proxybid'], true, false, false) : ''
 				));
 	}
 }
@@ -56,7 +57,7 @@ $template->assign_vars(array(
 
 include 'header.php';
 $TMP_usmenutitle = $MSG['620'];
-include $include_path . 'user_cp.php';
+include 'includes/user_cp.php';
 $template->set_filenames(array(
 		'body' => 'yourbids.tpl'
 		));

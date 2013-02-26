@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,10 +12,13 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'common.php';
+include 'includes/common.inc.php';
 include $include_path . 'dates.inc.php';
 include $main_path . 'language/' . $language . '/categories.inc.php';
 $catscontrol = new MPTTcategories();
+
+
+
 
 // Get parameters from the URL
 $id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
@@ -73,17 +76,60 @@ else
 	$par_id = $category['parent_id'];
 	$TPL_categories_string = '';
 	$crumbs = $catscontrol->get_bread_crumbs($category['left_id'], $category['right_id']);
+	$k = count($crumbs);
+	$ck = $crumbs[$i]['cat_id'];
 	for ($i = 0; $i < count($crumbs); $i++)
 	{
 		if ($crumbs[$i]['cat_id'] > 0)
 		{
 			if ($i > 0)
 			{
-				$TPL_categories_string .= ' &gt; ';
+				$TPL_categories_string .= ' ';
 			}
-			$TPL_categories_string .= '<a href="' . $system->SETTINGS['siteurl'] . 'browse.php?id=' . $crumbs[$i]['cat_id'] . '">' . $category_names[$crumbs[$i]['cat_id']] . '</a>';
+			
+			$TPL_categories_string .= '<li><a href="' . $system->SETTINGS['siteurl'] . 'browse.php?id=' . $crumbs[$i]['cat_id'] . '">' . $category_names[$crumbs[$i]['cat_id']] . '</a><span class="divider">/</span></li>';
+		$current_cat_name = $category_names[$crumbs[$i]['cat_id']];		
 		}
+		
 	}
+	
+	// added by Luc
+// from index
+// prepare categories list for templates/template 
+// Prepare categories sorting
+if ($system->SETTINGS['catsorting'] == 'alpha')
+{
+	$catsorting = ' ORDER BY cat_name ASC';
+}
+else
+{
+	$catsorting = ' ORDER BY sub_counter DESC';
+}
+
+$query = "SELECT cat_id FROM " . $DBPrefix . "categories WHERE parent_id = -1";
+$res = mysql_query($query);
+$system->check_mysql($res, $query, __LINE__, __FILE__);
+
+$query = "SELECT * FROM " . $DBPrefix . "categories
+		  WHERE parent_id = " . mysql_result($res, 0) . "
+		  " . $catsorting . "
+		  LIMIT " . $system->SETTINGS['catstoshow'];
+$res = mysql_query($query);
+$system->check_mysql($res, $query, __LINE__, __FILE__);
+
+while ($row = mysql_fetch_assoc($res))
+{
+	$template->assign_block_vars('cat_list', array(
+			'CATAUCNUM' => ($row['sub_counter'] != 0) ? '(' . $row['sub_counter'] . ')' : '',
+			'ID' => $row['cat_id'],
+			'IMAGE' => (!empty($row['cat_image'])) ? '<img src="' . $row['cat_image'] . '" border=0>' : '',
+			'COLOUR' => (empty($row['cat_colour'])) ? '#FFFFFF' : $row['cat_colour'],
+			'NAME' => $category_names[$row['cat_id']]
+			));
+}
+//added end
+
+
 
 	// get list of subcategories of this category
 	$subcat_count = 0;
@@ -99,7 +145,7 @@ else
 		++$subcat_count;
 		if ($cycle == 1)
 		{
-			$TPL_main_value .= '<tr align="left">' . "\n";
+			$TPL_main_value .= '<div class="row">' . "\n";
 		}
 		$sub_counter = $row['sub_counter'];
 		$cat_counter = $row['counter'];
@@ -127,26 +173,31 @@ else
 			$BG = '';
 		}
 		// Retrieve the translated category name
+		
+		
+		
 		$row['cat_name'] = $category_names[$row['cat_id']];
+		
+	
 		$catimage = (!empty($row['cat_image'])) ? '<img src="' . $row['cat_image'] . '" border=0>' : '';
-		$TPL_main_value .= "\t" . '<td ' . $BG . ' WIDTH="33%">' . $catimage . '<a href="' . $system->SETTINGS['siteurl'] . 'browse.php?id=' . $row['cat_id'] . '">' . $row['cat_name'] . $count_string . '</a></td>' . "\n";
+		$TPL_main_value .= "\t" . '<div ' . $BG . ' class="span3 browse-mini">' . $catimage . '<a href="' . $system->SETTINGS['siteurl'] . 'browse.php?id=' . $row['cat_id'] . '">' . $row['cat_name'] . $count_string . '</a></div>' . "\n";
 
 		++$cycle;
 		if ($cycle == 4)
 		{
 			$cycle = 1;
-			$TPL_main_value .= '</tr>' . "\n";
+			$TPL_main_value .= '</div>' . "\n";
 		}
 	}
 
-	if ($cycle >= 2 && $cycle <= 3)
+	if ($cycle >= 1 && $cycle <= 2)
 	{
-		while ($cycle < 4)
+		while ($cycle < 3)
 		{
-			$TPL_main_value .= '	<td width="33%">&nbsp;</td>' . "\n";
+			$TPL_main_value .= '' . "\n";
 			++$cycle;
 		}
-		$TPL_main_value .= '</tr>' . "\n";
+		$TPL_main_value .= '' . "\n";
 	}
 
 	$insql = "(category IN " . $catalist;
@@ -214,6 +265,9 @@ else
 	$template->assign_vars(array(
 			'ID' => $id,
 			'TOP_HTML' => $TPL_main_value,
+			//added by L
+			'CUR_CAT' => $current_cat_name,
+			//
 			'CAT_STRING' => $TPL_categories_string,
 			'NUM_AUCTIONS' => $TOTALAUCTIONS
 			));

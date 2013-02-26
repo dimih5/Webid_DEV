@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -28,21 +28,22 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 			// get the data we need
 			$row = build_items($row);
 
-			// time left till the end of this auction
+			// time left till the end of this auction 
+			$s_difference = time() - $row['starts'];
 			$difference = $row['ends'] - time();
-			$bgcolour = ($k % 2) ? 'bgcolor="#FFFEEE"' : '';
+			$bgcolour = ($k % 2) ? 'bgcolor=""' : '';
 
 			$template->assign_block_vars('featured_items', array(
 				'ID' => $row['id'],
-				'ROWCOLOUR' => ($row['highlighted'] == 'y') ? 'bgcolor="#fea100"' : $bgcolour,
+				'ROWCOLOUR' => ($row['highlighted'] == 'y') ? 'class="warning"' : $bgcolour,
 				'IMAGE' => $row['pict_url'],
 				'TITLE' => $row['title'],
 				'SUBTITLE' => $row['subtitle'],
 				'BUY_NOW' => ($difference < 0) ? '' : $row['buy_now'],
 				'BID' => $row['current_bid'],
 				'BIDFORM' => $system->print_money($row['current_bid']),
-				'CLOSES' => ArrangeDateNoCorrection($row['ends']),
-				'NUMBIDS' => sprintf($MSG['950'], $row['num_bids']),
+				'TIMELEFT' => FormatTimeLeft($difference),
+				'NUMBIDS' => $row['num_bids'],
 
 				'B_BOLD' => ($row['bold'] == 'y')
 			));
@@ -58,20 +59,21 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 		$row = build_items($row);
 
 		// time left till the end of this auction 
+		$s_difference = time() - $row['starts'];
 		$difference = $row['ends'] - time();
-		$bgcolour = ($k % 2) ? 'bgcolor="#FFFEEE"' : '';
+		$bgcolour = ($k % 2) ? 'bgcolor=""' : '';
 
 		$template->assign_block_vars('items', array(
 			'ID' => $row['id'],
-			'ROWCOLOUR' => ($row['highlighted'] == 'y') ? 'bgcolor="#fea100"' : $bgcolour,
+			'ROWCOLOUR' => ($row['highlighted'] == 'y') ? 'class="warning"' : $bgcolour,
 			'IMAGE' => $row['pict_url'],
 			'TITLE' => $row['title'],
 			'SUBTITLE' => $row['subtitle'],
 			'BUY_NOW' => ($difference < 0) ? '' : $row['buy_now'],
 			'BID' => $row['current_bid'],
 			'BIDFORM' => $system->print_money($row['current_bid']),
-			'CLOSES' => ArrangeDateNoCorrection($row['ends']),
-			'NUMBIDS' => sprintf($MSG['950'], $row['num_bids']),
+			'TIMELEFT' => FormatTimeLeft($difference),
+			'NUMBIDS' => $row['num_bids'],
 
 			'B_BOLD' => ($row['bold'] == 'y')
 		));
@@ -89,7 +91,7 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 		while ($COUNTER <= $PAGES && $COUNTER < ($PAGE+6))
 		{
 			$template->assign_block_vars('pages', array(
-				'PAGE' => ($PAGE == $COUNTER) ? '<b>' . $COUNTER . '</b>' : '<a href="' . $system->SETTINGS['siteurl'] . $current_page . '?PAGE=' . $COUNTER . $extravar . '"><u>' . $COUNTER . '</u></a>'
+				'PAGE' => ($PAGE == $COUNTER) ? '<li class="active"><a href="#">' . $COUNTER . '</a></li>' : '<a href="' . $system->SETTINGS['siteurl'] . $current_page . '?PAGE=' . $COUNTER . $extravar . '">' . $COUNTER . '</a>'
 			));
 			$COUNTER++;
 		}
@@ -100,8 +102,8 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 		'B_SUBTITLE' => ($system->SETTINGS['subtitle'] == 'y'),
 
 		'NUM_AUCTIONS' => ($total == 0) ? $ERR_114 : $total,
-		'PREV' => ($PAGES > 1 && $PAGE > 1) ? '<a href="' . $system->SETTINGS['siteurl'] . $current_page . '?PAGE=' . $PREV . $extravar . '"><u>' . $MSG['5119'] . '</u></a>&nbsp;&nbsp;' : '',
-		'NEXT' => ($PAGE < $PAGES) ? '<a href="' . $system->SETTINGS['siteurl'] . $current_page . '?PAGE=' . $NEXT . $extravar . '"><u>' . $MSG['5120'] . '</u></a>' : '',
+		'PREV' => ($PAGES > 1 && $PAGE > 1) ? '<a href="' . $system->SETTINGS['siteurl'] . $current_page . '?PAGE=' . $PREV . $extravar . '">' . '«' . '</a>' : '',
+		'NEXT' => ($PAGE < $PAGES) ? '<a href="' . $system->SETTINGS['siteurl'] . $current_page . '?PAGE=' . $NEXT . $extravar . '">' . '»' . '</a>' : '',
 		'PAGE' => $PAGE,
 		'PAGES' => $PAGES
 	));
@@ -121,6 +123,11 @@ function build_items($row)
 		$row['pict_url'] = get_lang_img('nopicture.gif');
 	}
 
+	$row['pict_url'] = '<a href="' . $system->SETTINGS['siteurl'] . 'item.php?id=' . $row['id'] . '"><img src="' . $row['pict_url'] . '" border=0 /></a>';
+
+	// this subastas title and link to details
+	$row['title'] = '<a href="' . $system->SETTINGS['siteurl'] . 'item.php?id=' . $row['id'] . '">' . $row['title'] . '</a>';
+
 	if ($row['current_bid'] == 0)
 	{
 		$row['current_bid'] = $row['minimum_bid'];
@@ -128,12 +135,12 @@ function build_items($row)
 
 	if ($row['buy_now'] > 0 && $row['bn_only'] == 'n' && ($row['num_bids'] == 0 || ($row['reserve_price'] > 0 && $row['current_bid'] < $row['reserve_price'])))
 	{
-		$row['buy_now'] = '<a href="' . $system->SETTINGS['siteurl'] . 'buy_now.php?id=' . $row['id'] . '"><img src="' . get_lang_img('buy_it_now.gif') . '" border=0 class="buynow"></a>' . $system->print_money($row['buy_now']);
+		$row['buy_now'] = '<br><a href="' . $system->SETTINGS['siteurl'] . 'buy_now.php?id=' . $row['id'] . '"><img src="' . get_lang_img('buy_it_now.png') . '" border=0 class="buynow"></a> <small>' . $system->print_money($row['buy_now']) . '</small>';
 	}
 	elseif ($row['buy_now'] > 0 && $row['bn_only'] == 'y')
 	{
 		$row['current_bid'] = $row['buy_now'];
-		$row['buy_now'] = '<a href="' . $system->SETTINGS['siteurl'] . 'buy_now.php?id=' . $row['id'] . '"><img src="' . get_lang_img('buy_it_now.gif') . '" border=0 class="buynow"></a>' . $system->print_money($row['buy_now']) . ') <img src="' . get_lang_img('bn_only.png') . '" border="0" class="buynow">';
+		$row['buy_now'] = '<br><a href="' . $system->SETTINGS['siteurl'] . 'buy_now.php?id=' . $row['id'] . '"><img src="' . get_lang_img('buy_it_now.png') . '" border=0 class="buynow"></a> <small>' . $system->print_money($row['buy_now']) . '</small> <img src="' . get_lang_img('bn_only.png') . '" border="0" class="buynow">';
 	}
 	else
 	{

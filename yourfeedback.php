@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,7 +12,7 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'common.php';
+include 'includes/common.inc.php';
 include $include_path . 'membertypes.inc.php';
 
 foreach ($membertypes as $idm => $memtypearr)
@@ -104,23 +104,23 @@ $firstpage = (($page - 5) <= 0) ? 1 : ($page - 5);
 $lastpage = (($page + 5) > $pages) ? $pages : ($page + 5);
 $backpage = (($page - 1) <= 0) ? 1 : ($page - 1);
 $nextpage = (($page + 1) > $pages) ? $pages : ($page + 1);
-$echofeed = ($page == 1) ? '' : '<a href="yourfeedback.php">&laquo;</a> <a href="yourfeedback.php?pg=' . $backpage . '"><</a> ';
+$echofeed = ($page == 1) ? '' : '<li><a href="yourfeedback.php">&laquo;</a></li> <li><a href="yourfeedback.php?pg=' . $backpage . '"><</a></li> ';
 for ($ind2 = $firstpage; $ind2 <= $lastpage; $ind2++)
 {
 	if ($page != $ind2)
 	{
-		$echofeed .= '<a href="yourfeedback.php?pg=' . $ind2 . '">' . $ind2 . '</a>';
+		$echofeed .= '<li><a href="yourfeedback.php?pg=' . $ind2 . '">' . $ind2 . '</a></li>';
 	}
 	else
 	{
-		$echofeed .= $ind2;
+		$echofeed .= '<li><a href="#">'.$ind2.'</a></li>';
 	}
 	if ($ind2 != $lastpage)
 	{
-		$echofeed .= ' | ';
+		$echofeed .= '';
 	}
 }
-$echofeed .= ($thispage == $pages || $pages == 0) ? '' : ' <a href="yourfeedback.php?pg=' . $nextpage . '">></a> <a href="yourfeedback.php?pg=' . $pages . '">&raquo;</a>';
+$echofeed .= ($thispage == $pages || $pages == 0) ? '' : ' <li><a href="yourfeedback.php?pg=' . $nextpage . '">></a></li> <li><a href="yourfeedback.php?pg=' . $pages . '">&raquo;</a></li>';
 
 $template->assign_vars(array(
 		'USERNICK' => $user->user_data['nick'],
@@ -132,7 +132,7 @@ $template->assign_vars(array(
 
 include 'header.php';
 $TMP_usmenutitle = $MSG['25_0223'];
-include $include_path . 'user_cp.php';
+include 'includes/user_cp.php';
 $template->set_filenames(array(
 		'body' => 'yourfeedback.tpl'
 		));

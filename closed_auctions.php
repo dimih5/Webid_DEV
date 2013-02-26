@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,7 +12,7 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'common.php';
+include 'includes/common.inc.php';
 
 if (!empty($_GET['user_id']))
 {
@@ -126,11 +126,11 @@ while ($COUNTER <= $PAGES && $COUNTER < ($PAGE + 6))
 {
 	if ($PAGE == $COUNTER)
 	{
-		$pagenation .= '<b>' . $COUNTER . '</b>&nbsp;&nbsp;';
+		$pagenation .= '<li class="active"><a href="#" >' . $COUNTER . '</a></li>';
 	}
 	else
 	{
-		$pagenation .= '<a href="closed_auctions.php?PAGE=' . $COUNTER . '&user_id=' . $user_id . '"><u>' . $COUNTER . '</u></a>&nbsp;&nbsp;';
+		$pagenation .= '<li><a href="closed_auctions.php?PAGE=' . $COUNTER . '&user_id=' . $user_id . '">' . $COUNTER . '</a></li>';
 	}
 	$COUNTER++;
 }

@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,7 +12,7 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'common.php';
+include 'includes/common.inc.php';
 
 if (!$user->is_logged_in())
 {
@@ -24,7 +24,6 @@ if (!$user->is_logged_in())
 $cropdefault = false;
 $width = $system->SETTINGS['thumb_show'];
 $height = $width / 1.2;
-unset($ERR);
 
 function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start_width, $start_height, $scale)
 {
@@ -46,10 +45,10 @@ function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start
 
 	$newImageWidth = ceil($width * $scale);
 	$newImageHeight = ceil($height * $scale);
-	$newImage = imagecreatetruecolor($newImageWidth, $newImageHeight);
+	$newImage = imagecreatetruecolor(200, 200);
 	// make the background white
-	$bg = imagecolorallocate($newImage, 0, 0, 0);
-	imagefill($newImage, 0, 0, $bg);
+	
+	
 	switch ($imageType)
 	{
 		case 'image/gif':
@@ -65,7 +64,16 @@ function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start
 			$source = imagecreatefrompng($image);
 			break;
 	}
-	imagecopyresampled($newImage, $source, 0, 0, $start_width, $start_height, $newImageWidth, $newImageHeight, $width, $height);
+	imagecopyresampled($newImage, $source, 0, 0, 0, 0, 200, 200, $imagewidth, $imageheight);
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	switch ($imageType)
 	{
 		case 'image/gif':
@@ -119,7 +127,17 @@ if (isset($_GET['action']) && $_GET['action'] == 'crop' && !empty($_POST['w']) &
 		$scale = $width / $w;
 		$large_image_location = $upload_path . session_id() . '/' . $_GET['img'];
 		$thumb_image_location = $upload_path . session_id() . '/thumb-' . $_GET['img'];
+		
+		
+		
 		$cropped = resizeThumbnailImage($thumb_image_location, $large_image_location, $w, $h, $x1, $y1, $scale);
+		
+		
+		
+		
+		
+		
+		
 		$_SESSION['SELL_pict_url'] = 'thumb-' . $_GET['img'];
 		$_SESSION['SELL_pict_url_temp'] = $_GET['img'];
 	}
@@ -146,8 +164,8 @@ if (isset($_POST['uploadpicture']) && $_POST['uploadpicture'] == $MSG['681'])
 		$filename = $_FILES['userfile']['name'];
 		$nameparts = explode('.', $filename);
 		$ext_key = count($nameparts) - 1;
-		$file_ext = strtolower($nameparts[$ext_key]);
-		$file_types = array('gif', 'jpg', 'jpeg', 'png');
+		$file_ext = $nameparts[$ext_key];
+		$file_types = array('gif', 'jpg', 'jpeg', 'png', 'GIF', 'JPG', 'JPEG', 'PNG');
 
 		// clean the name
 		unset($nameparts[$ext_key]);
@@ -166,7 +184,7 @@ if (isset($_POST['uploadpicture']) && $_POST['uploadpicture'] == $MSG['681'])
 		}
 		elseif (in_array($newname, $_SESSION['UPLOADED_PICTURES']))
 		{
-			$ERR = $MSG['2__0054'] . ' (' . $_FILES['userfile']['name'] . ')';
+			$ERR = $MGS_2__0054 . ' (' . $_FILES['userfile']['name'] . ')';
 		}
 		else
 		{
@@ -205,7 +223,7 @@ if ($cropdefault)
 		$ratio = '1.2:1';
 		$thumbwh = 'width:' . $width . '; height:' . $height . ';';
 		$scaleX = 120;
-		$scaleY = 100;
+		$scaleY = 120;
 		$startY = 380 * $whratio;
 		$startX = $startY * 1.2;
 	}
@@ -213,7 +231,7 @@ if ($cropdefault)
 	{
 		$ratio = '1:1.2';
 		$thumbwh = 'height:' . $width . '; width:' . $height . ';';
-		$scaleX = 100;
+		$scaleX = 120;
 		$scaleY = 120;
 		$startX = 380 * $whratio;
 		$startY = $startX * 1.2;
@@ -244,14 +262,13 @@ else
 			));
 }
 
-// built gallery
 foreach ($_SESSION['UPLOADED_PICTURES'] as $k => $v)
 {
 	$template->assign_block_vars('images', array(
 			'IMGNAME' => $v,
+			'IMGSIZE' => $_SESSION['UPLOADED_PICTURES_SIZE'][$k],
 			'ID' => $k,
-			'DEFAULT' => ($v == $_SESSION['SELL_pict_url_temp']) ? 'selected.gif' : 'unselected.gif',
-			'IMAGE' => $uploaded_path . session_id() . '/' . $v
+			'DEFAULT' => ($v == $_SESSION['SELL_pict_url_temp']) ? 'selected.gif' : 'unselected.gif'
 			));
 }
 
@@ -277,15 +294,11 @@ for ($i = 0; $i < $system->SETTINGS['moneydecimals']; $i++)
 $template->assign_vars(array(
 		'SITENAME' => $system->SETTINGS['sitename'],
 		'THEME' => $system->SETTINGS['theme'],
-		'ERROR' => (isset($ERR)) ? $ERR : '',
-		'IMAGE_COST' => ($image_fee != 0) ? sprintf($MSG['675'], $image_fee) : '',
-		'IMAGE_COST_PLAIN' => ($image_fee != 0) ? $image_fee : 0,
-		'PICINFO' => sprintf($MSG['673'], $system->SETTINGS['maxpictures'], $system->SETTINGS['maxuploadsize']),
-		'ERRORMSG' => sprintf($MSG['674'], $system->SETTINGS['maxpictures']),
-		'MAXPICS' => $system->SETTINGS['maxpictures'],
-		'MAXPICSIZE' => $system->SETTINGS['maxuploadsize'],
-		'SESSION_ID' => session_id(),
-		'UPLOADED' => intval(count($_SESSION['UPLOADED_PICTURES']))
+		'NUMIMAGES' => count($_SESSION['UPLOADED_PICTURES']),
+		'IMAGE_COST' => $image_fee,
+		'FEE_DECIMALS' => $decimals,
+
+		'B_CROPSCREEN' => $cropdefault
 		));
 $template->set_filenames(array(
 		'body' => 'upldgallery.tpl'

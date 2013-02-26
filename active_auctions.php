@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008 - 2013 WeBid
+ *   copyright				: (C) 2008, 2009 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,7 +12,7 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'common.php';
+include 'includes/common.inc.php';
 include $include_path . 'dates.inc.php';
 
 if (isset($_GET['user_id']) && !empty($_GET['user_id']))
@@ -87,11 +87,11 @@ while ($row = mysql_fetch_array($res))
 	$difference = $row['ends'] - time();
 
 	$template->assign_block_vars('auctions', array(
-			'BGCOLOUR' => (!($k % 2)) ? '' : 'class="alt-row"',
+			'BGCOLOUR' => (!($k % 2)) ? '' : 'highlighted',
 			'ID' => $row['id'],
 			'PIC_URL' => $row['pict_url'],
 			'TITLE' => $row['title'],
-			'BNIMG' => get_lang_img(($row['bn_only'] == 'n') ? 'buy_it_now.gif' : 'bn_only.png'),
+			'BNIMG' => get_lang_img(($row['bn_only'] == 'n') ? 'buy_it_now.png' : 'bn_only.png'),
 			'BNVALUE' => $row['buy_now'],
 			'BNFORMAT' => $system->print_money($row['buy_now']),
 			'BIDVALUE' => $row['current_bid'],
@@ -119,11 +119,11 @@ while ($COUNTER <= $PAGES && $COUNTER < ($PAGE + 6))
 {
 	if ($PAGE == $COUNTER)
 	{
-		$pagenation .= '<b>' . $COUNTER . '</b>&nbsp;&nbsp;';
+		$pagenation .= '<li class="active"><a href="#">' . $COUNTER . '</a></li>';
 	}
 	else
 	{
-		$pagenation .= '<a href="active_auctions.php?PAGE=' . $COUNTER . '&user_id=' . $user_id . '"><u>' . $COUNTER . '</u></a>&nbsp;&nbsp;';
+		$pagenation .= '<li><a href="active_auctions.php?PAGE=' . $COUNTER . '&user_id=' . $user_id . '">' . $COUNTER . '</a></li>';
 	}
 	$COUNTER++;
 }
@@ -146,7 +146,7 @@ $template->assign_vars(array(
 
 include 'header.php';
 $template->set_filenames(array(
-		'body' => 'active_auctions.tpl'
+		'body' => 'auctions_active.tpl'
 		));
 $template->display('body');
 include 'footer.php';

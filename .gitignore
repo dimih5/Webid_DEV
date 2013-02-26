@@ -1,3 +1,4 @@
+/cache
 /cache/tpl_admin_errorlog.tpl.php
 /cache/tpl_admin_footer.tpl.php
 /cache/tpl_admin_header.tpl.php
@@ -37,3 +38,7 @@
 /uploaded/cache/120-8f3d027a8d42d63a95398ee91dae4252
 /uploaded/cache/120-99957530b955b6e2570c2d2c343ecfa4
 /uploaded/cache/120-e7d0ed03dd3e100327180586fb794bb2
+
+/cache/index.php
+
+/cache/index.php

@@ -55,15 +55,47 @@ if (isset($_POST['action']) && empty($_POST['newmessage']))
 
 $TOTALMSGS = mysql_num_rows($res);
 
-// Update exclude user ADDON BY MAIKELB
-if(!isset($_SESSION['checkstate']))
+//Update exclude user ADDON BY MAIKELB
+	function checkstate($board_id)
+	{
+		global $system, $user;
+		$_SESSION['checkstate'] = 'falser';
+		$queryser = "SELECT excludeuser FROM webid_groups WHERE id = '" . $board_id . "'"; 
+		$resser = mysql_query($queryser);
+		$system->check_mysql($resser, $queryser, __LINE__, __FILE__);
+		while ($evalser = mysql_fetch_assoc($resser))
+		{
+			$excludeuser = implode($evalser);
+			$excludeuser = explode(",", $excludeuser);
+		}
+		if(!empty($excludeuser))
+		{
+			if (in_array($user->user_data['id'], $excludeuser)) 
+			{
+				$_SESSION['checkstate'] = 'falser';
+			}
+			else
+			{
+				$_SESSION['checkstate'] = 'truer';
+			}
+		}
+		else
+		{			
+			$_SESSION['checkstate'] = 'truer';
+		}
+	}
+//Check if it's the firstload so it can fetch the checkbox
+if (!isset($_SESSION['checkstate']) || !isset($_SESSION['firstload']))
 {
 	$_SESSION['checkstate'] = array();
+	$_SESSION['firstload'] = array();
+	checkstate($board_id);
 }
 if (isset($_POST['emailcheckbox']))
 {	
 	$queryser = "SELECT excludeuser FROM " . $DBPrefix . "groups WHERE id = '" . $board_id . "'"; 
-	$resser = mysql_query($queryser) or die(mysql_error());
+	global $resser;
+	$resser = mysql_query($queryser);
 	$system->check_mysql($resser, $queryser, __LINE__, __FILE__);
 	
 		if($_POST['emailcheckbox'] == 1)
@@ -89,44 +121,15 @@ if (isset($_POST['emailcheckbox']))
 				$resser = mysql_query($query);
 				$system->check_mysql($resser, $query, __LINE__, __FILE__);
 			}
-			if(!isset($_SESSION['checkstate']))
-			{
-				$_SESSION['checkstate'] = array();
-			}
-				$COU = 'falser';
-				$queryser = "SELECT excludeuser FROM " . $DBPrefix . "groups WHERE id = '" . $board_id . "'"; 
-				$resser = mysql_query($queryser);
-				$system->check_mysql($resser, $queryser, __LINE__, __FILE__);
-				while ($evalser = mysql_fetch_assoc($resser))
-				{
-					$excludeuser = implode($evalser);
-					$excludeuser = explode(",", $excludeuser);
-				}
-				if(!empty($excludeuser))
-				{
-					if (in_array($user->user_data['id'], $excludeuser)) 
-					{	
-						$COU = 'falser';
-						$_SESSION['checkstate'] = 'falser';
-					}
-					else
-					{
-						$COU = 'truer';
-						$_SESSION['checkstate'] = 'truer';
-					}
-				}
-				else
-				{			
-					$COU = 'truer';
-					$_SESSION['checkstate'] = 'truer';
-				}
+		checkstate($board_id);
 		}
 		else if($_POST['emailcheckbox'] == 0)
 		{
-		if(!isset($_SESSION['checkstate']))
-		{
-			$_SESSION['checkstate'] = array();
-		}
+			if(!isset($_SESSION['checkstate']) || !isset($_SESSION['firstload']))
+			{
+				$_SESSION['checkstate'] = array();
+				$_SESSION['firstload'] = array();
+			}
 			while ($evalser = mysql_fetch_row($resser))
 			{
 				$excludeuser = implode($evalser);
@@ -135,43 +138,16 @@ if (isset($_POST['emailcheckbox']))
 				{
 					if(in_array($user->user_data['id'], $excludeuser))
 					{
-							$inhoud = array_diff($excludeuser, array($user->user_data['id']));
-							$evalinput = implode(",", $inhoud);
-							$queryser = "UPDATE " . $DBPrefix . "groups SET excludeuser = '" . $evalinput . "' WHERE " . $DBPrefix . "groups.id = '" . $board_id . "'";
-							$resser = mysql_query($queryser);							
+						$inhoud = array_diff($excludeuser, array($user->user_data['id']));
+						$evalinput = implode(",", $inhoud);
+						$queryser = "UPDATE " . $DBPrefix . "groups SET excludeuser = '" . $evalinput . "' WHERE " . $DBPrefix . "groups.id = '" . $board_id . "'";
+						$resser = mysql_query($queryser);							
 					}
 				}
 			}
-				$COU = 'false';
-				$queryser = "SELECT excludeuser FROM " . $DBPrefix . "groups WHERE id = '" . $board_id . "'"; 
-				$resser = mysql_query($queryser);
-				$system->check_mysql($resser, $queryser, __LINE__, __FILE__);
-				while ($evalser = mysql_fetch_assoc($resser))
-				{
-					$excludeuser = implode($evalser);
-					$excludeuser = explode(",", $excludeuser);
-				}
-				if(!empty($excludeuser))
-				{
-					if (in_array($user->user_data['id'], $excludeuser)) 
-					{	
-						$COU = 'falser';
-						$_SESSION['checkstate'] = 'falser';
-					}
-					else
-					{
-						$COU = 'truer';
-						$_SESSION['checkstate'] = 'truer';
-					}
-				}
-				else
-				{			
-					$COU = 'truer';
-					$_SESSION['checkstate'] = 'truer';
-				}
+			checkstate($board_id);
 		}
-	}
-
+}
 // Retrieve excluded state from user (by checking the uid in the database)
 
 

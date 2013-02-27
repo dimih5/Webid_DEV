@@ -1,70 +1,78 @@
+<small><span class="muted">{L_5117}&nbsp;{PAGE}&nbsp;{L_5118}&nbsp;{PAGES}</span></small>
 <!-- IF B_FEATURED_ITEMS -->
-	<table width="99%" border="0" cellspacing="1" cellpadding="4">
-    <!-- BEGIN featured_items -->
-		<tr align="center">
-			<td align="center" width="15%">
-				<a href="{SITEURL}item.php?id={featured_items.ID}"><img src="{featured_items.IMAGE}" border="0"></a>
-			</td>
-			<td align="left"<!-- IF featured_items.B_BOLD --> style="font-weight: bold;"<!-- ENDIF -->>
-                <a href="{SITEURL}item.php?id={featured_items.ID}" class="bigfont">{featured_items.TITLE}</a>
-				<!-- IF B_SUBTITLE && featured_items.SUBTITLE ne '' --><p class="smallspan">{featured_items.SUBTITLE}</p><!-- ENDIF -->
-				<p>{L_949} {featured_items.CLOSES}</p>
-			</td>
-			<td align="center" width="15%">
-	<!-- IF featured_items.BUY_NOW neq '' -->
-				<span class="redfont bigfont">{featured_items.BUY_NOW}</span>
-	<!-- ELSE -->
-				<span class="grayfont">{L_951}</span>
-	<!-- ENDIF -->
-			</td>
-			<td align="center" width="15%">
-				<span class="bigfont">{featured_items.BIDFORM}</span>
-				<p class="smallspan">{featured_items.NUMBIDS}</p>
-			</td>
-		</tr>
-    <!-- END featured_items -->
-	</table>
-    <br class="spacer">
-<!-- ENDIF -->
+<table class="table table-browse-center" style="margin-bottom:0">
+  <tr>
+    <th class="tr-image"> </th>
+    <th class="tr-title"> </th>
+    <th class="tr-bids"> <small>{L_169}</small> </th>
+    <th class="hidden-phone tr-bindsno"> <small>{L_170}</small> </th>
+    <th class="tr-timeleft hidden-phone"> <small>{L_171}</small> </th>
+  </tr>
+  <!-- BEGIN featured_items -->
+  <tr class="table-row-click <!-- IF featured_items.B_BOLD -->
 
-	<table width="99%" border="0" cellspacing="1" cellpadding="4">
-<!-- BEGIN items -->
-		<tr align="center" {items.ROWCOLOUR}>
-			<td align="center" width="15%">
-				<a href="{SITEURL}item.php?id={items.ID}"><img src="{items.IMAGE}" border="0"></a>
-			</td>
-			<td align="left"<!-- IF items.B_BOLD --> style="font-weight: bold;"<!-- ENDIF -->>
-                <a href="{SITEURL}item.php?id={items.ID}" class="bigfont">{items.TITLE}</a>
-				<!-- IF B_SUBTITLE && items.SUBTITLE ne '' --><p class="smallspan">{items.SUBTITLE}</p><!-- ENDIF -->
-				<p>{L_949} {items.CLOSES}</p>
-			</td>
-			<td align="center" width="15%">
-	<!-- IF items.BUY_NOW neq '' -->
-				<span class="redfont bigfont">{items.BUY_NOW}</span>
-	<!-- ELSE -->
-				<span class="grayfont">{L_951}</span>
-	<!-- ENDIF -->
-			</td>
-			<td align="center" width="15%">
-				<span class="bigfont">{items.BIDFORM}</span>
-				<p class="smallspan">{items.NUMBIDS}</p>
-			</td>
-		</tr>
-<!-- END items -->
-		<tr align="center">
-			<td colspan="4">{NUM_AUCTIONS}</td>
-		</tr>
-	</table>
-	<table width="100%" cellpadding="0" cellspacing="0" border="0">
-		<tr>
-			<td align="center">
-				{L_5117}&nbsp;{PAGE}&nbsp;{L_5118}&nbsp;{PAGES}
-				<br>
-				{PREV}
-<!-- BEGIN pages -->
-				{pages.PAGE}&nbsp;&nbsp;
-<!-- END pages -->
-				{NEXT}
-			</td>
-		</tr>
-	</table>
+ highlighted
+
+    <!-- ENDIF -->"   
+
+  
+
+  
+  <!-- IF featured_items.B_BOLD -->
+  style="font-weight: bold;"
+  <!-- ENDIF -->
+  >
+  <td class="mini-img"><div class="tdb-image"> {featured_items.IMAGE} </div></td>
+    <td><span class="list-title">{featured_items.TITLE}</span>
+      <!-- IF B_SUBTITLE && featured_items.SUBTITLE ne '' -->
+      <br />
+      <span class="truncate-table"> {featured_items.SUBTITLE} </span>
+      <!-- ENDIF -->
+    </td>
+    <td> {featured_items.BIDFORM} <em>{featured_items.BUY_NOW}</em></td>
+    <td class="hidden-phone"><small>{featured_items.NUMBIDS}</small> </td>
+    <td class="hidden-phone"><small><span class="muted">{featured_items.TIMELEFT}</span></small> </td>
+  </tr>
+  <!-- END featured_items -->
+</table>
+<!-- ENDIF -->
+<table  class="table table-browse-center ">
+  <tr>
+    <th class="tr-image"> </th>
+    <th class="tr-title"> </th>
+    <th class="tr-bids"> <small>{L_169}</small> </th>
+    <th class="hidden-phone tr-bindsno"> <small>{L_170}</small> </th>
+    <th class="tr-timeleft  hidden-phone"> <small>{L_171}</small> </th>
+  </tr>
+  <!-- BEGIN items -->
+  <tr class="table-row-click <!-- IF items.ROWCOLOUR --> highlighted<!-- ENDIF -->"
+
+  
+  <!-- IF items.B_BOLD -->
+  style="font-weight: bold;"
+  <!-- ENDIF -->
+  >
+  <td  class="mini-img"><div class="tdb-image"> {items.IMAGE} </div></td>
+    <td><span class="list-title">{items.TITLE}</span>
+      <!-- IF B_SUBTITLE && items.SUBTITLE ne '' -->
+      <br />
+      <span class="truncate-table"> {items.SUBTITLE} </span>
+      <!-- ENDIF -->
+    </td>
+    <td> {items.BIDFORM} <em>{items.BUY_NOW}</em> </td>
+    <td  class="hidden-phone"  style="text-align:center;"><small>{items.NUMBIDS}</small> </td>
+    <td class="hidden-phone"><small><span class="muted">{items.TIMELEFT}</span></small> </td>
+  </tr>
+  <!-- END items -->
+</table>
+<hr  />
+<div class="pagination pagination-centered pagination-large">
+  <ul>
+    <li>{PREV}</li>
+    <!-- BEGIN pages -->
+    <li>{pages.PAGE}</li>
+    <!-- END pages -->
+    <li>{NEXT}</li>
+  </ul>
+</div>
+<hr  />

@@ -1,33 +1,20 @@
-<div class="content">
-	<div class="padtb">
-		<table width="100%" cellpadding="0" cellspacing="0" class="notd">
-		<tr>
-			<td>
-			<dl class="tabs">
-				<dd><a href="{SITEURL}user_menu.php?cptab=summary">{L_25_0080}</a></dd>  
-				<dd><a href="{SITEURL}user_menu.php?cptab=account">{L_25_0081}</a></dd>  
-<!-- IF B_CAN_SELL -->
-				<dd><a href="{SITEURL}user_menu.php?cptab=selling">{L_25_0082}</a></dd>	
-<!-- ENDIF -->
-				<dd><a href="{SITEURL}user_menu.php?cptab=buying">{L_25_0083}</a></dd> 	   
-			</dl>
-			</td>
-		</tr>
-		<tr>
-			<td>
-			<div class="titTable4">
-				{L_205}
-			</div>
+<div class="row-fluid">
+<div class="span3">
+  <div class="well" style="max-width: 340px; padding: 8px 0;">
+    <ul class="nav nav-list">
+      <li class="nav-header">{L_205}</li>
+      <li><a href="{SITEURL}user_menu.php?cptab=summary">{L_25_0080}</a></li>
+      <li><a href="{SITEURL}user_menu.php?cptab=account">{L_25_0081}</a></li>
+      <!-- IF B_CAN_SELL -->
+      <li><a href="{SITEURL}user_menu.php?cptab=selling">{L_25_0082}</a></li>
+      <!-- ENDIF -->
+      <li><a href="{SITEURL}user_menu.php?cptab=buying">{L_25_0083}</a></li>
+    </ul>
+  </div>
+</div>
 <!-- IF B_MENUTITLE -->
-			<div class="titTable4">
-				{UCP_TITLE}
-			</div>
+{UCP_TITLE}
 <!-- ENDIF -->
 <!-- IF B_ISERROR -->
-            <div class="error-box">
-                {UCP_ERROR}
-            </div>
+<p class="errfont" style="background-color;#FF9933;display:block">{UCP_ERROR}</p>
 <!-- ENDIF -->
-			</td>
-		</tr>
-		</table>

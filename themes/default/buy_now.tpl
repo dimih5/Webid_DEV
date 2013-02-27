@@ -1,78 +1,51 @@
-<div class="content">
-	<div class="tableContent2">
-		<div class="titTable2 rounded-top rounded-bottom">
-			{TITLE}
-		</div>
-		<div class="table2">
 <!-- IF ERROR ne '' -->
-			<div class="error-box">
-				{ERROR}
-			</div>
+
+<div class="alert alert-warning"> {ERROR} </div>
 <!-- ENDIF -->
 <!-- IF B_NOTBOUGHT -->
-            <form action="{ASSLURL}buy_now.php?id={ID}" method="post">
-            <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
-<!-- ENDIF -->
-            <table border=0 width="100%" cellspacing="0" cellpadding="4">
-                <tr>
-                    <td align=right width="40%"><b>{L_017} :</b></td>
-                    <td width="60%">{TITLE}</td>
-                </tr>
-                <tr>
-                    <td align=right width="50%"><b>{L_125} :</b></td>
-                    <td>{SELLER} {SELLERNUMFBS} {FBICON}</td>
-                </tr>
-                <tr>
-                    <td align="right" width="40%"><b>{L_497}:</b></td>
-                    <td>{BN_PRICE}</td>
-                </tr>
-                <tr>
-                    <td colspan=2 align="center">&nbsp;</td>
-                </tr>
-<!-- IF B_NOTBOUGHT -->
-                <tr>
-                    <td align="right"><b>{L_284}:</b></td>
-                    <td>
-    <!-- IF B_QTY -->
-    					<input type="text" name="qty" size="15" maxlength="15">{LEFT} {L_5408}
-    <!-- ELSE -->
-    					<input type="hidden" name="qty" value="1">1
-    <!-- ENDIF -->
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">{L_003}</td>
-                    <td>
-                        <b>{YOURUSERNAME}</b>
-                    </td>
-                </tr>
-	<!-- IF B_USERAUTH -->
-                <tr>
-                    <td align="right">{L_004}</td>
-                    <td>
-                        <input type="password" name="password" size="15" maxlength="15">
-                    </td>
-                </tr>
-	<!-- ENDIF -->
-            </table>
-            <div style="text-align:center;">
-                <input type="hidden" name="action" value="buy">
-                <input type="submit" name="" value="{L_496}" class="button">
-            </div>
-            </form>
+<form action="{ASSLURL}buy_now.php?id={ID}" method="post">
+  <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
+  <!-- ENDIF -->
+  <div class="row">
+  <div class="span8 offset2 well">
+  <legend> {TITLE} </legend>
+  {L_017}: {TITLE}<br />
+  <br />
+  {L_125}: {SELLER} {SELLERNUMFBS} {FBICON}<br />
+  <br />
+  {L_497}:{BN_PRICE}<br />
+  <br />
+  <!-- IF ERROR ne '' -->
+  <div class="alert alert-warning">{ERROR}</div>
+  <!-- ENDIF -->
+  <!-- IF B_NOTBOUGHT -->
+  {L_284}:
+  <!-- IF B_QTY -->
+  <input type="text" name="qty" size="15" maxlength="15">
+  {LEFT} {L_5408}
+  <!-- ELSE -->
+  <input type="hidden" name="qty" value="1">
+  1
+  <!-- ENDIF -->
+  <br />
+  {L_003}: {YOURUSERNAME}
+  <!-- IF B_USERAUTH -->
+  <label>{L_004}</label>
+  <input type="password" name="password" size="15" maxlength="65">
+  <!-- ENDIF -->
+  <div class="form-actions">
+    <input type="hidden" name="action" value="buy">
+    <input type="submit" name="" value="{L_496}" class="btn btn-primary">
+  </div>
+</form>
 <!-- ELSE -->
-            <tr>
-                <td colspan="2" align="center">
-                    {L_498}
-                    <form name="" method="post" action="{SITEURL}pay.php?a=2" id="fees">
-                    <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
-                    <input type="hidden" name="pfval" value="{ID}">
-                    <input type="submit" name="Pay" value="{L_756}" class="pay">
-                    </form>
-                </td>
-            </tr>
-            </table>
+<div class="form-actions">
+  <form name="" method="post" action="{SITEURL}pay.php?a=2" id="fees">
+    <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
+    <input type="hidden" name="pfval" value="{ID}">
+    <input type="submit" name="Pay" value="{L_756}" class="btn btn-primary">
+  </form>
+</div>
 <!-- ENDIF -->
-		</div>
-	</div>
+</div>
 </div>

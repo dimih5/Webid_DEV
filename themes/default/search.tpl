@@ -1,20 +1,12 @@
-<div class="tableContent2">
-	<div class="titTable2">
-		{L_199}
-	</div>
-	<div class="table2">
+<legend>{L_199}</legend>
 <!-- IF ERROR ne '' -->
-		<div class="error-box">
-			{ERROR}
-		</div>
-<!-- ELSE -->
-	<!-- IF NUM_AUCTIONS gt 0 -->
-		<!-- INCLUDE browse.tpl -->
-	<!-- ELSE -->
-		<div class="padding" align="center">
-			{L_198}
-		</div>
-	<!-- ENDIF -->
-<!-- ENDIF -->
-	</div>
+<div class="alert alert-info" align="center">
+  <p class="errfont">{ERROR}</p>
 </div>
+<!-- ELSE -->
+<!-- IF NUM_AUCTIONS gt 0 -->
+<!-- INCLUDE browse.tpl -->
+<!-- ELSE -->
+<div class="alert alert-info" align="center"> {L_198} </div>
+<!-- ENDIF -->
+<!-- ENDIF -->

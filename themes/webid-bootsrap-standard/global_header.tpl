@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href="{INCURL}themes/{THEME}/css/style.css">
 <link rel="stylesheet" type="text/css" href="{INCURL}themes/{THEME}/css/jquery.lightbox.css" media="screen">
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-<link rel="stylesheet" type="text/css" href="{INCURL}includes/calendar.css">
+<link rel="stylesheet" type="text/css" href="{INCURL}inc/calendar.css">
 <link rel="alternate" type="application/rss+xml" title="{L_924}" href="{SITEURL}rss.php?feed=1">
 <link rel="alternate" type="application/rss+xml" title="{L_925}" href="{SITEURL}rss.php?feed=2">
 <link rel="alternate" type="application/rss+xml" title="{L_926}" href="{SITEURL}rss.php?feed=3">

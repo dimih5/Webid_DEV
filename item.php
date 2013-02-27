@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008, 2009 WeBid
+ *   copyright				: (C) 2008 - 2013 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,7 +12,7 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'includes/common.inc.php';
+include 'common.php';
 include $include_path . 'dates.inc.php';
 include $include_path . 'membertypes.inc.php';
 include $main_path . 'language/' . $language . '/categories.inc.php';
@@ -58,7 +58,6 @@ $minimum_bid = $auction_data['minimum_bid'];
 $high_bid = $auction_data['current_bid'];
 $customincrement = $auction_data['increment'];
 $seller_reg = FormatDate($auction_data['reg_date'], '/', false);
-
 
 // sort out counter
 if (empty($auction_data['counter']))
@@ -418,7 +417,7 @@ if ($total_rate > 0)
 	}
 }
 
-// Pictures Gellery
+// Pictures Gallery
 $K = 0;
 $UPLOADED_PICTURES = array();
 if (file_exists($uploaded_path . $id))
@@ -451,6 +450,26 @@ if (file_exists($uploaded_path . $id))
 			}
 		}
 	}
+}
+// Contracts
+$K = 0;
+$UPLOADED_CONTRACTS = array();
+if (file_exists($uploaded_path . $id . "/contracts"))
+{
+	$dir = @opendir($uploaded_path . $id . "/contracts");
+	if ($dir)
+	{
+		while ($file = @readdir($dir))
+		{
+			if ($file != '.' && $file != '..' && strpos($file, 'thumb-') === false)
+			{
+				$UPLOADED_CONTRACTS[$K] = $file;
+				$K++;
+			}
+		}
+		@closedir($dir);
+	}
+	$CONTRACT_DIR = $id;
 }
 
 // payment methods
@@ -498,7 +517,7 @@ foreach ($payment_options as $k => $v)
 
 if (!$has_ended)
 {
-	$bn_link = ' <a href="' . $system->SETTINGS['siteurl'] . 'buy_now.php?id=' . $id . '"><img border="0" align="absbottom" alt="' . $MSG['496'] . '" src="' . get_lang_img('buy_it_now.png') . '"></a>';
+	$bn_link = ' <a href="' . $system->SETTINGS['siteurl'] . 'buy_now.php?id=' . $id . '"><img border="0" align="absbottom" alt="' . $MSG['496'] . '" src="' . get_lang_img('buy_it_now.gif') . '"></a>';
 }
 
 $page_title = $auction_data['title'];
@@ -506,13 +525,23 @@ $page_title = $auction_data['title'];
 $sslurl = ($system->SETTINGS['usersauth'] == 'y' && $system->SETTINGS['https'] == 'y') ? str_replace('http://', 'https://', $system->SETTINGS['siteurl']) : $system->SETTINGS['siteurl'];
 $sslurl = (!empty($system->SETTINGS['https_url'])) ? $system->SETTINGS['https_url'] : $sslurl;
 
+$shipping = '';
+if ($auction_data['shipping'] == 1)
+	$shipping = $MSG['033'];
+elseif ($auction_data['shipping'] == 2)
+	$shipping = $MSG['032'];
+elseif ($auction_data['shipping'] == 3)
+	$shipping = $MSG['867'];
+	
 $template->assign_vars(array(
 		'ID' => $auction_data['id'],
 		'TITLE' => $auction_data['title'],
 		'SUBTITLE' => $auction_data['subtitle'],
 		'AUCTION_DESCRIPTION' => stripslashes($auction_data['description']),
 		'PIC_URL' => $uploaded_path . $id . '/' . $auction_data['pict_url'],
-		'SHIPPING_COST' => ($auction_data['shipping_cost'] > 0) ? $system->print_money($auction_data['shipping_cost']) : $system->print_money($auction_data['shipping_cost']),
+		'CONTR_URL' => $uploaded_path . $id . '/contracts/' . $auction_data['contr_url'],
+		'SHIPPING_COST' => $system->print_money($auction_data['shipping_cost']),
+		'ADDITIONAL_SHIPPING_COST' => $system->print_money($auction_data['shipping_cost_additional']),
 		'COUNTRY' => $auction_data['country'],
 		'ZIP' => $auction_data['zip'],
 		'QTY' => $auction_data['quantity'],
@@ -527,21 +556,21 @@ $template->assign_vars(array(
 		'MAXBID' => $high_bid,
 		'NEXTBID' => $next_bid,
 		'INTERNATIONAL' => ($auction_data['international'] == 1) ? $MSG['033'] : $MSG['043'],
-		'SHIPPING' => ($auction_data['shipping'] == 1) ? $MSG['031'] : $MSG['032'],
+		'SHIPPING' => $shipping,
 		'SHIPPINGTERMS' => nl2br($auction_data['shipping_terms']),
 		'PAYMENTS' => $payment_methods,
 		'AUCTION_VIEWS' => $auction_data['counter'],
 		'AUCTION_TYPE' => ($auction_data['bn_only'] == 'n') ? $system->SETTINGS['auction_types'][$auction_type] : $MSG['933'],
 		'ATYPE' => $auction_type,
 		'THUMBWIDTH' => $system->SETTINGS['thumb_show'],
-		'VIEW_HISTORY1' => (empty($view_history)) ? '' : $view_history,
+		'VIEW_HISTORY1' => (empty($view_history)) ? '' : $view_history . ' | ',
 		'VIEW_HISTORY2' => $view_history,
 		'TOPCATSPATH' => ($system->SETTINGS['extra_cat'] == 'y' && isset($_SESSION['browse_id']) && $_SESSION['browse_id'] == $auction_data['secondcat']) ? $secondcat_value : $cat_value,
 		'CATSPATH' => $cat_value,
 		'SECCATSPATH' => $secondcat_value,
 		'CAT_ID' => $auction_data['category'],
 		'UPLOADEDPATH' => $uploaded_path,
-		'BNIMG' => get_lang_img('buy_it_now.png'),
+		'BNIMG' => get_lang_img('buy_it_now.gif'),
 
 		'SELLER_REG' => $seller_reg,
 		'SELLER_ID' => $auction_data['user'],
@@ -567,9 +596,11 @@ $template->assign_vars(array(
 		'B_HASRESERVE' => ($auction_data['reserve_price'] > 0 && $auction_data['reserve_price'] > $auction_data['current_bid']),
 		'B_BNENABLED' => ($system->SETTINGS['buy_now'] == 2),
 		'B_HASGALELRY' => (count($UPLOADED_PICTURES) > 0),
+		'B_HASCONTRACTS' => (count($UPLOADED_CONTRACTS) > 0),
 		'B_SHOWHISTORY' => (isset($_GET['history']) && $num_bids > 0),
 		'B_BUY_NOW' => ($auction_data['buy_now'] > 0 && ($auction_data['bn_only'] == 'y' || $auction_data['bn_only'] == 'n' && ($auction_data['num_bids'] == 0 || ($auction_data['reserve_price'] > 0 && $auction_data['current_bid'] < $auction_data['reserve_price'])))),
 		'B_BUY_NOW_ONLY' => ($auction_data['bn_only'] == 'y'),
+		'B_ADDITIONAL_SHIPPING_COST' => ($auction_data['auction_type'] == '2'),
 		'B_USERBID' => $userbid,
 		'B_BIDDERPRIV' => ($system->SETTINGS['buyerprivacy'] == 'y' && (!$user->logged_in || ($user->logged_in && $user->user_data['id'] != $auction_data['user']))),
 		'B_HASBUYER' => (count($hbidder_data) > 0),

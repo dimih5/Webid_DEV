@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008, 2009 WeBid
+ *   copyright				: (C) 2008 - 2013 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,13 +12,10 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'includes/common.inc.php';
+include 'common.php';
 include $include_path . 'dates.inc.php';
 include $main_path . 'language/' . $language . '/categories.inc.php';
 $catscontrol = new MPTTcategories();
-
-
-
 
 // Get parameters from the URL
 $id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
@@ -128,9 +125,6 @@ while ($row = mysql_fetch_assoc($res))
 			));
 }
 //added end
-
-
-
 	// get list of subcategories of this category
 	$subcat_count = 0;
 	$query = "SELECT * FROM " . $DBPrefix . "categories WHERE parent_id = " . $id . " ORDER BY cat_name";
@@ -173,11 +167,7 @@ while ($row = mysql_fetch_assoc($res))
 			$BG = '';
 		}
 		// Retrieve the translated category name
-		
-		
-		
-		$row['cat_name'] = $category_names[$row['cat_id']];
-		
+		$row['cat_name'] = $category_names[$row['cat_id']];		
 	
 		$catimage = (!empty($row['cat_image'])) ? '<img src="' . $row['cat_image'] . '" border=0>' : '';
 		$TPL_main_value .= "\t" . '<div ' . $BG . ' class="span3 browse-mini">' . $catimage . '<a href="' . $system->SETTINGS['siteurl'] . 'browse.php?id=' . $row['cat_id'] . '">' . $row['cat_name'] . $count_string . '</a></div>' . "\n";

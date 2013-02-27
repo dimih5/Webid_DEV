@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008, 2009 WeBid
+ *   copyright				: (C) 2008 - 2013 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,7 +12,7 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'includes/common.inc.php';
+include 'common.php';
 
 $NOW = time();
 
@@ -97,7 +97,8 @@ if (isset($_POST['action']) && isset($_POST['username']) && isset($_POST['passwo
 
 			if (isset($_SESSION['REDIRECT_AFTER_LOGIN']))
 			{
-				$URL = 'index.php';
+				$URL = str_replace('\r', '', str_replace('\n', '', $_SESSION['REDIRECT_AFTER_LOGIN']));
+				unset($_SESSION['REDIRECT_AFTER_LOGIN']);
 			}
 			else
 			{

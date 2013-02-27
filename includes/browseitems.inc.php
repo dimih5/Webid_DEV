@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008, 2009 WeBid
+ *   copyright				: (C) 2008 - 2013 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -42,8 +42,8 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 				'BUY_NOW' => ($difference < 0) ? '' : $row['buy_now'],
 				'BID' => $row['current_bid'],
 				'BIDFORM' => $system->print_money($row['current_bid']),
-				'TIMELEFT' => FormatTimeLeft($difference),
-				'NUMBIDS' => $row['num_bids'],
+				'CLOSES' => ArrangeDateNoCorrection($row['ends']),
+				'NUMBIDS' => sprintf($MSG['950'], $row['num_bids']),
 
 				'B_BOLD' => ($row['bold'] == 'y')
 			));
@@ -72,8 +72,8 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 			'BUY_NOW' => ($difference < 0) ? '' : $row['buy_now'],
 			'BID' => $row['current_bid'],
 			'BIDFORM' => $system->print_money($row['current_bid']),
-			'TIMELEFT' => FormatTimeLeft($difference),
-			'NUMBIDS' => $row['num_bids'],
+			'CLOSES' => ArrangeDateNoCorrection($row['ends']),
+			'NUMBIDS' => sprintf($MSG['950'], $row['num_bids']),
 
 			'B_BOLD' => ($row['bold'] == 'y')
 		));
@@ -135,12 +135,12 @@ function build_items($row)
 
 	if ($row['buy_now'] > 0 && $row['bn_only'] == 'n' && ($row['num_bids'] == 0 || ($row['reserve_price'] > 0 && $row['current_bid'] < $row['reserve_price'])))
 	{
-		$row['buy_now'] = '<br><a href="' . $system->SETTINGS['siteurl'] . 'buy_now.php?id=' . $row['id'] . '"><img src="' . get_lang_img('buy_it_now.png') . '" border=0 class="buynow"></a> <small>' . $system->print_money($row['buy_now']) . '</small>';
+		$row['buy_now'] = '<br><a href="' . $system->SETTINGS['siteurl'] . 'buy_now.php?id=' . $row['id'] . '"><img src="' . get_lang_img('buy_it_now.gif') . '" border=0 class="buynow"></a> <small>' . $system->print_money($row['buy_now']) . '</small>';
 	}
 	elseif ($row['buy_now'] > 0 && $row['bn_only'] == 'y')
 	{
 		$row['current_bid'] = $row['buy_now'];
-		$row['buy_now'] = '<br><a href="' . $system->SETTINGS['siteurl'] . 'buy_now.php?id=' . $row['id'] . '"><img src="' . get_lang_img('buy_it_now.png') . '" border=0 class="buynow"></a> <small>' . $system->print_money($row['buy_now']) . '</small> <img src="' . get_lang_img('bn_only.png') . '" border="0" class="buynow">';
+		$row['buy_now'] = '<br><a href="' . $system->SETTINGS['siteurl'] . 'buy_now.php?id=' . $row['id'] . '"><img src="' . get_lang_img('buy_it_now.gif') . '" border=0 class="buynow"></a> <small>' . $system->print_money($row['buy_now']) . '</small> <img src="' . get_lang_img('bn_only.gif') . '" border="0" class="buynow">';
 	}
 	else
 	{

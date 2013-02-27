@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *   copyright				: (C) 2008, 2009 WeBid
+ *   copyright				: (C) 2008 - 2013 WeBid
  *   site					: http://www.webidsupport.com/
  ***************************************************************************/
 
@@ -12,7 +12,7 @@
  *   sold. If you have been sold this script, get a refund.
  ***************************************************************************/
 
-include 'includes/common.inc.php';
+include 'common.php';
 
 // If user is not logged in redirect to login page
 if (!$user->is_logged_in())
@@ -40,7 +40,7 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 $TOTALAUCTIONS = mysql_result($res, 0, 'COUNT');
 $PAGES = ($TOTALAUCTIONS == 0) ? 1 : ceil($TOTALAUCTIONS / $system->SETTINGS['perpage']);
 
-$query = "SELECT w.auction As id, a.title, a.shipping_cost, w.bid, w.qty FROM " . $DBPrefix . "winners w
+$query = "SELECT w.auction As id, w.id As winid, a.title, a.shipping_cost, w.bid, w.qty, a.shipping_cost_additional FROM " . $DBPrefix . "winners w
 		LEFT JOIN " . $DBPrefix . "auctions a ON (a.id = w.auction)
 		WHERE w.paid = 0 AND w.winner = " . $user->user_data['id'] . "
 		LIMIT " . intval($OFFSET) . "," . $system->SETTINGS['perpage'];
@@ -52,10 +52,16 @@ while ($row = mysql_fetch_assoc($res))
 	$template->assign_block_vars('to_pay', array(
 			'URL' => $system->SETTINGS['siteurl'] . 'item.php?id=' . $row['id'],
 			'TITLE' => $row['title'],
+			'SHIPPING' => ($row['shipping'] == 2) ? $system->print_money($row['shipping_cost']) : $system->print_money(0),
+			'ADDITIONAL_SHIPPING_COST' => $system->print_money($row['additional_shipping_cost'] * ($row['qty'] - 1)),
+			'ADDITIONAL_SHIPPING' => $system->print_money($row['additional_shipping_cost']),
+			'ADDITIONAL_SHIPPING_QUANTITYS' => $row['qty'] - 1,
+			'QUANTITY' => $row['qty'],
 			'SHIPPING' => $system->print_money($row['shipping_cost']),
 			'BID' => $system->print_money($row['bid'] * $row['qty']),
-			'TOTAL' => $system->print_money($row['shipping_cost'] + ($row['bid'] * $row['qty'])),
+			'TOTAL' => $system->print_money($row['shipping_cost'] + ($row['bid'] * $row['qty']) + ($row['additional_shipping_cost'] * ($row['qty'] - 1))),
 			'ID' => $row['id'],
+			'WINID'=> $row['winid'],
 
 			'B_NOTITLE' => (empty($row['title']))
 			));
@@ -95,8 +101,8 @@ $template->assign_vars(array(
 		));
 
 include 'header.php';
-$TMP_usmenutitle = $MSG['453'];
-include 'includes/user_cp.php';
+$TMP_usmenutitle = $MSG['422'];
+include $include_path . 'user_cp.php';
 $template->set_filenames(array(
 		'body' => 'outstanding.tpl'
 		));

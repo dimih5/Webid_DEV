@@ -15,8 +15,7 @@
 if (!defined('InWeBid')) exit();
 
 include $include_path . 'maintainance.php';
-include $include_path . 'banners.inc.php';
-include $main_path . 'language/' . $language . '/categories.inc.php';
+include $include_path . 'functions_banners.php';
 if (basename($_SERVER['PHP_SELF']) != 'error.php')
 	include $include_path . 'stats.inc.php';
 
@@ -93,7 +92,6 @@ $template->assign_vars(array(
 		'SELECTION_BOX' => file_get_contents($main_path . 'language/' . $language . '/categories_select_box.inc.php'),
 		'YOURUSERNAME' => ($user->logged_in) ? $user->user_data['nick'] : '',
 		
-
 		'B_CAN_SELL' => ($user->can_sell || !$user->logged_in),
 		'B_LOGGED_IN' => $user->logged_in,
 		'B_BOARDS' => ($system->SETTINGS['boards'] == 'y')
@@ -103,6 +101,4 @@ $template->set_filenames(array(
 		'header' => 'global_header.tpl'
 		));
 $template->display('header');
-
-
 ?>

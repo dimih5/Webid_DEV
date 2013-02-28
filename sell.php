@@ -78,7 +78,7 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'recall')
 
 switch ($_SESSION['action'])
 {
-	case 3: // finalise auction (submit to db)
+	case 4: // finalise auction (submit to db)
 		if ($system->SETTINGS['usersauth'] == 'y' && $system->SETTINGS['https'] == 'y' && $_SERVER['HTTPS'] != 'on')
 		{
 			$sslurl = str_replace('http://', 'https://', $system->SETTINGS['siteurl']);
@@ -322,7 +322,7 @@ switch ($_SESSION['action'])
 
 				if ($user->user_data['startemailmode'] == 'yes')
 				{
-					include $include_path . 'email_auction_confirmation';
+					include $include_path . 'email_auction_confirmation.php';
 				}
 				if ($system->SETTINGS['bn_only'] == 'y' && $system->SETTINGS['bn_only_disable'] == 'y' && $system->SETTINGS['bn_only_percent'] < 100)
 				{
@@ -363,11 +363,11 @@ switch ($_SESSION['action'])
 					'TITLE' => $MSG['028'],
 					'PAGE' => 3,
 					'AUCTION_ID' => $auction_id,
-					'MESSAGE' => sprintf($MSG['102'], $auction_id, date('D j M \a\t g:ia', $a_ends))
+
 					));
 			break;
 		}
-	case 2: // confirm auction
+	case 3: // confirm auction
 		$noerror = true;
 		if ($with_reserve == 'no') $reserve_price = 0;
 		if ($buy_now == 'no') $buy_now_price = 0;
@@ -388,7 +388,7 @@ switch ($_SESSION['action'])
 			$ERR = 'ERR_' . CheckSellData();
 			if ($ERR != 'ERR_')
 			{
-				$_SESSION['action'] = 2;
+				$_SESSION['action'] = 1;
 				$noerror = false;
 			}
 		}

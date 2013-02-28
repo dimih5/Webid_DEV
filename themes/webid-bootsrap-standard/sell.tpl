@@ -403,12 +403,12 @@ function updatefee(newfee) {
     </div>
     <!-- ENDIF -->
     <div class="form-actions">
-      <input type="hidden" value="2" name="action">
+      <input type="hidden" value="3" name="action">
       <button type="submit" class="btn btn-primary">{L_5189}</button>
       <button type="reset" class="btn">{L_5190}</button>
     </div>
   </form>
-  <!-- ELSEIF PAGE eq 1 -->
+  <!-- ELSEIF PAGE eq 2 -->
   <form name="preview" action="{ASSLURL}sell.php" method="post">
     <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
     <table class="table">
@@ -531,7 +531,7 @@ function updatefee(newfee) {
     </table>
     <div class="alert alert-info">{L_264}<a href="{SITEURL}sell.php?mode=recall">{L_265}</a>{L_266}</div>
     <div class="form-actions">
-      <input type="hidden" value="3" name="action">
+      <input type="hidden" value="4" name="action">
       <input type="submit" name="" value="{L_2__0037}" class="btn btn-primary">
     </div>
   </form>

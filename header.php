@@ -16,6 +16,7 @@ if (!defined('InWeBid')) exit();
 
 include $include_path . 'maintainance.php';
 include $include_path . 'functions_banners.php';
+include $main_path . 'language/' . $language . '/categories.inc.php';
 if (basename($_SERVER['PHP_SELF']) != 'error.php')
 	include $include_path . 'stats.inc.php';
 

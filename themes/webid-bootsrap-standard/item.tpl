@@ -77,7 +77,7 @@ $(document).ready(function () {
 
   <!-- IF B_BUY_NOW -->
   <em>
-  <p><small>{L_496}: 
+  <p><small>{L_496}:
     
     {BUYNOW2}</small></p>
   </em>

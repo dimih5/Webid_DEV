@@ -1,4 +1,5 @@
 <small><span class="muted">{L_5117}&nbsp;{PAGE}&nbsp;{L_5118}&nbsp;{PAGES}</span></small>
+</script>
 <!-- IF B_FEATURED_ITEMS -->
 <table class="table table-browse-center" style="margin-bottom:0">
   <tr>
@@ -10,15 +11,8 @@
   </tr>
   <!-- BEGIN featured_items -->
   <tr class="table-row-click <!-- IF featured_items.B_BOLD -->
-
- highlighted
-
     <!-- ENDIF -->"   
-
-  
-
-  
-  <!-- IF featured_items.B_BOLD -->
+	<!-- IF featured_items.B_BOLD -->
   style="font-weight: bold;"
   <!-- ENDIF -->
   >
@@ -61,7 +55,7 @@
     </td>
     <td> {items.BIDFORM} <em>{items.BUY_NOW}</em> </td>
     <td  class="hidden-phone"  style="text-align:center;"><small>{items.NUMBIDS}</small> </td>
-    <td class="hidden-phone"><small><span class="muted">{items.TIMELEFT}</span></small> </td>
+    <td class="hidden-phone"><small><span id="{items.DIVNAME}" time="{items.TIMELEFT}" class="ending_counter"></span></small> </td>
   </tr>
   <!-- END items -->
 </table>

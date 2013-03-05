@@ -93,7 +93,7 @@ if (!function_exists('FormatTimeLeft'))
 		$difference = $difference % 3600;
 		$minutes_difference = floor($difference / 60);
 		$seconds_difference = $difference % 60;
-		$secshow = false;
+		$secshow = true;
 		$timeleft = '';
 
 		if ($days_difference > 0)

@@ -148,7 +148,8 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 $i = 0;
 while ($row = mysql_fetch_assoc($res))
 {
-	$difference = $row['ends'] - time();
+	$ends = $row['ends'];
+    $difference = $ends - time();
 	if ($difference > 0)
 	{
 		$ends_string = FormatTimeLeft($difference);
@@ -159,7 +160,8 @@ while ($row = mysql_fetch_assoc($res))
 	}
 	$template->assign_block_vars('end_soon', array(
 			'BGCOLOUR' => (!($i % 2)) ? '' : 'class="alt-row"',
-			'DATE' => $ends_string,
+			'DATE' => $ends_string, //Used for customers not using any javascript. 
+			'TIMELEFT' => $difference, //Used for customers that are using javascript.
 			'ID' => $row['id'],
 			//added by L
 			'IMAGE' => (!empty($row['pict_url'])) ? 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'] : 'images/email_alerts/default_item_img.jpg',
@@ -168,8 +170,8 @@ while ($row = mysql_fetch_assoc($res))
 			));
 	$i++;
 }
-
 $end_soon = ($i > 0) ? true : false;
+
 // get hot items
 $query = "SELECT a.id, a.title, a.current_bid, a.pict_url, a.ends, a.num_bids, a.minimum_bid 
         FROM " . $DBPrefix . "auctions a 
@@ -196,6 +198,7 @@ while ($row = mysql_fetch_assoc($res))
     $high_bid = ($row['num_bids'] == 0) ? $row['minimum_bid'] : $row['current_bid'];
     $template->assign_block_vars('hotitems', array(
             'ENDS' => $ends_string,
+			'TIMELEFT' => $difference,
             'ID' => $row['id'],
             'BID' => $system->print_money($high_bid),
             'IMAGE' => (!empty($row['pict_url'])) ? 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'] : 'images/email_alerts/default_item_img.jpg',

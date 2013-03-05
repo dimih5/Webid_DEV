@@ -33,13 +33,13 @@
     <!-- BEGIN hotitems -->
     <div class="span2 featured-item"><a href="{SITEURL}item.php?id={hotitems.ID}"><img class="img-polaroid" src="{hotitems.IMAGE}" alt="{hotitems.TITLE}" ></a>
       <div><a href="{SITEURL}item.php?id={hotitems.ID}">{hotitems.TITLE}</a><br>
-         <small>{hotitems.BID}</div>
+         <small>{hotitems.BID}</div>		 <span class="ending_counter" time="{hotitems.TIMELEFT}">{hotitems.ENDS}</span>
       </small> </div>
     <!-- END hotitems -->
     <hr  />
   </div>
   <!-- ENDIF -->
-  <!-- IF B_AUC_ENDSOON -->
+  <!-- IF B_AUC_ENDSOON -->
   <div class="row">
     <div class="span6">
       <h3>{L_280}</h3>
@@ -47,7 +47,7 @@
     <!-- BEGIN end_soon -->
     <div class="span2 featured-item"> <a href="{SITEURL}item.php?id={end_soon.ID}"><img class="img-circle" src="{end_soon.IMAGE}" alt="{end_soon.TITLE}" height="160"></a> <br />
       <div><a href="{SITEURL}item.php?id={end_soon.ID}">{end_soon.TITLE}</a><br />
-      <small><span class="muted">{end_soon.DATE}</span></small> </div></div>
+      <small><span class="ending_counter" time="{end_soon.TIMELEFT}">{end_soon.DATE}</span></small> </div></div>
     <!-- END end_soon -->
   </div>
   <!-- ENDIF -->
@@ -77,12 +77,11 @@
             <span class="muted"><small>{auc_last.DATE}</small></span></td>
         </tr>
         <!-- END auc_last -->
-        </tbody>
-        
+        </tbody>        
       </table>
     </div>
     <!-- ENDIF -->
-    <!-- IF B_AUC_ENDSOON -->
+    <!-- IF B_AUC_ENDSOON eq 0 -->
     <div class="span3">
       <h3>{L_280}</h3>
       <table class="table table-condensed">

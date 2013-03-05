@@ -32,7 +32,7 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 			$s_difference = time() - $row['starts'];
 			$difference = $row['ends'] - time();
 			$bgcolour = ($k % 2) ? 'bgcolor=""' : '';
-
+			$ends_string = FormatTimeLeft($difference);
 			$template->assign_block_vars('featured_items', array(
 				'ID' => $row['id'],
 				'ROWCOLOUR' => ($row['highlighted'] == 'y') ? 'class="warning"' : $bgcolour,
@@ -44,6 +44,7 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 				'BIDFORM' => $system->print_money($row['current_bid']),
 				'CLOSES' => ArrangeDateNoCorrection($row['ends']),
 				'NUMBIDS' => sprintf($MSG['950'], $row['num_bids']),
+				'TIMELEFT' => $ends_string,
 
 				'B_BOLD' => ($row['bold'] == 'y')
 			));
@@ -53,19 +54,21 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 	}
 
 	$k = 0;
+	$c = 0;
 	while ($row = mysql_fetch_assoc($result))
 	{
 		// get the data we need
 		$row = build_items($row);
-
+		
 		// time left till the end of this auction 
+		$divs .= "#ending_counter" . $c . ", ";
 		$s_difference = time() - $row['starts'];
 		$difference = $row['ends'] - time();
 		$bgcolour = ($k % 2) ? 'bgcolor=""' : '';
-
+		$ends_string = FormatTimeLeft($difference);
 		$template->assign_block_vars('items', array(
 			'ID' => $row['id'],
-			'ROWCOLOUR' => ($row['highlighted'] == 'y') ? 'class="warning"' : $bgcolour,
+			'ROWCOLOUR' => ($row['highlighted'] == 'y') ? true : false,
 			'IMAGE' => $row['pict_url'],
 			'TITLE' => $row['title'],
 			'SUBTITLE' => $row['subtitle'],
@@ -74,10 +77,18 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 			'BIDFORM' => $system->print_money($row['current_bid']),
 			'CLOSES' => ArrangeDateNoCorrection($row['ends']),
 			'NUMBIDS' => sprintf($MSG['950'], $row['num_bids']),
-
+			'TIMELEFT' => ($row['ends'] - time()),
+			'DIVNAME' => "ending_counter" . $c,
+			
 			'B_BOLD' => ($row['bold'] == 'y')
 		));
+		$template->assign_block_vars('current', array(
+		'ENDS_IN' => ($row['ends'] - time()),
+		'FUNCNAME' => 'displaytime' . $c
+		));
 		$k++;
+		$c++;
+
 	}
 
 	$extravar = (empty($extravar)) ? '' : '&' . $extravar;

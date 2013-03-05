@@ -22,7 +22,7 @@
 <link rel="alternate" type="application/rss+xml" title="{L_930}" href="{SITEURL}rss.php?feed=7">
 <link rel="alternate" type="application/rss+xml" title="{L_931}" href="{SITEURL}rss.php?feed=8">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript" src="{INCURL}loader.php?js={JSFILES}"></script>
+<script type="text/javascript" src="{INCURL}loader.php?js={JSFILES}"></script><script type="text/javascript" src="{SITEURL}js/Realdisplaytime.js"></script>
 <!-- IF LOADCKEDITOR -->
 <script type="text/javascript" src="{INCURL}ckeditor/ckeditor.js"></script>
 <!-- ENDIF -->
@@ -84,7 +84,7 @@
                   </div>
                   <!-- BEGIN cat_list_drop-->
                   <div class="span3">
-                    <div class="single-cat-dopdown"> <a href="browse.php?id={cat_list.ID}">{cat_list_drop.IMAGE}{cat_list_drop.NAME}</a> </div>
+                    <div class="single-cat-dopdown"> <a href="browse.php?id={cat_list_drop.ID}">{cat_list_drop.IMAGE}{cat_list_drop.NAME}</a> </div>
                   </div>
                   <!-- END cat_list_drop -->
                 </div>

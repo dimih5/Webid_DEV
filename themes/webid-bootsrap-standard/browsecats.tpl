@@ -1,4 +1,3 @@
-
 <div>
   <ul class="breadcrumb">
     <li class="active">{L_287} : </li>
@@ -70,7 +69,6 @@
       <!-- ELSE -->
     </div>
   </div>
-</div>
 </div>
 <!-- ENDIF -->
 </div>

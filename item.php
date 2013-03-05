@@ -35,7 +35,7 @@ $_SESSION['CURRENT_ITEM'] = $id;
 $_SESSION['REDIRECT_AFTER_LOGIN'] = $system->SETTINGS['siteurl'] . 'item.php?id=' . $id;
 
 // get auction all needed data
-$query = "SELECT a.*, ac.counter, u.nick, u.reg_date, u.country, u.zip FROM " . $DBPrefix . "auctions a
+$query = "SELECT a.*, ac.counter, u.nick, u.reg_date, u.country, payment FROM " . $DBPrefix . "auctions a
 		LEFT JOIN " . $DBPrefix . "users u ON (u.id = a.user)
 		LEFT JOIN " . $DBPrefix . "auccounter ac ON (ac.auction_id = a.id)
 		WHERE a.id = " . $id . " LIMIT 1";
@@ -473,18 +473,19 @@ if (file_exists($uploaded_path . $id . "/contracts"))
 }
 
 // payment methods
-$payment = explode(', ', $auction_data['payment']);
-$payment_methods = '';
+$payment = explode(',', $auction_data['payment']);
+$payment_methods = array();
 $query = "SELECT * FROM " . $DBPrefix . "gateways";
 $res = mysql_query($query);
 $system->check_mysql($res, $query, __LINE__, __FILE__);
 $gateways_data = mysql_fetch_assoc($res);
 $gateway_list = explode(',', $gateways_data['gateways']);
 $p_first = true;
-foreach ($gateway_list as $v)
+foreach ($gateways_data as $k => $v)
 {
 	$v = strtolower($v);
-	if ($gateways_data[$v . '_active'] == 1 && _in_array($v, $payment))
+	$gatdatastr = $k;
+	if ($gateways_data[$gatdatastr] == 1 && _in_array($v, $payment))
 	{
 		if (!$p_first)
 		{

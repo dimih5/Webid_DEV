@@ -49,18 +49,13 @@ $(document).ready(function () {
 <div class="row">
 <!-- IF B_HASIMAGE -->
 <div class="span3" style="text-align:center"> <img class="img-polaroid"
-
-  
-
-  
-
    src="{SITEURL}getthumb.php?w={THUMBWIDTH}&fromfile={PIC_URL}" border="0" align="center"><br>
   <!-- IF B_HASGALELRY -->
   <div> <a name="gallery"></a>
     <legend>{L_663}</legend>
     <div id="gallery">
       <!-- BEGIN gallery -->
-      <a href="{SITEURL}{UPLOADEDPATH}{ID}/{gallery.V}" > <img class="img-polaroid" src="{SITEURL}getthumb.php?w={THUMBWIDTH}&fromfile={UPLOADEDPATH}{ID}/{gallery.V}"  width="100"> </a>
+      <a href="{SITEURL}{gallery.PIC_URL}/{gallery.V}" > <img class="img-polaroid" src="{SITEURL}getthumb.php?w={THUMBWIDTH}&fromfile={UPLOADEDPATH}{ID}/{gallery.V}"  width="100"> </a>
       <!-- END gallery -->
     </div>
   </div>

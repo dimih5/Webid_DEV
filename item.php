@@ -474,14 +474,13 @@ if (file_exists($uploaded_path . $id . "/contracts"))
 
 // payment methods
 $payment = explode(',', $auction_data['payment']);
-$payment_methods = array();
 $query = "SELECT * FROM " . $DBPrefix . "gateways";
 $res = mysql_query($query);
 $system->check_mysql($res, $query, __LINE__, __FILE__);
 $gateways_data = mysql_fetch_assoc($res);
 $gateway_list = explode(',', $gateways_data['gateways']);
 $p_first = true;
-foreach ($gateways_data as $k => $v)
+foreach ($gateways_list as $k => $v)
 {
 	$v = strtolower($v);
 	$gatdatastr = $k;

@@ -61,7 +61,6 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 		$row = build_items($row);
 		
 		// time left till the end of this auction 
-		$divs .= "#ending_counter" . $c . ", ";
 		$s_difference = time() - $row['starts'];
 		$difference = $row['ends'] - time();
 		$bgcolour = ($k % 2) ? 'bgcolor=""' : '';

@@ -437,7 +437,7 @@ if (file_exists($uploaded_path . $id))
 
 	if (is_array($UPLOADED_PICTURES))
 	{
-		foreach ($UPLOADED_PICTURES as $ka => $va)
+		foreach ($UPLOADED_PICTURES as $k => $v)
 		{
 			$TMP = @getimagesize($uploaded_path . $id . '/' . $va);
 			if ($TMP[2] >= 1 && $TMP[2] <= 3)

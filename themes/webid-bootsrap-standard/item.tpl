@@ -55,7 +55,7 @@ $(document).ready(function () {
     <legend>{L_663}</legend>
     <div id="gallery">
       <!-- BEGIN gallery -->
-      <a href="{SITEURL}{gallery.PIC_URL}/{gallery.V}" > <img class="img-polaroid" src="{SITEURL}getthumb.php?w={THUMBWIDTH}&fromfile={UPLOADEDPATH}{ID}/{gallery.V}"  width="100"> </a>
+      <a href="{SITEURL}/uploaded/{ID}/{gallery.V}" > <img class="img-polaroid" src="{SITEURL}getthumb.php?w={THUMBWIDTH}&fromfile={UPLOADEDPATH}{ID}/{gallery.V}"  width="100"> </a>
       <!-- END gallery -->
     </div>
   </div>

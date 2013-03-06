@@ -1,166 +1,167 @@
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{SITENAME}</title>
-<link rel="stylesheet" type="text/css" href="themes/{THEME}/style.css">
-<link rel="stylesheet" type="text/css" href="themes/{THEME}/css/bootstrap.css">
-<style media="all" type="text/css">
-.imgareaselect-border1 {
-	background: url(images/border-v.gif) repeat-y left top;
-}
-
-.imgareaselect-border2 {
-    background: url(images/border-h.gif) repeat-x left top;
-}
-
-.imgareaselect-border3 {
-    background: url(images/border-v.gif) repeat-y right top;
-}
-
-.imgareaselect-border4 {
-    background: url(images/border-h.gif) repeat-x left bottom;
-}
-
-.imgareaselect-border1, .imgareaselect-border2,
-.imgareaselect-border3, .imgareaselect-border4 {
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-}
-
-.imgareaselect-handle {
-    background-color: #fff;
-    border: solid 1px #000;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-}
-
-.imgareaselect-outer {
-    background-color: #000;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-}
-</style>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript">
-$(document).ready(function () {
-	var num_images = $('#numimages', window.opener.document).val();
-	var now_images = {NUMIMAGES};
-	var image_cost = {IMAGE_COST};
-	if (num_images != now_images) {
-		var fee_diff = (now_images - num_images) * image_cost;
-		var nowfee = $("#fee_exact", window.opener.document).val() + fee_diff;
-		$("#fee_exact", window.opener.document).val(nowfee);
-		$("#to_pay").text(Math.round(nowfee*1{FEE_DECIMALS})/1{FEE_DECIMALS});
-		$('#numimages', window.opener.document).val(now_images);
-	}
-});
-</script>
-<!-- IF B_CROPSCREEN -->
-
-<script type="text/javascript">
-
-
-$(document).ready(function () {
-	$('#save_thumb').click(function() {
-		var x1 = 0;
-		var y1 = 0;
-		var x2 = 0;
-		var y2 = 0;
-		var w = 0;
-		var h = 0;
-		
-			return true;
-		
-	});
-});
-
-$(window).load(function () {
-	$('#thumbnail').imgAreaSelect({ aspectRatio: '{RATIO}', onSelectChange: preview, x1: 0, y1: 0, x2: 0, y2: 0 });
-});
-
-</script>
-<!-- ENDIF -->
-</head>
-<body>
-<div class="container-fluid" style="padding-bottom:10px">
-  <!-- IF B_CROPSCREEN -->
-  <div style="color:#000000;" align="center">
-    
-    <img src="{IMGPATH}" style="width:200px; height:200px;" id="thumbnail" alt="Create Thumbnail"><br>
-    <small>{L_613}</small>
-    <div style="overflow:hidden; display:none; border:#000000 double; {THUMBWH}"> <img src="{IMGPATH}" style="position: relative;" alt="Thumbnail Preview" id="thumbprev"> </div>
-    <form name="thumbnail" action="?action=crop&img={IMAGE}" method="post">
-      <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
-      <input type="hidden" name="x1" value="0" id="x1">
-      <input type="hidden" name="y1" value="0" id="y1">
-      <input type="hidden" name="x2" value="{STARTX}" id="x2">
-      <input type="hidden" name="y2" value="{STARTY}" id="y2">
-      <input type="hidden" name="w" value="50" id="w">
-      <input type="hidden" name="h" value="50" id="h">
-      <br>
-      <input type="submit" class="btn btn-primary" name="upload_thumbnail" value="{L_616}" id="save_thumb">
-      <input type="submit" class="btn" name="upload_thumbnail" value="{L_618}" style="display:none" >
-    </form>
-  
-  </div>
-  <!-- ELSE -->
-  <form name="upload" class="form-horizontal" action="" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
-    <legend>{L_663}</legend>
-    <div class="alert alert-info"> {L_673} {MAXIMAGES} {L_674}<br>
-      {L_679} </div>
-    <!-- IF ERROR ne '' -->
-    <div class="alert"> {ERROR} </div>
-    <!-- ENDIF -->
-    <!-- IF B_CANUPLOAD -->
-    <div class="control-group">
-      <label class="control-label" > <span class="badge badge-info">1</span><br>
-      {L_680} </label>
-
-      <div class="controls">
-        <input type="file" class="" name="userfile" size="5" >
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" > <span class="badge badge-info">2</span> <br>
-      {L_681}</label>
-      <div class="controls">
-        <input class="btn" type="submit" name="uploadpicture" value="{L_681}">
-      </div>
-    </div>
-    <div class="alert alert-info"> {L_682} </div>
-    <!-- ELSE -->
-    <div class="alert"> {L_688} {MAXIMAGES} {L_689} </div>
-    <!-- ENDIF -->
-    <!-- ENDIF -->
-    <br style="clear:both;">
-    <br>
-    <legend>{L_687}</legend>
-    <table class="table table-bordered table-striped">
-      <tr bgcolor="{HEADERCOLOUR}">
-        <td width="46%"><small>{L_684}</small></td>
-        <td width="30%"><small>{L_685}</small></td>
-        <td width="12%" align="center"><small>{L_008}</small></td>
-        <td width="12%" align="center"><small>{L_686}</small></td>
-      </tr>
-      <!-- BEGIN images -->
-      <tr>
-        <td> <small>{images.IMGNAME}</small> </td>
-        <td> <small>{images.IMGSIZE}</small> </td>
-        <td align="center"><a href="?action=delete&img={images.ID}"><i class="icon-trash"></i></a> </td>
-        <td align="center"><a href="?action=makedefault&img={images.IMGNAME}"><img src="images/{images.DEFAULT}" border="0"></a> </td>
-      </tr>
-      <!-- END images -->
-    </table>
-    <center>
-      <input type="submit" class="btn btn-primary" name="creategallery" value="{L_683}">
-    </center>
-  </form>
-  <br>
-  <br>
-  <center>
-    <a class="btn" href="javascript: window.close()">{L_678}</a>
-  </center>
-</div>
-</body>
-</html>
+<html>
+<head>
+<title>{SITENAME}</title>
+<link rel="stylesheet" type="text/css" href="themes/{THEME}/style.css">
+<script type="text/javascript" src="js/jquery.js"></script>
+
+<!-- Load Queue widget CSS and jQuery -->
+<style type="text/css">@import url({SITEURL}inc/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+<!-- Third party script for BrowserPlus runtime (Google Gears included in Gears runtime now) -->
+<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+
+<!-- Load plupload and all it's runtimes and finally the jQuery queue widget -->
+<script type="text/javascript" src="{SITEURL}inc/plupload/js/plupload.full.js"></script>
+<script type="text/javascript" src="{SITEURL}inc/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+
+<script type="text/javascript">
+// Convert divs to queue widgets when the DOM is ready
+$(function() {
+	$("#uploader").pluploadQueue({
+		// General settings
+		runtimes : 'html5,gears,flash,silverlight,browserplus',
+		url : '{SITEURL}ajax.php?do=uploadaucimages',
+		max_file_size : '{MAXPICSIZE}kb',
+		chunk_size : '1mb',
+		unique_names : true,
+
+		// Specify what files to browse for
+		filters : [
+			{title : "Image files", extensions : "jpg,jpeg,gif,png"},
+		],
+
+		// Flash settings
+		flash_swf_url : '{SITEURL}inc/plupload/js/plupload.flash.swf',
+
+		// Silverlight settings
+		silverlight_xap_url : '{SITEURL}inc/plupload/js/plupload.silverlight.xap',
+
+		// Post init events, bound after the internal events
+		init : {
+			Refresh: function(up) {
+				// Called when upload shim is moved
+			},
+
+			StateChanged: function(up) {
+				// Called when the state of the queue is changed
+			},
+
+			QueueChanged: function(up) {
+				// Called when the files in queue are changed by adding/removing files
+				if (up.files.length > ({MAXPICS} - {UPLOADED}))
+				{
+					for (var key in up.files) {
+						if (up.files.length > ({MAXPICS} - {UPLOADED})) {
+							up.removeFile(up.files[key]);
+						}
+					}
+				}
+				up.refresh();
+			},
+
+			UploadProgress: function(up, file) {
+				// Called while a file is being uploaded
+			},
+
+			FilesAdded: function(up, files) {
+				// Callced when files are added to queue
+			},
+
+			FilesRemoved: function(up, files) {
+				// Called when files where removed from queue
+
+				plupload.each(files, function(file) {
+				});
+			},
+
+			FileUploaded: function(up, file, info) {
+				// Called when a file has finished uploading
+				$.get('{SITEURL}ajax.php?do=getupldtable', function(data) {
+					$('#uploaded').html(data);
+				});
+			},
+
+			ChunkUploaded: function(up, file, info) {
+				// Called when a file chunk has finished uploading
+			},
+
+			Error: function(up, args) {
+				// Called when a error has occured
+			}
+		}
+	});
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	var num_images = $('#numimages', window.opener.document).val();
+	var now_images = {UPLOADED};
+	var image_cost = {IMAGE_COST_PLAIN};
+	if (num_images != now_images) {
+		var fee_diff = (now_images - num_images) * image_cost;
+		var nowfee = $("#fee_exact", window.opener.document).val() + fee_diff;
+		$("#fee_exact", window.opener.document).val(nowfee);
+		$("#to_pay").text(Math.round(nowfee*1{FEE_DECIMALS})/1{FEE_DECIMALS});
+		$('#numimages', window.opener.document).val(now_images);
+	}
+});
+</script>
+</head>
+
+<body>
+<div class="container-fluid">
+<!-- IF ERROR ne '' -->
+	<div class="error-box">
+		{ERROR}
+	</div>
+<!-- ENDIF -->
+	<div class="container-fluid">
+		{L_663}
+	</div>
+
+	<table cellpadding="3" cellspacing="0" border="0" align="center" width="90%">
+		<tr bgcolor="{HEADERCOLOUR}">
+			<td width="76%" colspan="2">
+				<b>{L_684}</b>
+			</td>
+			<td width="12%" align="center">
+				<b>{L_008}</b>
+			</td>
+			<td width="12%" align="center">
+				<b>{L_686}</b>
+			</td>
+		</tr>
+		<tbody id="uploaded">
+<!-- BEGIN images -->
+		<tr>
+			<td>
+				<img src="{images.IMAGE}" width="60" border="0">
+			</td>
+			<td width="46%">
+				{images.IMGNAME}
+			</td>
+			<td align="center">
+				<a href="?action=delete&img={images.ID}"><IMG SRC="images/trash.gif" border="0"></a>
+			</td>
+			<td align="center">
+				<a href="?action=makedefault&img={images.IMGNAME}"><img src="images/{images.DEFAULT}" border="0"></a>
+			</td>
+		</tr>
+<!-- END images -->
+		</tbody>
+	</table>
+	<p>{PICINFO}</p>
+	<p>{IMAGE_COST}</p>
+	<div id="uploader">
+		<p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+	</div>
+
+	<br style="clear:both;">
+	<center>
+		<a href="javascript: window.close()">{L_678}</a>
+	</center>
+</div>
+</body>
+</html>

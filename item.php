@@ -48,7 +48,7 @@ if (mysql_num_rows($result) == 0)
 	header('location: message.php');
 	exit;
 }
-$auction_data = mysql_fetch_assoc($result);
+$auction_data = mysql_fetch_row($result, 0);
 $category = $auction_data['category'];
 $auction_type = $auction_data['auction_type'];
 $ends = $auction_data['ends'];
@@ -591,11 +591,11 @@ $template->assign_vars(array(
 		'B_HASENDED' => $has_ended,
 		'B_CANEDIT' => ($user->logged_in && $user->user_data['id'] == $auction_data['user'] && $num_bids == 0 && $difference > 0),
 		'B_CANCONTACTSELLER' => (($system->SETTINGS['contactseller'] == 'always' || ($system->SETTINGS['contactseller'] == 'logged' && $user->logged_in)) && (!$user->logged_in || $user->user_data['id'] != $auction_data['user'])),
-		'B_HASIMAGE' => (!empty($auction_data['pict_url'])),
+		'B_HASIMAGE' => true,
 		'B_NOTBNONLY' => ($auction_data['bn_only'] == 'n'),
 		'B_HASRESERVE' => ($auction_data['reserve_price'] > 0 && $auction_data['reserve_price'] > $auction_data['current_bid']),
 		'B_BNENABLED' => ($system->SETTINGS['buy_now'] == 2),
-		'B_HASGALELRY' => (count($UPLOADED_PICTURES) > 0) ? false:true,
+		'B_HASGALELRY' => true,
 		'B_HASCONTRACTS' => (count($UPLOADED_CONTRACTS) > 0),
 		'B_SHOWHISTORY' => (isset($_GET['history']) && $num_bids > 0),
 		'B_BUY_NOW' => ($auction_data['buy_now'] > 0 && ($auction_data['bn_only'] == 'y' || $auction_data['bn_only'] == 'n' && ($auction_data['num_bids'] == 0 || ($auction_data['reserve_price'] > 0 && $auction_data['current_bid'] < $auction_data['reserve_price'])))),

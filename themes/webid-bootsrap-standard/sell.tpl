@@ -219,9 +219,17 @@ function updatefee(newfee) {
     <!-- IF B_GALLERY -->
     <hr  />
     <legend>{L_663}</legend>
-    {L_673} {MAXPICS} {L_674}<br>
+	{MAXPICS}<br>
     <a href="upldgallery.php" alt="gallery" class="new-window btn btn-primary">{L_677}</a>
     <input type="hidden" name="numimages" value="{NUMIMAGES}" id="numimages">
+    <hr  />
+    <!-- ENDIF -->
+	 <!-- IF B_GALLERY-->
+    <hr  />
+    <legend>{L_663}</legend>
+	{MAXCONTR}<br>
+    <a href="upldcontract.php" alt="contracts" class="new-window btn btn-primary">{L_677}</a>
+    <input type="hidden" name="numcons" value="{NUMCONS}" id="num">
     <hr  />
     <!-- ENDIF -->
     <div class="alert alert-info"> {L_640} </div>

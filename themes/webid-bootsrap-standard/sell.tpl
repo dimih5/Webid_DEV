@@ -225,10 +225,9 @@ function updatefee(newfee) {
     <hr  />
     <!-- ENDIF -->
 	 <!-- IF B_GALLERY-->
-    <hr  />
-    <legend>{L_663}</legend>
-	{MAXCONTR}<br>
-    <a href="upldcontract.php" alt="contracts" class="new-window btn btn-primary">{L_677}</a>
+    <legend>{L_CM_2026_0002}</legend>
+	{MAXCONS}<br>
+    <a href="upldcontract.php" alt="contracts" class="new-window btn btn-primary">{L_CM_2026_0005}</a>
     <input type="hidden" name="numcons" value="{NUMCONS}" id="num">
     <hr  />
     <!-- ENDIF -->

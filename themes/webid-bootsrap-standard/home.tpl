@@ -81,7 +81,7 @@
       </table>
     </div>
     <!-- ENDIF -->
-    <!-- IF B_AUC_ENDSOON eq 0 -->
+    <!-- IF B_AUC_ENDSOON -->
     <div class="span3">
       <h3>{L_280}</h3>
       <table class="table table-condensed">

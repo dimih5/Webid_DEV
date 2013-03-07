@@ -257,6 +257,10 @@ switch ($_SESSION['action'])
 				umask();
 				if (!is_dir($upload_path . $auction_id . "/contracts"))
 				{
+					if(!is_dir($upload_path . $auction_id))
+					{
+						mkdir($upload_path . $auction_id, 0777);
+					}
 					mkdir($upload_path . $auction_id . "/contracts", 0777);
 				}
 				// Copy files

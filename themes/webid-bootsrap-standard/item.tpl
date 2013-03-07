@@ -179,6 +179,23 @@ $(document).ready(function () {
   <hr />
   <h3>{L_018}</h3>
   {AUCTION_DESCRIPTION} </div>
+<!-- IF B_HASCONTRACTS -->
+
+		<div class="span12">
+				<hr />
+			<a name="contracts"></a><h3>{L_CM_2026_0002}</h3>
+		<div class="table2" style="text-align:center; overflow-y:auto;" id="contracts">
+		<table>
+			<tr>
+				<td>
+				<a href="{SITEURL}{UPLOADEDPATH}download.php?file={SITEURL}{CONTR_URL}&filename=AUCTION_{TITLE}_AUCTION_ID_{ID}" >{L_CM_2026_0003}
+				</a>
+				</td>
+			</tr>
+		</table>
+		</div>
+	</div>
+<!-- ENDIF -->
 <!-- IF B_HAS_QUESTIONS -->
 <div class="span12">
   <hr />

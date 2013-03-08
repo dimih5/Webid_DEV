@@ -12,3 +12,6 @@ Options All -Indexes
  order allow,deny
  deny from all
 </files>
+
+AddType image/gif .gif .GIF 
+AddType image/jpeg .jpeg .jpg .jpe .JPG 

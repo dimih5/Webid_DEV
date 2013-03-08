@@ -163,17 +163,19 @@
     </div>
   </div>
   <!-- ENDIF -->
+  <hr />
+  <div class="control-group">
   {CAPCHA}
-  <div class="clear"></div>
-  <div style="margin:55px 5px 5px 5px">
+  <div class="control-group">
     <label class="checkbox">
     <input type="checkbox" name="terms_check" id="terms_check">
     {L_858} </label>
   </div>
   <input type="hidden" name="action" value="first">
-  <div class="form-actions">
+  <div class="control-group">
     <button type="submit" class="btn btn-primary">{L_235}</button>
     <button type="button" class="btn">{L_035}</button>
+  </div>
   </div>
 </form>
 </div>

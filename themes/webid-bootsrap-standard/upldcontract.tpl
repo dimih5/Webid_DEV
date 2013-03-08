@@ -1,0 +1,142 @@
+<html>
+<head>
+<title>{SITENAME}</title>
+<link rel="stylesheet" type="text/css" href="themes/{THEME}/style.css">
+<script type="text/javascript" src="js/jquery.js"></script>
+
+<!-- Load Queue widget CSS and jQuery -->
+<style type="text/css">@import url({SITEURL}inc/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+<!-- Third party script for BrowserPlus runtime (Google Gears included in Gears runtime now) -->
+<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+
+<!-- Load plupload and all it's runtimes and finally the jQuery queue widget -->
+<script type="text/javascript" src="{SITEURL}inc/plupload/js/plupload.full.js"></script>
+<script type="text/javascript" src="{SITEURL}inc/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+
+<script type="text/javascript">
+// Convert divs to queue widgets when the DOM is ready
+$(function() {
+	$("#uploader").pluploadQueue({
+		// General settings
+		runtimes : 'html5,gears,flash,silverlight,browserplus',
+		url : '{SITEURL}ajax.php?do=uploadauccontracts',
+		max_file_size : '{MAXCONTRSIZE}kb',
+		chunk_size : '1mb',
+		unique_names : true,
+
+		// Specify what files to browse for
+		filters : [
+			{title : "contract files", extensions : "docx,pdf"},
+		],
+
+		// Flash settings
+		flash_swf_url : '{SITEURL}inc/plupload/js/plupload.flash.swf',
+
+		// Silverlight settings
+		silverlight_xap_url : '{SITEURL}inc/plupload/js/plupload.silverlight.xap',
+
+		// Post init events, bound after the internal events
+		init : {
+			Refresh: function(up) {
+				// Called when upload shim is moved
+			},
+
+			StateChanged: function(up) {
+				// Called when the state of the queue is changed
+			},
+
+			QueueChanged: function(up) {
+				// Called when the files in queue are changed by adding/removing files
+				if (up.files.length > ({MAXCONTR} - {UPLOADED}))
+				{
+					for (var key in up.files) {
+						if (up.files.length > ({MAXCONTR} - {UPLOADED})) {
+							up.removeFile(up.files[key]);
+						}
+					}
+				}
+				up.refresh();
+			},
+
+			UploadProgress: function(up, file) {
+				// Called while a file is being uploaded
+			},
+
+			FilesAdded: function(up, files) {
+				// Callced when files are added to queue
+			},
+
+			FilesRemoved: function(up, files) {
+				// Called when files where removed from queue
+
+				plupload.each(files, function(file) {
+				});
+			},
+
+			FileUploaded: function(up, file, info) {
+				// Called when a file has finished uploading
+				$.get('{SITEURL}ajax.php?do=getupldtablecontracts', function(data) {
+					$('#uploaded').html(data);
+				});
+			},
+
+			ChunkUploaded: function(up, file, info) {
+				// Called when a file chunk has finished uploading
+			},
+
+			Error: function(up, args) {
+				// Called when a error has occured
+			}
+		}
+	});
+});
+</script>
+
+<body>
+<div class="padding">
+<!-- IF ERROR ne '' -->
+	<div class="error-box">
+		{ERROR}
+	</div>
+<!-- ENDIF -->
+	<div class="titTable2">
+		{L_663}
+	</div>
+	<table cellpadding="3" cellspacing="0" border="0" align="center" width="90%">
+		<tr bgcolor="{HEADERCOLOUR}">
+			<td width="76%" colspan="2">
+				<b>{L_684}</b>
+			</td>
+			<td width="24%" align="center">
+				<b>{L_008}</b>
+			</td>
+		</tr>
+		<tbody id="uploaded">
+<!-- BEGIN contracts -->
+		<tr>
+			<td>
+				<img src="{contracts.CONTRACT}" width="60" border="0">
+			</td>
+			<td width="46%">
+				{contracts.CTRNAME}
+			</td>
+			<td align="center">
+				<a href="?action=delete&contr={contracts.ID}"><IMG SRC="images/trash.gif" border="0"></a>
+			</td>
+		</tr>
+<!-- END contracts -->
+		</tbody>
+	</table>
+	<div id="uploader">
+		<p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+	</div>
+
+	<br style="clear:both;">
+	<center>
+		<a href="javascript: window.close()">{L_678}</a>
+	</center>
+</div>
+</body>
+</html>

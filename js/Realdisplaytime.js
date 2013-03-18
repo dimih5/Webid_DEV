@@ -15,14 +15,14 @@ var currenttime = $(this).attr('time');
 		var hours = Math.floor(currenttime / 3600);
 		var mins = Math.floor((currenttime - (hours * 3600)) / 60);
 		var secs = Math.floor(currenttime - (hours * 3600) - (mins * 60));
-		var timestring = padlength(hours) + ':' + padlength(mins) + ':' + padlength(secs);
+		 var timestring = padlength(hours) + 'h ' + padlength(mins) + 'm ' + padlength(secs) + 's';
 		$(this).html(timestring);
 		$(this).removeProp('time');
 		$(this).attr('time', currenttime);
 	}
 	else 
 	{
-		$("#ending_counter").html('<div class="alert">{L_911}</div');
+		$(".ending_counter").html('<div class="alert">{L_911}</div');
 	}
 });
 }, 1000)

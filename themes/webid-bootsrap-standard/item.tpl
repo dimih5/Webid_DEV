@@ -1,30 +1,32 @@
+
 <!-- IF B_COUNTDOWN -->
+<!-- ENDIF -->
 <script type="text/javascript">
 $(document).ready(function () {
-    var currenttime = '{ENDS_IN}';
-
-    function padlength(what) {
-        var output = (what.toString().length == 1) ? '0' + what : what;
-        return output;
-    }
-
-    function displaytime() {
-        currenttime -= 1;
-        if (currenttime > 0) {
-            var hours = Math.floor(currenttime / 3600);
-            var mins = Math.floor((currenttime - (hours * 3600)) / 60);
-            var secs = Math.floor(currenttime - (hours * 3600) - (mins * 60));
-            var timestring = padlength(hours) + ':' + padlength(mins) + ':' + padlength(secs);
-            $("#ending_counter").html(timestring);
-            setTimeout(displaytime, 1000);
-        } else {
-            $("#ending_counter").html('<div class="alert">{L_911}</div');
-        }
-    }
-    setTimeout(displaytime, 1000);
+	function is_array(input){
+    return typeof(input)=='object'&&(input instanceof Array);
+	}
+	var sendingarray;
+	var checkcount = 1;
+	function getAuctionData() {
+		$.ajax({
+			type:'POST',
+			url: "http://10.127.129.119:9968/webid_realtime_data/itemreturn.php?id={ID}",
+			data: {requested: true, sendarray: sendingarray, check: checkcount, id: {ID}},
+			dataType: 'json',
+			async: true,
+			cache: false,
+			timeout: 50000,
+			success: function(data2){
+			$("#MAXBID").html(data2.MAXBID);
+			sendingarray = JSON.stringify(data2);
+			setTimeout(getAuctionData, 1000);
+			}
+		});
+	}
+	setTimeout(getAuctionData, 1000);
 });
 </script>
-<!-- ENDIF -->
 <div class="breadcrumb"> {L_041}: {TOPCATSPATH} </div>
 <!-- IF B_USERBID -->
 <div class="alert alert-success"> {YOURBIDMSG} </div>
@@ -81,7 +83,7 @@ $(document).ready(function () {
   <!-- IF ATYPE eq 2 -->
   {L_038}: {MINBID}<br />
   <!-- ENDIF -->
-  <div class="well" style="padding:4px; margin-bottom:10px;"> {L_116}: {MAXBID}</div>
+  <div id="MAXBID" class="well" style="padding:4px; margin-bottom:10px;"> </div>
   <!-- IF B_HASRESERVE -->
   &nbsp;<small>{L_514}</small>
   <!-- ENDIF -->
@@ -90,9 +92,9 @@ $(document).ready(function () {
   {L_023}: {SHIPPING_COST}<br />
   <small>{L_118}:
   <!-- IF B_COUNTDOWN -->
-  <span id="ending_counter">{ENDS}</span><br />
+  <span class="ending_counter" time="{ENDS_IN}">{ENDS}</span><br />
   <!-- ELSE -->
-  {ENDS}
+  <b class="ending_counter" time="{ENDS_IN}">{ENDS}</b>
   <!-- IF B_SHOWENDTIME -->
   ({ENDTIME})
   <!-- ENDIF -->
@@ -275,4 +277,7 @@ $(document).ready(function () {
   <div class="breadcrumb">{L_814}:</b> {SECCATSPATH}</div>
   <!-- ENDIF -->
 </div>
+</div>
+<div id="cookiemonster">
+
 </div>

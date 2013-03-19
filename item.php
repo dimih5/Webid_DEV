@@ -24,7 +24,8 @@ foreach ($membertypes as $idm => $memtypearr)
 }
 ksort($memtypesarr, SORT_NUMERIC);
 
-$id = (isset($_SESSION['CURRENT_ITEM'])) ? intval($_SESSION['CURRENT_ITEM']) : 0;
+$id = (isset($_SESSION['CURR
+ENT_ITEM'])) ? intval($_SESSION['CURRENT_ITEM']) : 0;
 $id = (isset($_REQUEST['id'])) ? intval($_REQUEST['id']) : 0;
 if (!is_numeric($id)) $id = 0;
 $bidderarray = array();
@@ -533,7 +534,7 @@ elseif ($auction_data['shipping'] == 2)
 elseif ($auction_data['shipping'] == 3)
 	$shipping = $MSG['867'];
 	
-$template->assign_vars(array(
+$vararray = array(
 		'ID' => $auction_data['id'],
 		'TITLE' => $auction_data['title'],
 		'SUBTITLE' => $auction_data['subtitle'],
@@ -608,7 +609,8 @@ $template->assign_vars(array(
 		'B_HAS_QUESTIONS' => ($num_questions > 0),
 		'B_CAN_BUY' => $user->can_buy && !($start > time()),
 		'B_SHOWENDTIME' => $showendtime
-		));
+		);
+$template->assign_vars($vararray);
 
 include 'header.php';
 $template->set_filenames(array(

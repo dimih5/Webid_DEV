@@ -67,9 +67,9 @@ class db_handle
 			$params = $this->clean_params($query, $params);
 			$this->lastquery = $this->pdo->prepare($query);
 			//$this->lastquery->bindParam(':table', $this->DBPrefix . $table, PDO::PARAM_STR); // must always be set
-			foreach ($params as $val)
+			foreach ($params as $key)
 			{
-				$this->lastquery->bindParam($val[0], $val[1], @$val[2], @$val[3], @$val[4]);
+			$this->lastquery->bindParam($key[0], $key[1], $key[2]);
 			}
 			$this->lastquery->execute();
 			//$this->lastquery->debugDumpParams();
@@ -91,9 +91,18 @@ class db_handle
 			{
 				$this->fetchquery = $this->lastquery;
 			}
-			if ($method == 'FETCH_ASSOC') $result = $this->fetchquery->fetch(PDO::FETCH_ASSOC);
-			if ($method == 'FETCH_BOTH') $result = $this->fetchquery->fetch(PDO::FETCH_BOTH);
-			if ($method == 'FETCH_NUM') $result = $this->fetchquery->fetch(PDO::FETCH_NUM);
+			if ($method == 'FETCH_ASSOC')
+			{
+			$result = $this->fetchquery->fetch(PDO::FETCH_ASSOC);
+			}
+			if ($method == 'FETCH_BOTH')
+			{
+			$result = $this->fetchquery->fetch(PDO::FETCH_BOTH);
+			}
+			if ($method == 'FETCH_NUM')
+			{
+			$result = $this->fetchquery->fetch(PDO::FETCH_NUM);
+			}
 			// clear fetch query
 			if ($result == false)
 			{

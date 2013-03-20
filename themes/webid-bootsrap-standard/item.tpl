@@ -11,7 +11,7 @@ $(document).ready(function () {
 	function getAuctionData() {
 		$.ajax({
 			type:'POST',
-			url: "http://10.127.129.119:9968/webid_realtime_data/itemreturn.php?id={ID}",
+			url: "{SITEURL}itemreturn.php?id={ID}",
 			data: {requested: true, sendarray: sendingarray, check: checkcount, id: {ID}},
 			dataType: 'json',
 			async: true,
@@ -83,7 +83,7 @@ $(document).ready(function () {
   <!-- IF ATYPE eq 2 -->
   {L_038}: {MINBID}<br />
   <!-- ENDIF -->
-  <div id="MAXBID" class="well" style="padding:4px; margin-bottom:10px;"> </div>
+  <div id="MAXBID" class="well" style="padding:4px; margin-bottom:10px;">{MAXBID}</div>
   <!-- IF B_HASRESERVE -->
   &nbsp;<small>{L_514}</small>
   <!-- ENDIF -->
@@ -218,7 +218,7 @@ $(document).ready(function () {
       <legend>{L_724} </legend>
       <small>
       <!-- IF COUNTRY ne '' or ZIP ne '' -->
-      <b>{L_014}:</b> {COUNTRY} ({ZIP})<br>
+      <b>{L_014}:</b> {COUNTRY} <br>
       <!-- ENDIF -->
       <b>{L_025}:</b> {SHIPPING}, {INTERNATIONAL}<br>
       <!-- IF SHIPPINGTERMS ne '' -->

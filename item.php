@@ -481,22 +481,22 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 $gateways_data = mysql_fetch_assoc($res);
 $gateway_list = explode(',', $gateways_data['gateways']);
 $p_first = true;
-foreach ($gateways_list as $k => $v)
-{
-	$v = strtolower($v);
-	$gatdatastr = $k;
-	if ($gateways_data[$gatdatastr] == 1 && _in_array($v, $payment))
+foreach ($gateways_data as $k => $v)
 	{
-		if (!$p_first)
+		$v = strtolower($v);
+		if ($gateways_data[$k] == 1 && _in_array($v, $payment))
 		{
-			$payment_methods .= ', ';
+			if (!$p_first)
+			{
+				$payment_methods .= ', ';
+			}
+			else
+			{
+				$p_first = false;
+			}
+			$k = str_replace('_active', '', $k);
+			$payment_methods .= $system->SETTINGS['gatways'][$k];
 		}
-		else
-		{
-			$p_first = false;
-		}
-		$payment_methods .= $system->SETTINGS['gatways'][$v];
-	}
 }
 
 $payment_options = unserialize($system->SETTINGS['payment_options']);
@@ -544,7 +544,6 @@ $vararray = array(
 		'SHIPPING_COST' => $system->print_money($auction_data['shipping_cost']),
 		'ADDITIONAL_SHIPPING_COST' => $system->print_money($auction_data['shipping_cost_additional']),
 		'COUNTRY' => $auction_data['country'],
-		'ZIP' => $auction_data['zip'],
 		'QTY' => $auction_data['quantity'],
 		'ENDS' => $ending_time,
 		'ENDS_IN' => ($ends - time()),

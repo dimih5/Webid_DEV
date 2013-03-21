@@ -95,7 +95,8 @@ $template->assign_vars(array(
 		
 		'B_CAN_SELL' => ($user->can_sell || !$user->logged_in),
 		'B_LOGGED_IN' => $user->logged_in,
-		'B_BOARDS' => ($system->SETTINGS['boards'] == 'y')
+		'B_BOARDS' => ($system->SETTINGS['boards'] == 'y'),
+		'B_REALTIMECLOCK' => ($system->SETTINGS['realtimeclock'] == 'y') ? true:false
 		));
 
 $template->set_filenames(array(

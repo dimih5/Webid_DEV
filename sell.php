@@ -251,7 +251,7 @@ switch ($_SESSION['action'])
 				}
 			}
 			// Create contract map if any
-			if ($system->SETTINGS['contractsmap'] == 1 && count($UPLOADED_CONTRACTS) > 0)
+			if ($system->SETTINGS['contractsmap'] == "y" && count($UPLOADED_CONTRACTS) > 0)
 			{
 				// Create dirctory
 				umask();
@@ -740,6 +740,7 @@ switch ($_SESSION['action'])
 				
 				'B_CAN_TAX' => $can_tax,
 				'B_GALLERY' => ($system->SETTINGS['picturesgallery'] == 1),
+				'B_CONTRACTS' => ($system->SETTINGS['contractsmap'] == 'y') ? true:false,
 				'B_BN_ONLY' => ($system->SETTINGS['buy_now'] == 2 && $system->SETTINGS['bn_only'] == 'y' && (($system->SETTINGS['bn_only_disable'] == 'y' && $user->user_data['bn_only'] == 'y') || $system->SETTINGS['bn_only_disable'] == 'n')),
 				'B_BN' => ($system->SETTINGS['buy_now'] == 2),
 				'B_EDITING' => ($_SESSION['SELL_action'] == 'edit'),

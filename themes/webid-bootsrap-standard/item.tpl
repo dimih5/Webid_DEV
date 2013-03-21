@@ -1,6 +1,7 @@
 
 <!-- IF B_COUNTDOWN -->
 <!-- ENDIF -->
+<!-- IF B_REALTIMEDATA -->
 <script type="text/javascript">
 $(document).ready(function () {
 	function is_array(input){
@@ -27,6 +28,7 @@ $(document).ready(function () {
 	setTimeout(getAuctionData, 1000);
 });
 </script>
+<!-- ENDIF -->
 <div class="breadcrumb"> {L_041}: {TOPCATSPATH} </div>
 <!-- IF B_USERBID -->
 <div class="alert alert-success"> {YOURBIDMSG} </div>

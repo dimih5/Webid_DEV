@@ -224,7 +224,7 @@ function updatefee(newfee) {
     <input type="hidden" name="numimages" value="{NUMIMAGES}" id="numimages">
     <hr  />
     <!-- ENDIF -->
-	 <!-- IF B_GALLERY-->
+	<!-- IF B_CONTRACTS-->
     <legend>{L_CM_2026_0002}</legend>
 	{MAXCONS}<br>
     <a href="upldcontract.php" alt="contracts" class="new-window btn btn-primary">{L_CM_2026_0005}</a>

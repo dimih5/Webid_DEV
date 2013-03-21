@@ -587,7 +587,7 @@ $vararray = array(
 		'YOURBIDMSG' => (isset($yourbidmsg)) ? $yourbidmsg : '',
 		'YOURBIDCLASS' => (isset($yourbidclass)) ? $yourbidclass : '',
 		'BIDURL' => $sslurl,
-
+		
 		'B_HASENDED' => $has_ended,
 		'B_CANEDIT' => ($user->logged_in && $user->user_data['id'] == $auction_data['user'] && $num_bids == 0 && $difference > 0),
 		'B_CANCONTACTSELLER' => (($system->SETTINGS['contactseller'] == 'always' || ($system->SETTINGS['contactseller'] == 'logged' && $user->logged_in)) && (!$user->logged_in || $user->user_data['id'] != $auction_data['user'])),
@@ -597,6 +597,7 @@ $vararray = array(
 		'B_BNENABLED' => ($system->SETTINGS['buy_now'] == 2),
 		'B_HASGALELRY' => (count($UPLOADED_PICTURES) > 0),
 		'B_HASCONTRACTS' => (count($UPLOADED_CONTRACTS) > 0),
+		'B_REALTIMEDATA' => ($system->SETTINGS['realtimedata'] == 'y') ? true:false,
 		'B_SHOWHISTORY' => (isset($_GET['history']) && $num_bids > 0),
 		'B_BUY_NOW' => ($auction_data['buy_now'] > 0 && ($auction_data['bn_only'] == 'y' || $auction_data['bn_only'] == 'n' && ($auction_data['num_bids'] == 0 || ($auction_data['reserve_price'] > 0 && $auction_data['current_bid'] < $auction_data['reserve_price'])))),
 		'B_BUY_NOW_ONLY' => ($auction_data['bn_only'] == 'y'),

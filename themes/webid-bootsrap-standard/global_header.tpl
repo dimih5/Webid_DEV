@@ -22,7 +22,7 @@
 <link rel="alternate" type="application/rss+xml" title="{L_930}" href="{SITEURL}rss.php?feed=7">
 <link rel="alternate" type="application/rss+xml" title="{L_931}" href="{SITEURL}rss.php?feed=8">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript" src="{INCURL}loader.php?js={JSFILES}"></script><script type="text/javascript" src="{SITEURL}js/Realdisplaytime.js"></script>
+<script type="text/javascript" src="{INCURL}loader.php?js={JSFILES}"></script><!-- IF B_REALTIMECLOCK --><script type="text/javascript" src="{SITEURL}js/Realdisplaytime.js"></script><!-- ENDIF -->
 <!-- IF LOADCKEDITOR -->
 <script type="text/javascript" src="{INCURL}ckeditor/ckeditor.js"></script>
 <!-- ENDIF -->

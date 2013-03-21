@@ -1697,4 +1697,8 @@ $MSG['CM_2026_0003'] = "Download the included contract";
 $MSG['CM_2026_0004'] = "You've got a new message from the following group:";
 $MSG['CM_2026_0005'] = "Upload your contract";
 $MSG['CM_2026_0006'] = "You can upload up to %s contracts. Each contract must be smaller than %s bytes.";
+$MSG['CM_2026_0007'] = "Custom settings";
+$MSG['CM_2026_0008'] = "Realtimedata mod";
+$MSG['CM_2026_0009'] = "Contract mod";
+$MSG['CM_2026_0010'] = "Realtimeclock mod";
 ?>

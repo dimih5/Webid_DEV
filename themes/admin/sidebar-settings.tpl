@@ -25,6 +25,16 @@
                         </ul>
                     </div>
                 </div>
+				<div class="box">
+					<h4 class="rounded-top">{L_CM_2026_0007}</h4>
+					<div class="rounded_bottom">
+						<ul class="menu">
+							<li><a href="{SITEURL}admin/realtimeauction.php">{L_CM_2026_0008}</a></li>
+							<li><a href="{SITEURL}admin/contractmod.php">{L_CM_2026_0009}</a></li>
+							<li><a href="{SITEURL}admin/realtimeclockmod.php">{L_CM_2026_0010}</a></li>
+						</ul>
+					</div>
+				</div>
             	<div class="box">
                 	<h4 class="rounded-top">{L_25_0008}</h4>
                     <div class="rounded-bottom">
@@ -42,6 +52,7 @@
                         </ul>
                     </div>
                 </div>
+
             	<div class="box">
                 	<h4 class="rounded-top">{L_1061}</h4>
                     <div class="rounded-bottom">
@@ -52,6 +63,5 @@
 						</form>
 					</div>
                 </div>
-				<div class="box">
-					<h4 class="rounder-top">
-				</div>
+
+				

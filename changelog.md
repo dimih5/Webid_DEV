@@ -1,6 +1,7 @@
 webid_dev CHANGELOG by MaikelB
 ==============================
 
+**ADDED Custom settings in admin panel
 **ADDED Realtimedata for the auctions.
 **ADDED contract uploader and downloader (Simple download.php is included and will be fixed within the next commit(s))
 **ADDED group notifications.

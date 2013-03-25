@@ -1,6 +1,7 @@
 webid_dev CHANGELOG by MaikelB
 ==============================
 
+**ADDED Auc_Create_admin_mail
 **ADDED Custom settings in admin panel
 **ADDED Realtimedata for the auctions.
 **ADDED contract uploader and downloader (Simple download.php is included and will be fixed within the next commit(s))

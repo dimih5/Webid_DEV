@@ -35,5 +35,32 @@ if ($user->user_data['startemailmode'] == 'yes')
 	$emailer->email_uid = $user->user_data['id'];
 	$subject = $system->SETTINGS['sitename'] . ' ' . $MSG['099'] . ': ' . $title . ' (' . $auction_id . ')';
 	$emailer->email_sender($user->user_data['email'], 'auctionmail.inc.php', $subject);
+	
+	if ($system->SETTINGS['VIPemailStatus'] == 'y')
+	{
+		$emailer = new email_handler();
+		$emailer->assign_vars(array(
+			'SITE_URL' => $system->SETTINGS['siteurl'],
+			'SITENAME' => $system->SETTINGS['sitename'],
+
+			'A_ID' => $auction_id,
+			'A_TITLE' => $title,
+			'A_TYPE' => ($atype == 1) ? $MSG['642'] : $MSG['641'],
+			'A_PICURL' => ($pict_url != '') ? $uploaded_path . $auction_id . '/' . $pict_url : 'images/email_alerts/default_item_img.jpg',
+			'A_MINBID' => $system->print_money($minimum_bid, true, false),
+			'A_RESERVE' => $system->print_money($reserve_price, true, false),
+			'A_BNPRICE' => $system->print_money($buy_now_price, true, false),
+			'A_ENDS' => ArrangeDateNoCorrection($a_ends + $system->tdiff),
+
+			'C_NAME' => 'Administrator'
+			));
+		
+		$VIPArray = explode(',' , $system->SETTINGS['VIPemail']);
+		if (is_array($VIPArray) && !empty($VIPArray))
+		{
+			$subject = 'New auction has been submitted';
+			$emailer->email_sender($VIPArray, 'auctionmailadmin.inc.php', $subject);
+		}
+	}
 }
 ?>

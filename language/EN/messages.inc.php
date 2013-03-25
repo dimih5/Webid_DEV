@@ -1706,13 +1706,17 @@ $MSG['CM_2026_0012'] = "When you activate this options, bidders can upload contr
 $MSG['CM_2026_0013'] = "Contracts mod settings updated";
 $MSG['CM_2026_0014'] = "Uploadable contracts";
 $MSG['CM_2026_0015'] = "Change the amount of pictures someone can upload";
-$MSG['CM_2026_0016'] = "Activate realtimedata";
+$MSG['CM_2026_0016'] = "Activate realtimedata?";
 $MSG['CM_2026_0017'] = "When you activate this options, most data of auctions will be realtime";
 $MSG['CM_2026_0018'] = "Realtimedata mod settings updated";
-$MSG['CM_2026_0019'] = "Activate realtimeclock";
+
+$MSG['CM_2026_0019'] = "Activate realtimeclock?";
 $MSG['CM_2026_0020'] = "When you activate this options, all the timers will be updated every second";
 $MSG['CM_2026_0021'] = "Realtimeclock mod settings updated";
-$MSG['CM_2026_0022'] = "";
-$MSG['CM_2026_0023'] = "";
-$MSG['CM_2026_0024'] = "";
+$MSG['CM_2026_0022'] = "Activate VIPemail?";
+$MSG['CM_2026_0023'] = "When you activate this options, everytime an auction is created an email is send to specified admins";
+$MSG['CM_2026_0024'] = "Set emails";
+$MSG['CM_2026_0025'] = "IMPORTANT!!! SEPERATE EMAILS WITH A COMMA";
+$MSG['CM_2026_0026'] = "VIPemails mod";
+$MSG['CM_2026_0027'] = "VIPemails mod settings updated";
 ?>

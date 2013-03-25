@@ -7,6 +7,9 @@ ADD MYSQL LINES ETC
 
 **ADD THESE LINES FROM TOP TO BOTTOM
 
+**SETTINGS(For Auc_Create_admin_mail)
+ALTER TABLE  `webid_settings` ADD  `VIPemail` VARCHAR( 300 ) NOT NULL
+ALTER TABLE  `webid_settings` ADD  `VIPemailStatuas` ENUM('y',  'n') NOT NULL DEFAULT  'y'
 **SETTINGS(for realtimedata)
 ALTER TABLE  `webid_settings` ADD  `realtimedata` ENUM('y',  'n') NOT NULL DEFAULT  'y' AFTER  `contractsmap`
 **SETTINGS(for contract uploading)

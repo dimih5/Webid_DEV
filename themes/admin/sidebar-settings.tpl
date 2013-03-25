@@ -32,6 +32,7 @@
 							<li><a href="{SITEURL}admin/realtimeauction.php">{L_CM_2026_0008}</a></li>
 							<li><a href="{SITEURL}admin/contractmod.php">{L_CM_2026_0009}</a></li>
 							<li><a href="{SITEURL}admin/realtimeclockmod.php">{L_CM_2026_0010}</a></li>
+							<li><a href="{SITEURL}admin/VIPemails.php">{L_CM_2026_0026}</a></li>
 						</ul>
 					</div>
 				</div>

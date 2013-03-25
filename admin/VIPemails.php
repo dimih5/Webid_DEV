@@ -22,20 +22,22 @@
  
  unset($ERR);
  
- if (isset($_POST['action']) && $_POST['action'] == 'update')
+ if (isset($_POST['VIPemailStatus']) && isset($_POST['VIPemail']))
  {
-	$query = "UPDATE " . $DBPrefix . "settings SET
-	contractsmap = '" . $_POST['contractsmap'] . "',
-	maxcontracts = '" . $_POST['maxcontracts'] . "'";
+	$query = "UPDATE " . $DBPrefix . "settings SET 
+	VIPemailStatus = '" . $_POST['VIPemailStatus'] . "',
+	VIPemail = '" . $_POST['VIPemail'] . "'";
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-	$system->SETTINGS['contractsmap'] = $_POST['contractsmap'];
-	$system->SETTINGS['maxcontracts'] = $_POST['maxcontracts'];
-	$ERR = $MSG['CM_2026_0013'];
+	$system->SETTINGS['VIPemailStatus'] = $_POST['VIPemailStatus'];
+	$system->SETTINGS['VIPemail'] = $_POST['VIPemail'];
+	
+	$ERR = $MSG['CM_2026_0027'];
  }
- loadblock($MSG['CM_2026_0011'], $MSG['CM_2026_0012'], 'yesno', 'contractsmap', $system->SETTINGS['contractsmap'], array($MSG['030'], $MSG['029']));
- loadblock($MSG['CM_2026_0014'], $MSG['CM_2026_0015'], 'text', 'maxcontracts', $system->SETTINGS['maxcontracts']);
  
- $template->assign_vars(array(
+ loadblock($MSG['CM_2026_0022'], $MSG['CM_2026_0023'], 'yesno', 'VIPemailStatus', $system->SETTINGS['VIPemailStatus'], array($MSG['030'], $MSG['029']));
+ loadblock($MSG['CM_2026_0024'], $MSG['CM_2026_0025'], 'text', 'VIPemail', $system->SETTINGS['VIPemail']);
+ 
+  $template->assign_vars(array(
 		'ERROR' => (isset($ERR)) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['CM_2026_0007'],

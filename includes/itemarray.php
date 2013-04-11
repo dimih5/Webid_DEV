@@ -570,7 +570,8 @@
 					'YOURBIDMSG' => (isset($yourbidmsg)) ? $yourbidmsg : '',
 					'YOURBIDCLASS' => (isset($yourbidclass)) ? $yourbidclass : '',
 					'BIDURL' => $sslurl,
-
+					
+					'B_REALTIMEDATA' => ($system->SETTINGS['realtimedata'] == 'y'),
 					'B_HASENDED' => $has_ended,
 					'B_CANEDIT' => ($user->logged_in && $user->user_data['id'] == $auction_data['user'] && $num_bids == 0 && $difference > 0),
 					'B_CANCONTACTSELLER' => (($system->SETTINGS['contactseller'] == 'always' || ($system->SETTINGS['contactseller'] == 'logged' && $user->logged_in)) && (!$user->logged_in || $user->user_data['id'] != $auction_data['user'])),

@@ -20,7 +20,7 @@ include 'loggedin.inc.php';
 
 unset($ERR);
 $id = intval($_GET['id']);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	$user = intval($_POST['user']);
@@ -39,7 +39,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	$NUM = mysql_result($res, 0, 'FNUM');
 
 	$query = "UPDATE " . $DBPrefix . "users SET rate_sum = " . $SUM . ", rate_num = " . $NUM . " WHERE id = " . $user;
-	$ERR = $MSG['183'];
+	$ERR .= '<br/>' . $MSG['183'];
 }
 
 $query = "SELECT u.nick, u.id, f.rater_user_nick, f.feedback, f.rate FROM " . $DBPrefix . "feedbacks f
@@ -49,7 +49,7 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 $feedback = mysql_fetch_assoc($res);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'RATED_USER' => $feedback['nick'],
 		'RATED_USER_ID' => $feedback['id'],
 		'RATER_USER' => $feedback['rater_user_nick'],

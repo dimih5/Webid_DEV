@@ -74,7 +74,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'process' && $_POST['box'] ==
 	}
 	else
 	{
-		$ERR = $ERR_25_0001;
+		$ERR .= '<br/>' . $ERRMSG['25_0001'];
 	}
 }
 
@@ -207,7 +207,7 @@ $template->assign_vars(array(
         'B_SHOWBUTTON' => $SHOWBUTTON,
 		'CAT_NO' => $cat_no,
 		'COST' => ($extra_cat > 0) ? $system->print_money($extra_cat) : '',
-        'ERROR' => (isset($ERR)) ? $ERR : ''
+        'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : ''
         ));
 
 include 'header.php';

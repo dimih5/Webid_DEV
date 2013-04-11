@@ -14,7 +14,7 @@
 
 include 'common.php';
 include $include_path . 'countries.inc.php';
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'ok')
 {
 	if (isset($_POST['TPL_username']) && isset($_POST['TPL_email']))
@@ -47,17 +47,17 @@ if (isset($_POST['action']) && $_POST['action'] == 'ok')
 		}
 		else
 		{
-			$ERR = $ERR_076;
+			$ERR .= '<br/>' . $ERRMSG['076'];
 		}
 	}
 	else
 	{
-		$ERR = $ERR_112;
+		$ERR .= '<br/>' . $ERRMSG['112'];
 	}
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'USERNAME' => (isset($username)) ? $username : '',
 		'EMAIL' => (isset($email)) ? $email : '',
 		'B_FIRST' => (!isset($_POST['action']) || (isset($_POST['action']) && isset($ERR)))

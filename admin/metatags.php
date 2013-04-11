@@ -26,7 +26,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 			 descriptiontag = '" . $system->cleanvars($_POST['descriptiontag']) . "',
 			 keywordstag = '" . $system->cleanvars($_POST['keywordstag']) . "'";
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-	$ERR = $MSG['25_0185'];
+	$ERR .= '<br/>' . $MSG['25_0185'];
 	$system->SETTINGS['descriptiontag'] = $_POST['descriptiontag'];
 	$system->SETTINGS['keywordstag'] = $_POST['keywordstag'];
 }
@@ -35,7 +35,7 @@ loadblock($MSG['25_0180'], $MSG['25_0182'], 'textarea', 'descriptiontag', $syste
 loadblock($MSG['25_0181'], $MSG['25_0184'], 'textarea', 'keywordstag', $system->SETTINGS['keywordstag']);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['25_0008'],
 		'PAGENAME' => $MSG['25_0178']

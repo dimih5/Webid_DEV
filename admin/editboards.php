@@ -18,21 +18,21 @@ include '../common.php';
 include $include_path . 'functions_admin.php';
 include $include_path . 'dates.inc.php';
 include 'loggedin.inc.php';
-
+$ERR;
 // Insert new currency
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	if (empty($_POST['name']) || empty($_POST['msgstoshow']) || empty($_POST['active']))
 	{
-		$ERR = $ERR_047;
+		$ERR .= '<br/>' . $ERRMSG['047'];
 	}
 	elseif (!is_numeric($_POST['msgstoshow']))
 	{
-		$ERR = $ERR_5000;
+		$ERR .= '<br/>' . $ERRMSG['5000'];
 	}
 	elseif (intval($_POST['msgstoshow'] == 0))
 	{
-		$ERR = $ERR_5001;
+		$ERR .= '<br/>' . $ERRMSG['5001'];
 	}
 	else
 	{
@@ -56,7 +56,7 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 $board_data = mysql_fetch_assoc($res);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'NAME' => $board_data['name'],
 		'MESSAGES' => $board_data['messages'],
 		'LAST_POST' => ($board_data['lastmessage'] > 0) ? FormatDate($board_data['lastmessage']) : '--',

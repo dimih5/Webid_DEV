@@ -20,6 +20,7 @@ include 'loggedin.inc.php';
 include $main_path . 'language/' . $language . '/categories.inc.php';
 
 unset($ERR);
+$ERR;
 $id = intval($_REQUEST['id']);
 
 // insert a new banner
@@ -28,7 +29,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'insert')
 	// Data integrity
 	if (empty($_FILES['bannerfile']) || empty($_POST['url']))
 	{
-		$ERR = $ERR_047;
+		$ERR .= '<br/>' . $ERRMSG['047'];
 	}
 	else
 	{
@@ -47,7 +48,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'insert')
 		$TARGET = $upload_path . 'banners/' . $id . '/' . $_FILES['bannerfile']['name'];
 		if (file_exists($TARGET))
 		{
-			$ERR = sprintf($MSG['_0047'], $TARGET);
+			$ERR .= '<br/>' . sprintf($MSG['_0047'], $TARGET);
 		}
 		else
 		{
@@ -57,7 +58,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'insert')
 			$file_types = array('gif', 'jpg', 'jpeg', 'png', 'swf');
 			if (!in_array(strtolower($file_ext), $file_types))
 			{
-				$ERR = $MSG['_0048'];
+				$ERR .= '<br/>' . $MSG['_0048'];
 			}
 			else
 			{
@@ -172,7 +173,7 @@ if (isset($category_plain) && count($category_plain) > 0)
 $TPL_categories_list .= '</select>' . "\n";
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ID' => $id,
 		'NAME' => $USER['name'],
 		'COMPANY' => $USER['company'],

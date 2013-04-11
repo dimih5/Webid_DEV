@@ -19,20 +19,20 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	$query = "UPDATE " . $DBPrefix . "settings SET
 			newsletter = " . intval($_POST['newsletter']);
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['newsletter'] = $_POST['newsletter'];
-	$ERR = $MSG['30_0049'];
+	$ERR .= '<br/>' . $MSG['30_0049'];
 }
 
 loadblock($MSG['603'], $MSG['604'], 'batch', 'newsletter', $system->SETTINGS['newsletter'], array($MSG['030'], $MSG['029']));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['25_0010'],
 		'PAGENAME' => $MSG['25_0079']

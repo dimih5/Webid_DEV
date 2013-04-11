@@ -19,7 +19,7 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	// Update database
@@ -41,7 +41,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	$system->SETTINGS['lastitemsnumber'] = $_POST['lastitemsnumber'];
 	$system->SETTINGS['hotitemsnumber'] = $_POST['hotitemsnumber'];
 	$system->SETTINGS['endingsoonnumber'] = $_POST['endingsoonnumber'];
-	$ERR = $MSG['795'];
+	$ERR .= '<br/>' . $MSG['795'];
 }
 
 loadblock($MSG['789'], $MSG['790'], 'days', 'perpage', $system->SETTINGS['perpage']);
@@ -56,7 +56,7 @@ loadblock($MSG['533'], $MSG['538'], 'batch', 'newsbox', $system->SETTINGS['newsb
 loadblock('', $MSG['554'], 'days', 'newstoshow', $system->SETTINGS['newstoshow']);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['5142'],
 		'PAGENAME' => $MSG['788']

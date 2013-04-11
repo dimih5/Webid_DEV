@@ -20,17 +20,17 @@ include 'loggedin.inc.php';
 
 unset($ERR);
 $id = $_REQUEST['id'];
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	if (empty($_POST['name']) || empty($_POST['company']) || empty($_POST['email']))
 	{
-		$ERR = $ERR_047;
+		$ERR .= '<br/>' . $ERRMSG['047'];
 		$USER = $_POST;
 	}
 	elseif (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $_POST['email']))
 	{
-		$ERR = $ERR_008;
+		$ERR .= '<br/>' . $ERRMSG['008'];
 		$USER = $_POST;
 	}
 	else
@@ -58,7 +58,7 @@ else
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ID' => $id,
 		'NAME' => (isset($USER['name'])) ? $USER['name'] : '',
 		'COMPANY' => (isset($USER['company'])) ? $USER['company'] : '',

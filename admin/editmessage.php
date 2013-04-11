@@ -20,13 +20,13 @@ include 'loggedin.inc.php';
 
 $msg = intval($_REQUEST['msg']);
 $board_id = intval($_REQUEST['id']);
-
+$ERR;
 // Insert new currency
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	if (!isset($_POST['message']) || empty($_POST['message']))
 	{
-		$ERR = $ERR_047;
+		$ERR .= '<br/>' . $ERRMSG['047'];
 	}
 	else
 	{

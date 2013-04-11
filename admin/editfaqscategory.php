@@ -19,12 +19,12 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if ($_POST['action'] == 'update')
 {
 	if (strlen($_POST['category']) == 0)
 	{
-		$ERR = $ERR_049;
+		$ERR .= '<br/>' . $ERRMSG['049'];
 	}
 	else
 	{
@@ -77,7 +77,7 @@ foreach ($LANGUAGES as $k => $v)
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'FAQ_NAME' => $tr[$system->SETTINGS['defaultlanguage']],
 		'ID' => $_GET['id']
 		));

@@ -19,7 +19,7 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	// update durations table
@@ -44,7 +44,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 		$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	}
 
-	$ERR = $MSG['123'];
+	$ERR .= '<br/>' . $MSG['123'];
 }
 
 $query = "SELECT * FROM " . $DBPrefix . "durations ORDER BY days";
@@ -64,7 +64,7 @@ while ($row = mysql_fetch_assoc($res))
 
 $template->assign_vars(array(
 		'SITEURL' => $system->SETTINGS['siteurl'],
-		'ERROR' => (isset($ERR)) ? $ERR : ''
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : ''
 		));
 
 $template->set_filenames(array(

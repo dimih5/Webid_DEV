@@ -38,7 +38,7 @@ elseif (isset($_POST['action']) && $_POST['action'] == $MSG['029'])
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ID' => $msg,
 		'MESSAGE' => sprintf($MSG['834'], $msg),
 		'TYPE' => 1

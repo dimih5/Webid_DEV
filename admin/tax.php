@@ -28,14 +28,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['taxuser'] = $_POST['taxuser'];
 	$system->SETTINGS['tax'] = $_POST['tax'];
-	$ERR = $MSG['1089'];
+	$ERR .= '<br/>' . $MSG['1089'];
 }
 
 loadblock($MSG['1090'], $MSG['1091'], 'yesno', 'tax', $system->SETTINGS['tax'], array($MSG['030'], $MSG['029']));
 loadblock($MSG['1092'], $MSG['1093'], 'yesno', 'taxuser', $system->SETTINGS['taxuser'], array($MSG['030'], $MSG['029']));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['25_0012'],
 		'PAGENAME' => $MSG['1088']

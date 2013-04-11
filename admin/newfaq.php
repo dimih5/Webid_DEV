@@ -26,7 +26,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	if (empty($_POST['question'][$system->SETTINGS['defaultlanguage']]) || empty($_POST['answer'][$system->SETTINGS['defaultlanguage']]))
 	{
 		$system->SETTINGS = $_POST;
-		$ERR = $ERR_067;
+		$ERR .= '<br/>' . $ERRMSG['067'];
 	}
 	else
 	{
@@ -77,7 +77,7 @@ foreach ($LANGUAGES as $k => $language)
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : ''
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : ''
 		));
 
 $template->set_filenames(array(

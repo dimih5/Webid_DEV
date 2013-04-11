@@ -19,7 +19,7 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	$query = "UPDATE " . $DBPrefix . "settings SET
@@ -28,14 +28,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['invoice_yellow_line'] = $_POST['invoice_yellow_line'];
 	$system->SETTINGS['invoice_thankyou'] = $_POST['invoice_thankyou'];
-	$ERR = $MSG['1095'];
+	$ERR .= '<br/>' . $MSG['1095'];
 }
 
 loadblock($MSG['1096'], $MSG['1097'], 'text', 'invoice_yellow_line', $system->SETTINGS['invoice_yellow_line']);
 loadblock($MSG['1098'], $MSG['1099'], 'text', 'invoice_thankyou', $system->SETTINGS['invoice_thankyou']);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['25_0012'],
 		'PAGENAME' => $MSG['1094']

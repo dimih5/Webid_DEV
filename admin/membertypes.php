@@ -60,7 +60,7 @@ if (isset($_POST['action']) && $_POST['action'] = 'update')
 		$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	}
 	rebuild_table_file('membertypes');
-	$ERR = $MSG['836'];
+	$ERR .= '<br/>' . $MSG['836'];
 }
 
 foreach ($membertypes as $id => $quest)
@@ -73,7 +73,7 @@ foreach ($membertypes as $id => $quest)
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : ''
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : ''
 		));
 		
 $template->set_filenames(array(

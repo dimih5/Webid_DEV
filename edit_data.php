@@ -14,7 +14,7 @@
 
 include 'common.php';
 include $include_path . 'countries.inc.php';
-
+$ERR;
 // If user is not logged in redirect to login page
 if (!$user->is_logged_in())
 {
@@ -63,55 +63,55 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	{
 		if (strlen($_POST['TPL_password']) < 6 && strlen($_POST['TPL_password']) > 0)
 		{
-			$ERR = $ERR_011;
+			$ERR .= '<br/>' . $ERRMSG['011'];
 		}
 		elseif ($_POST['TPL_password'] != $_POST['TPL_repeat_password'])
 		{
-			$ERR = $ERR_109;
+			$ERR .= '<br/>' . $ERRMSG['109'];
 		}
 		elseif (strlen($_POST['TPL_email']) < 5)
 		{
-			$ERR = $ERR_110;
+			$ERR .= '<br/>' . $ERRMSG['110'];
 		}
 		elseif (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $_POST['TPL_email']))
 		{
-			$ERR = $ERR_008;
+			$ERR .= '<br/>' . $ERRMSG['008'];
 		}
 		elseif (strlen($_POST['TPL_zip']) < 4 && $MANDATORY_FIELDS['zip'] == 'y')
 		{
-			$ERR = $ERR_616;
+			$ERR .= '<br/>' . $ERRMSG['616'];
 		}
 		elseif (strlen($_POST['TPL_phone']) < 3 && $MANDATORY_FIELDS['tel'] == 'y')
 		{
-			$ERR = $ERR_617;
+			$ERR .= '<br/>' . $ERRMSG['617'];
 		}
 		elseif ((empty($_POST['TPL_day']) || empty($_POST['TPL_month']) || empty($_POST['TPL_year'])) && $MANDATORY_FIELDS['birthdate'] == 'y')
 		{
-			$ERR = $MSG['948'];
+			$ERR .= '<br/>' . $MSG['948'];
 		}
 		elseif (!empty($_POST['TPL_day']) && !empty($_POST['TPL_month']) && !empty($_POST['TPL_year']) && !checkdate($_POST['TPL_month'], $_POST['TPL_day'], $_POST['TPL_year']))
 		{
-			$ERR = $ERR_117;
+			$ERR .= '<br/>' . $ERRMSG['117'];
 		}
 		elseif ($gateway_data['paypal_required'] == 1 && (empty($_POST['TPL_pp_email']) || !preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $_POST['TPL_pp_email'])))
 		{
-			$ERR = $MSG['810'];
+			$ERR .= '<br/>' . $MSG['810'];
 		}
 		elseif ($gateway_data['authnet_required'] == 1 && (empty($_POST['TPL_authnet_id']) || empty($_POST['TPL_authnet_pass'])))
 		{
-			$ERR = $MSG['811'];
+			$ERR .= '<br/>' . $MSG['811'];
 		}
 		elseif ($gateway_data['moneybookers_required'] == 1 && (empty($_POST['TPL_moneybookers_email']) || !preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $_POST['TPL_moneybookers_email'])))
 		{
-			$ERR = $MSG['822'];
+			$ERR .= '<br/>' . $MSG['822'];
 		}
 		elseif ($gateway_data['toocheckout_required'] == 1 && (empty($_POST['TPL_toocheckout_id'])))
 		{
-			$ERR = $MSG['821'];
+			$ERR .= '<br/>' . $MSG['821'];
 		}
 		elseif ($gateway_data['worldpay_required'] == 1 && (empty($_POST['TPL_worldpay_id'])))
 		{
-			$ERR = $MSG['823'];
+			$ERR .= '<br/>' . $MSG['823'];
 		}
 		else
 		{
@@ -169,12 +169,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 
 			$query .= " WHERE id = " . $user->user_data['id'];
 			$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-			$ERR = $MSG['183'];
+			$ERR .= '<br/>' . $MSG['183'];
 		}
 	}
 	else
 	{
-		$ERR = $ERR_112;
+		$ERR .= '<br/>' . $ERRMSG['112'];
 	}
 }
 

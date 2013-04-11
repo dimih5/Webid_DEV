@@ -148,7 +148,7 @@ if (isset($_POST['action']))
 			$message .= '</table>';
 			// build message
 			$template->assign_vars(array(
-					'ERROR' => (isset($ERR)) ? $ERR : '',
+					'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 					'ID' => '',
 					'MESSAGE' => (($counter > 0) ? $message : '') . '<p>' . $MSG['838'] . implode(', ', $names) . '</p>',
 					'TYPE' => 1
@@ -191,7 +191,8 @@ if (isset($_POST['action']))
 					}
 					else
 					{
-						$ERR = $MSG['844'];
+						$ERR;
+						$ERR .= '<br/>' . $MSG['844'];
 					}
 				}
 			}
@@ -250,7 +251,7 @@ for ($i = 0; $i < count($children); $i++)
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'CRUMBS' => $crumb_string,
 		'PARENT' => $parent

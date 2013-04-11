@@ -20,17 +20,17 @@ include $include_path . 'dates.inc.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 $id = intval($_REQUEST['id']);
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	if ((!empty($_POST['password']) && empty($_POST['repeatpassword'])) || (empty($_POST['password']) && !empty($_POST['repeatpassword'])))
 	{
-		$ERR = $ERR_054;
+		$ERR .= '<br/>' . $ERRMSG['054'];
 	}
 	elseif ($_POST['password'] != $_POST['repeatpassword'])
 	{
-		$ERR = $ERR_006;
+		$ERR .= '<br/>' . $ERRMSG['006'];
 	}
 	else
 	{ 
@@ -72,7 +72,7 @@ else
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ID' => $id,
 		'USERNAME' => $user_data['username'],
 		'CREATED' => $CREATED,

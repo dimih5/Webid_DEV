@@ -17,7 +17,7 @@ $current_page = 'settings';
 include '../common.php';
 include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
-
+$ERR;
 function ToBeDeleted($index)
 {
 	global $delete;
@@ -45,11 +45,11 @@ if (isset($_POST['action']) && $_POST['action'] = 'update')
 		{
 			if (!$system->CheckMoney($lows[$i]) || !$system->CheckMoney($highs[$i]) || !$system->CheckMoney($increments[$i]))
 			{
-				$ERR = $ERR_030;
+				$ERR .= '<br/>' . $ERRMSG['030'];
 			}
 			if ($lows[$i] > $highs[$i])
 			{
-				$ERR = $ERR_713;
+				$ERR .= '<br/>' . $ERRMSG['713'];
 			}
 		}
 	}
@@ -80,7 +80,7 @@ if (isset($_POST['action']) && $_POST['action'] = 'update')
 			}
 			$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 		}
-		$ERR = $MSG['160'];
+		$ERR .= '<br/>' . $MSG['160'];
 	}
 }
 
@@ -99,7 +99,7 @@ while ($row = mysql_fetch_array($res))
 
 $template->assign_vars(array(
 		'SITEURL' => $system->SETTINGS['siteurl'],
-		'ERROR' => (isset($ERR)) ? $ERR : ''
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : ''
 		));
 
 $template->set_filenames(array(

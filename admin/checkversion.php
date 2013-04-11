@@ -17,10 +17,10 @@ $current_page = 'tools';
 include '../common.php';
 include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
-
+$ERR;
 if (!($realversion = load_file_from_url('http://www.webidsupport.com/version.txt')))
 {
-	$ERR = $ERR_25_0002;
+	$ERR .= '<br/>' . $ERRMSG['25_0002'];
 	$realversion = 'Unknown';
 }
 
@@ -48,7 +48,7 @@ else
 
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TEXT' => $text,
 		'MYVERSION' => $myversion,

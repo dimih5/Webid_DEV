@@ -19,6 +19,7 @@ include $main_path . 'language/' . $language . '/categories.inc.php';
 
 // set default variables
 unset($ERR);
+$ERR;
 $catscontrol = new MPTTcategories();
 $NOW = time();
 $searching = false;
@@ -72,7 +73,7 @@ if (isset($_SESSION['advs']) && is_array($_SESSION['advs']))
 		}
 		else
 		{
-			$ERR = $ERR_100;
+			$ERR .= '<br/>' . $ERRMSG['100'];
 		}
 	}
 
@@ -245,7 +246,7 @@ if ($searching && !isset($ERR))
 	}
 	else
 	{
-		$ERR = $ERR_122;
+		$ERR .= '<br/>' . $ERRMSG['122'];
 	}
 }
 
@@ -296,7 +297,7 @@ foreach ($countries as $key => $val)
 $TPL_countries_list .= '</select>' . "\n";
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'CATEGORY_LIST' => $TPL_categories_list,
 		'CURRENCY' => $system->SETTINGS['currency'],
 		'PAYMENTS_LIST' => $payment_methods,

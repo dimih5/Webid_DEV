@@ -19,7 +19,7 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 $links = array(
 	'paypal' => 'http://paypal.com/',
 	'authnet' => 'http://authorize.net/',
@@ -65,7 +65,7 @@ if (isset($_POST['action']))
 		$gateway_data[$gateway . '_address'] = $_POST[$gateway . '_address'];
 	}
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-	$ERR = $MSG['762'];
+	$ERR .= '<br/>' . $MSG['762'];
 }
 
 for ($i = 0; $i < count($gateways); $i++)
@@ -88,7 +88,7 @@ for ($i = 0; $i < count($gateways); $i++)
 
 $template->assign_vars(array(
 		'SITEURL' => $system->SETTINGS['siteurl'],
-		'ERROR' => (isset($ERR)) ? $ERR : ''
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : ''
 		));
 
 $template->set_filenames(array(

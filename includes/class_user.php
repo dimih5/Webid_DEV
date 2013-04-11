@@ -79,10 +79,10 @@ class user
 				$valid_req = true;		# Neither GET nor POST params exist => permit
 			if(!$valid_req) 
             {
-                global $MSG, $ERR_077; 
+                global $MSG, $ERRMSG; 
                  
                 $_SESSION['msg_title'] = $MSG['936']; 
-                $_SESSION['msg_body'] = $ERR_077; 
+                $_SESSION['msg_body'] = $ERRMSG['077']; 
                     header('location: message.php'); 
                     exit; // kill the page 
             }
@@ -119,14 +119,14 @@ class user
 
 	function is_valid_user($id) 
     { 
-        global $system, $MSG, $ERR_025, $DBPrefix; 
+        global $system, $MSG, $ERRMSG, $DBPrefix; 
         $query = "SELECT id FROM " . $DBPrefix . "users WHERE id = " . intval($id); 
         $res = mysql_query($query); 
         $system->check_mysql($res, $query, __LINE__, __FILE__); 
         if (mysql_num_rows($res) == 0) 
         { 
             $_SESSION['msg_title'] = $MSG['415']; 
-            $_SESSION['msg_body'] = $ERR_025; 
+            $_SESSION['msg_body'] = $ERRMSG['025']; 
             header('location: message.php'); 
             exit; 
         } 

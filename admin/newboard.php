@@ -19,21 +19,21 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 // Insert new message board
 if (isset($_POST['action']) && $_POST['action'] == 'insert')
 {
 	if (empty($_POST['name']) || empty($_POST['msgstoshow']) || empty($_POST['active']))
 	{
-		$ERR = $ERR_047;
+		$ERR .= '<br/>' . $ERRMSG['047'];
 	}
 	elseif (!is_numeric($_POST['msgstoshow']))
 	{
-		$ERR = $ERR_5000;
+		$ERR .= '<br/>' . $ERRMSG['5000'];
 	}
 	elseif (intval($_POST['msgstoshow'] == 0))
 	{
-		$ERR = $ERR_5001;
+		$ERR .= '<br/>' . $ERRMSG['5001'];
 	}
 	else
 	{
@@ -47,7 +47,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'insert')
 
 $template->assign_vars(array(
 		'SITEURL' => $system->SETTINGS['siteurl'],
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 
 		'NAME' => (isset($_POST['name'])) ? $_POST['name'] : '',
 		'MSGTOSHOW' => (isset($_POST['msgstoshow'])) ? $_POST['msgstoshow'] : '',

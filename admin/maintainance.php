@@ -21,7 +21,7 @@ include $main_path . "ckeditor/ckeditor.php";
 include $include_path . 'htmLawed.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	// Check if the specified user exists
@@ -31,7 +31,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	$system->check_mysql($res, $query, __LINE__, __FILE__);
 	if (mysql_num_rows($res) == 0 && $_POST['active'] == 'y')
 	{
-		$ERR = $ERR_025;
+		$ERR .= '<br/>' . $ERRMSG['025'];
 	}
 	else
 	{
@@ -41,7 +41,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 				maintainancetext = '" . htmLawed($_POST['maintainancetext'], array('safe'=>1)) . "',
 				active = '" . $_POST['active'] . "'";
 		$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-		$ERR = $MSG['_0005'];
+		$ERR .= '<br/>' . $MSG['_0005'];
 	}
 	$system->SETTINGS['superuser'] = $_POST['superuser'];
 	$system->SETTINGS['maintainancetext'] = $_POST['maintainancetext'];		
@@ -71,7 +71,7 @@ $CKEditor->config['height'] = 400;
 loadblock($MSG['_0004'], '', $CKEditor->editor('maintainancetext', stripslashes($system->SETTINGS['maintainancetext'])));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['5436'],
 		'PAGENAME' => $MSG['_0001']

@@ -21,7 +21,7 @@
  include 'loggedin.inc.php';
  
  unset($ERR);
- 
+ $ERR;
  if (isset($_POST['action']) && $_POST['action'] == 'update')
  {
 	$query = "UPDATE " . $DBPrefix . "settings SET
@@ -30,13 +30,13 @@
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['contractsmap'] = $_POST['contractsmap'];
 	$system->SETTINGS['maxcontracts'] = $_POST['maxcontracts'];
-	$ERR = $MSG['CM_2026_0013'];
+	$ERR .= '<br/>' . $MSG['CM_2026_0013'];
  }
  loadblock($MSG['CM_2026_0011'], $MSG['CM_2026_0012'], 'yesno', 'contractsmap', $system->SETTINGS['contractsmap'], array($MSG['030'], $MSG['029']));
  loadblock($MSG['CM_2026_0014'], $MSG['CM_2026_0015'], 'text', 'maxcontracts', $system->SETTINGS['maxcontracts']);
  
  $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['CM_2026_0007'],
 		'PAGENAME' => $MSG['CM_2026_0009'],

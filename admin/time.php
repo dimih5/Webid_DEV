@@ -29,7 +29,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['timecorrection'] = $_POST['timecorrection'];
 	$system->SETTINGS['datesformat'] = $_POST['datesformat'];
-	$ERR = $MSG['347'];
+	$ERR .= '<br/>' . $MSG['347'];
 }
 
 $TIMECORRECTION = array();
@@ -47,7 +47,7 @@ loadblock($MSG['363'], $MSG['379'], 'datestacked', 'datesformat', $system->SETTI
 loadblock($MSG['346'], $MSG['345'], 'dropdown', 'timecorrection', $system->SETTINGS['timecorrection']);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'OPTIONHTML' => $html,
 		'TYPENAME' => $MSG['25_0008'],

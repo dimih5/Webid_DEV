@@ -19,12 +19,12 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	if (($_POST['spam_sendtofriend'] == 2 || $_POST['spam_register'] == 2) && empty($_POST['recaptcha_public']) && empty($_POST['recaptcha_private']))
 	{
-		$ERR = $MSG['751'];
+		$ERR .= '<br/>' . $MSG['751'];
 	}
 	else
 	{
@@ -38,7 +38,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 		$system->SETTINGS['recaptcha_private'] = $_POST['recaptcha_private'];
 		$system->SETTINGS['spam_sendtofriend'] = $_POST['spam_sendtofriend'];
 		$system->SETTINGS['spam_register'] = $_POST['spam_register'];
-		$ERR = $MSG['750'];
+		$ERR .= '<br/>' . $MSG['750'];
 	}
 }
 
@@ -48,7 +48,7 @@ loadblock($MSG['743'], $MSG['745'], 'select3num', 'spam_register', $system->SETT
 loadblock($MSG['744'], '', 'select3num', 'spam_sendtofriend', $system->SETTINGS['spam_sendtofriend'], array($MSG['740'], $MSG['741'], $MSG['742']));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['5142'],
 		'PAGENAME' => $MSG['749']

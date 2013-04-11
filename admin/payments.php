@@ -51,7 +51,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	$query = "UPDATE " . $DBPrefix . "settings SET
 			payment_options = '" . $system->SETTINGS['payment_options'] . "'";
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-	$ERR = $MSG['093'];
+	$ERR .= '<br/>' . $MSG['093'];
 }
 
 $payment_options = unserialize($system->SETTINGS['payment_options']);
@@ -66,7 +66,7 @@ foreach ($payment_options as $k => $v)
 
 $template->assign_vars(array(
 		'SITEURL' => $system->SETTINGS['siteurl'],
-		'ERROR' => (isset($ERR)) ? $ERR : ''
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : ''
 		));
 
 $template->set_filenames(array(

@@ -68,7 +68,7 @@ if (isset($_POST['action']))
 				$auto_join = true;
 			}
 		}
-		$ERR = $ERR_050;
+		$ERR .= '<br/>' . $ERRMSG['050'];
 	}
 	if ($_GET['action'] == 'edit' || is_numeric($_GET['id']))
 	{
@@ -105,7 +105,7 @@ while ($row = mysql_fetch_assoc($res))
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'B_EDIT' => $edit
 		));
 

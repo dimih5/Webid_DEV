@@ -45,7 +45,7 @@ $system->check_mysql($result, $query, __LINE__, __FILE__);
 
 if (mysql_num_rows($result) == 0)
 {
-	$TPL_error_text = $ERR_606;
+	$TPL_error_text = $ERRMSG['606'];
 }
 else
 {
@@ -67,17 +67,17 @@ if (isset($_POST['action']) || !empty($_POST['action']))
 	// Check errors
 	if (isset($_POST['action']) && (!isset($_POST['sender_name']) || !isset($_POST['sender_email']) || empty($seller_nick) || empty($seller_email)))
 	{
-		$TPL_error_text = $ERR_032;
+		$TPL_error_text = $ERRMSG['032'];
 	}
 
 	if (empty($cleaned_question))
 	{
-		$TPL_error_text = $ERR_031;
+		$TPL_error_text = $ERRMSG['031'];
 	}
 
 	if (isset($_POST['action']) && (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $_POST['sender_email']) || !preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $seller_email)))
 	{
-		$TPL_error_text = $ERR_008;
+		$TPL_error_text = $ERRMSG['008'];
 	}
 	if (empty($TPL_error_text))
 	{

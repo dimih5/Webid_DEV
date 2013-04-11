@@ -23,13 +23,13 @@ unset($ERR);
 $banner = (isset($_GET['banner']) && !empty($_GET['banner'])) ? $_GET['banner'] : '';
 $banner = (isset($_POST['banner']) && !empty($_POST['banner'])) ? $_POST['banner'] : $banner;
 $id = intval($_REQUEST['id']);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'insert')
 {
 	// Data integrity
 	if (empty($_FILES['bannerfile']) || empty($_POST['url']))
 	{
-		$ERR = $ERR_047;
+		$ERR .= '<br/>' . $ERRMSG['047'];
 	}
 	else
 	{
@@ -54,7 +54,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'insert')
 			$file_types = array('gif', 'jpg', 'jpeg', 'png', 'swf');
 			if (!in_array($file_ext, $file_types))
 			{
-				$ERR = $MSG['_0048'];
+				$ERR .= '<br/>' . $MSG['_0048'];
 			}
 			else
 			{
@@ -211,7 +211,7 @@ if (isset($category_plain) && count($category_plain) > 0)
 $TPL_categories_list .= '</select>';
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ID' => $id,
 		'NAME' => $USER['name'],
 		'COMPANY' => $USER['company'],

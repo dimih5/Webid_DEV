@@ -58,7 +58,7 @@ if(isset($_GET['type']) && isset($fees[$_GET['type']]))
 		{
 			if(!$system->CheckMoney($_POST['value']))
 			{
-				$errmsg = $ERR_058;
+				$errmsg = $ERRMSG['058'];
 			}
 			else
 			{
@@ -120,7 +120,7 @@ if(isset($_GET['type']) && isset($fees[$_GET['type']]))
 				}
 				else
 				{
-					$errmsg = $ERR_713;
+					$errmsg = $ERRMSG['713'];
 				}
 			}
 		}

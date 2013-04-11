@@ -54,7 +54,7 @@ while ($row = mysql_fetch_assoc($res))
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : ''
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : ''
 		));
 
 $template->set_filenames(array(

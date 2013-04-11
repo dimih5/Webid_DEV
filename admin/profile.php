@@ -19,7 +19,7 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 $MANDATORY_FIELDS = unserialize($system->SETTINGS['mandatory_fields']);
 $DISPLAYED_FIELDS = unserialize($system->SETTINGS['displayed_feilds']);
 
@@ -52,7 +52,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	{
 		if ($MANDATORY_FIELDS[$required[$i]] == 'y' && $DISPLAYED_FIELDS[$display[$i]] == 'n')
 		{
-			$ERR = $MSG['809'];
+			$ERR .= '<br/>' . $MSG['809'];
 		}
 	}
 	if (!isset($ERR))
@@ -63,12 +63,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 				  mandatory_fields = '" . $mdata . "',
 				  displayed_feilds = '" . $sdata . "'";
 		$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-		$ERR = $MSG['779'];
+		$ERR .= '<br/>' . $MSG['779'];
 	}
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'REQUIRED_0' => ($MANDATORY_FIELDS['birthdate'] == 'y') ? true : false,
 		'REQUIRED_1' => ($MANDATORY_FIELDS['address'] == 'y') ? true : false,

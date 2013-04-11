@@ -9,13 +9,19 @@ if ($('.ending_counter')[0]){
 setInterval(function(){$('.ending_counter').each(function displaytime() {
 var currenttime = 0; //reset counter
 var currenttime = $(this).attr('time');
+var timestring = "";
 	currenttime -= 1;
 	if (currenttime > 0) 
 	{
-		var hours = Math.floor(currenttime / 3600);
-		var mins = Math.floor((currenttime - (hours * 3600)) / 60);
-		var secs = Math.floor(currenttime - (hours * 3600) - (mins * 60));
-		 var timestring = padlength(hours) + 'h ' + padlength(mins) + 'm ' + padlength(secs) + 's';
+		var days = Math.floor(currenttime / 86400);
+		var hours = Math.floor((currenttime - (days * 86400)) / 3600);
+		var mins = Math.floor((currenttime - (days * 86400) - (hours * 3600)) / 60);
+		var secs = Math.floor((currenttime - (days * 86400) - (hours * 3600) - (mins * 60)));
+		if (days != 0)
+		{
+			var timestring = padlength(days) + 'd ';
+		}
+		var timestring = timestring + padlength(hours) + 'h ' + padlength(mins) + 'm ' + padlength(secs) + 's';
 		$(this).html(timestring);
 		$(this).removeProp('time');
 		$(this).attr('time', currenttime);

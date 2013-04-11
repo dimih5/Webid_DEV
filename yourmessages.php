@@ -33,7 +33,7 @@ $check = mysql_num_rows($res);
 
 if ($check == 0)
 {
-	$_SESSION['message'] = $ERR_070;
+	$_SESSION['message'] = $ERRMSG['070'];
 	header('location: mail.php');
 }
 

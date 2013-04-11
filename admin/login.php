@@ -15,7 +15,7 @@
 define('InAdmin', 1);
 include '../common.php';
 include $include_path . 'functions_admin.php';
-
+$ERR;
 if (isset($_POST['action']))
 {
 	switch ($_POST['action'])
@@ -42,11 +42,11 @@ if (isset($_POST['action']))
 		case 'login':
 			if (strlen($_POST['username']) == 0 || strlen($_POST['password']) == 0)
 			{
-				$ERR = $ERR_047;
+				$ERR .= '<br/>' . $ERRMSG['047'];
 			}
 			elseif (!preg_match('([a-zA-Z0-9]*)', $_POST['username']))
 			{
-				$ERR = $ERR_071;
+				$ERR .= '<br/>' . $ERRMSG['071'];
 			}
 			else
 			{
@@ -57,7 +57,7 @@ if (isset($_POST['action']))
 
 				if (mysql_num_rows($res) == 0)
 				{
-					$ERR = $ERR_048;
+					$ERR .= '<br/>' . $ERRMSG['048'];
 				}
 				else
 				{
@@ -87,7 +87,7 @@ $res = mysql_query($query);
 $system->check_mysql($res, $query, __LINE__, __FILE__);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'THEME' => $system->SETTINGS['theme'],
 		'PAGE' => (mysql_num_rows($res) == 0) ? 1 : 2

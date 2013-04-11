@@ -63,15 +63,15 @@ if (isset($_POST['uploadpicture']))
 
 		if ($_FILES['userfile']['size'] > $system->SETTINGS['maxuploadsize'])
 		{
-			$ERR = $ERR_709 . '&nbsp;' . ($system->SETTINGS['maxuploadsize'] / 1024) . '&nbsp;' . $MSG['672'];
+			$ERR .= '<br/>' . $ERRMSG['709'] . '&nbsp;' . ($system->SETTINGS['maxuploadsize'] / 1024) . '&nbsp;' . $MSG['672'];
 		}
 		elseif (!in_array($file_ext, $file_types))
 		{
-			$ERR = $ERR_710 . ' (' . $file_ext . ')';
+			$ERR .= '<br/>' . $ERRMSG['710'] . ' (' . $file_ext . ')';
 		}
 		elseif (in_array($newname, $_SESSION['UPLOADED_CONTRACTS']))
 		{
-			$ERR = $MSG['2__0054'] . ' (' . $_FILES['userfile']['name'] . ')';
+			$ERR .= '<br/>' . $MSG['2__0054'] . ' (' . $_FILES['userfile']['name'] . ')';
 		}
 		else
 		{
@@ -133,7 +133,7 @@ for ($i = 0; $i < $system->SETTINGS['moneydecimals']; $i++)
 $template->assign_vars(array(
 		'SITENAME' => $system->SETTINGS['sitename'],
 		'THEME' => $system->SETTINGS['theme'],
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ERRORMSG' => sprintf($MSG['674'], $system->SETTINGS['maxcontracts']),
 		'MAXCONTR' => $system->SETTINGS['maxcontracts'],
 		'MAXCONTRSIZE' => $system->SETTINGS['maxuploadsize'],

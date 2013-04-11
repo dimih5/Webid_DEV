@@ -16,7 +16,7 @@ if (!defined('InWeBid')) exit();
 
 function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 {
-	global $system, $uploaded_path, $DBPrefix, $MSG, $ERR_114;
+	global $system, $uploaded_path, $DBPrefix, $MSG, $ERRMSG;
 	global $template, $PAGES, $PAGE;
 
 	$feat_items = false;
@@ -111,7 +111,7 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 		'B_FEATURED_ITEMS' => $feat_items,
 		'B_SUBTITLE' => ($system->SETTINGS['subtitle'] == 'y'),
 
-		'NUM_AUCTIONS' => ($total == 0) ? $ERR_114 : $total,
+		'NUM_AUCTIONS' => ($total == 0) ? $ERRMSG['114'] : $total,
 		'PREV' => ($PAGES > 1 && $PAGE > 1) ? '<a href="' . $system->SETTINGS['siteurl'] . $current_page . '?PAGE=' . $PREV . $extravar . '">' . '«' . '</a>' : '',
 		'NEXT' => ($PAGE < $PAGES) ? '<a href="' . $system->SETTINGS['siteurl'] . $current_page . '?PAGE=' . $NEXT . $extravar . '">' . '»' . '</a>' : '',
 		'PAGE' => $PAGE,

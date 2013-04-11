@@ -37,7 +37,7 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 $title = mysql_result($res, 0);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ID' => $_GET['id'],
 		'MESSAGE' => sprintf($MSG['832'], $title),
 		'TYPE' => 1

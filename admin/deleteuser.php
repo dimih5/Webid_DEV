@@ -144,22 +144,22 @@ $query = "SELECT id, title FROM " . $DBPrefix . "auctions WHERE user = " . $id;
 $res = mysql_query($query);
 $system->check_mysql($res, $query, __LINE__, __FILE__);
 $num_auctions = mysql_num_rows($res);
-
+$ERR;
 if ($num_auctions > 0)
 {
-	$ERR = $MSG['420'];
+	$ERR .= '<br/>' . $MSG['420'];
 	$i = 0;
 	while ($row = mysql_fetch_assoc($res))
 	{
 		if ($i >= 10)
 			break;
 		$has_auctions = true;
-		$ERR .= $row['id'] . ' - <a href="' . $system->SETTINGS['siteurl'] . 'item.php?id=' . $row['id'] . '" target="_blank">' . $row['title'] . '</a><br>';
+		$ERR .= '<br/>' . $row['id'] . ' - <a href="' . $system->SETTINGS['siteurl'] . 'item.php?id=' . $row['id'] . '" target="_blank">' . $row['title'] . '</a><br>';
 		$i++;
 	}
 	if ($num_auctions != $i)
 	{
-		$ERR .= '<p>' . sprintf($MSG['568'], $num_auctions - $i) . '</p>';
+		$ERR .= '<br/>' . '<p>' . sprintf($MSG['568'], $num_auctions - $i) . '</p>';
 	}
 }
 
@@ -172,7 +172,7 @@ $num_bids = mysql_num_rows($res);
 if ($num_bids > 0)
 {
 	$has_bids = true;
-	$ERR .= sprintf($MSG['421'], $num_auctions);
+	$ERR .= '<br/>' . sprintf($MSG['421'], $num_auctions);
 }
 
 $query = "SELECT nick FROM " . $DBPrefix . "users WHERE id = " . $id;
@@ -181,7 +181,7 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 $username = mysql_result($res,0);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ID' => $id,
 		'MESSAGE' => sprintf($MSG['835'], $username),
 		'TYPE' => 1

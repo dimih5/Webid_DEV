@@ -63,7 +63,7 @@ $system->SETTINGS['auction_types'] = array (
 // Atuomatically login user is necessary "Remember me" option
 if (!$user->logged_in && isset($_COOKIE['WEBID_RM_ID']))
 {
-	$query = "SELECT userid FROM " . $DBPrefix . "rememberme WHERE hashkey = '" . mysql_escape_string($_COOKIE['WEBID_RM_ID']) . "'";
+	$query = "SELECT userid FROM " . $DBPrefix . "rememberme WHERE hashkey = '" . mysql_real_escape_string($_COOKIE['WEBID_RM_ID']) . "'";
 	$res = mysql_query($query);
 	$system->check_mysql($res, $query, __LINE__, __FILE__);
 	if (mysql_num_rows($res) > 0)

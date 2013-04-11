@@ -20,6 +20,7 @@ include 'loggedin.inc.php';
 include $include_path . 'countries.inc.php';
 
 unset($ERR);
+$ERR;
 $userid = intval($_REQUEST['userid']);
 
 // Data check
@@ -60,47 +61,47 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 
 		if (strlen($_POST['password']) > 0 && ($_POST['password'] != $_POST['repeat_password']))
 		{
-			$ERR = $ERR_006;
+			$ERR .= '<br/>' . $ERRMSG['006'];
 		}
 		elseif (strlen($_POST['email']) < 5) //Primitive mail check
 		{
-			$ERR = $ERR_110;
+			$ERR .= '<br/>' . $ERRMSG['110'];
 		}
 		elseif (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $_POST['email']))
 		{
-			$ERR = $ERR_008;
+			$ERR .= '<br/>' . $ERRMSG['008'];
 		}
 		elseif (!preg_match('/^([0-9]{2})\/([0-9]{2})\/([0-9]{2,4})$/', $_POST['birthdate']) && $MANDATORY_FIELDS['birthdate'] == 'y')
 		{ //Birthdate check
-			$ERR = $ERR_043;
+			$ERR .= '<br/>' . $ERRMSG['043'];
 		}
 		elseif (strlen($_POST['zip']) < 4 && $MANDATORY_FIELDS['zip'] == 'y')
 		{ //Primitive zip check
-			$ERR = $ERR_616;
+			$ERR .= '<br/>' . $ERRMSG['616'];
 		}
 		elseif (strlen($_POST['phone']) < 3 && $MANDATORY_FIELDS['tel'] == 'y')
 		{ //Primitive phone check
-			$ERR = $ERR_617;
+			$ERR .= '<br/>' . $ERRMSG['617'];
 		}
 		elseif (empty($_POST['address']) && $MANDATORY_FIELDS['address'] == 'y')
 		{
-			$ERR = $ERR_5034;
+			$ERR .= '<br/>' . $ERRMSG['5034'];
 		}
 		elseif (empty($_POST['city']) && $MANDATORY_FIELDS['city'] == 'y')
 		{
-			$ERR = $ERR_5035;
+			$ERR .= '<br/>' . $ERRMSG['5035'];
 		}
 		elseif (empty($_POST['prov']) && $MANDATORY_FIELDS['prov'] == 'y')
 		{
-			$ERR = $ERR_5036;
+			$ERR .= '<br/>' . $ERRMSG['5036'];
 		}
 		elseif (empty($_POST['country']) && $MANDATORY_FIELDS['country'] == 'y')
 		{
-			$ERR = $ERR_5037;
+			$ERR .= '<br/>' . $ERRMSG['5037'];
 		}
 		elseif (count($_POST['group']) == 0)
 		{
-			$ERR = $ERR_044;
+			$ERR .= '<br/>' . $ERRMSG['044'];
 		}
 		else
 		{
@@ -139,7 +140,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	}
 	else
 	{
-		$ERR = $ERR_112;
+		$ERR .= '<br/>' . $ERRMSG['112'];
 	}
 }
 
@@ -192,7 +193,7 @@ while ($row = mysql_fetch_assoc($res))
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'REALNAME' => $user_data['name'],
 		'USERNAME' => $user_data['nick'],
 		'EMAIL' => $user_data['email'],

@@ -24,7 +24,7 @@ $cat_id = intval($_GET['id']);
 if (strlen($term) == 0)
 {
 	$template->assign_vars(array(
-			'ERROR' => $ERR_037,
+			'ERROR' => $ERRMSG['037'],
 			'NUM_AUCTIONS' => 0,
 			'TOP_HTML' => ''
 			));

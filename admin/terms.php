@@ -30,7 +30,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['terms'] = $_POST['terms'];
 	$system->SETTINGS['termstext'] = $_POST['termstext'];
-	$ERR = $MSG['5084'];
+	$ERR .= '<br/>' . $MSG['5084'];
 }
 
 loadblock($MSG['5082'], $MSG['5081'], 'yesno', 'terms', $system->SETTINGS['terms'], array($MSG['030'], $MSG['029']));
@@ -44,7 +44,7 @@ $CKEditor->config['height'] = 400;
 loadblock($MSG['5083'], $MSG['5080'], $CKEditor->editor('termstext', stripslashes($system->SETTINGS['termstext'])));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPE' => 'con',
 		'TYPENAME' => $MSG['25_0018'],

@@ -19,20 +19,20 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['repeatpassword']))
 	{
-		$ERR = $ERR_047;
+		$ERR .= '<br/>' . $ERRMSG['047'];
 	}
 	elseif ((!empty($_POST['password']) && empty($_POST['repeatpassword'])) || empty($_POST['password']) && !empty($_POST['repeatpassword']))
 	{
-		$ERR = $ERR_054;
+		$ERR .= '<br/>' . $ERRMSG['054'];
 	}
 	elseif ($_POST['password'] != $_POST['repeatpassword'])
 	{
-		$ERR = $ERR_006;
+		$ERR .= '<br/>' . $ERRMSG['006'];
 	}
 	else
 	{
@@ -42,7 +42,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 		$system->check_mysql($res, $query, __LINE__, __FILE__);
 		if (mysql_num_rows($res) > 0)
 		{
-			$ERR = sprintf($ERR_055, $_POST['username']);
+			$ERR .= '<br/>' . sprintf($ERRMSG['055'], $_POST['username']);
 		}
 		else
 		{
@@ -62,7 +62,7 @@ loadblock($MSG['564'], '', 'password', 'repeatpassword', $system->SETTINGS['repe
 loadblock('', '', 'batch', 'status', $system->SETTINGS['status'], array($MSG['566'], $MSG['567']));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['25_0010'],
 		'PAGENAME' => $MSG['367']

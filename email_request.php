@@ -13,7 +13,7 @@
  ***************************************************************************/
 
 include 'common.php';
-
+$ERR;
 // Get auction_id from sessions variables
 if (isset($_REQUEST['auction_id']))
 {
@@ -43,11 +43,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'proceed')
 {
 	if (empty($_POST['TPL_text']))
 	{
-		$ERR = $ERR_031;
+		$ERR .= '<br/>' . $ERRMSG['031'];
 	}
 	elseif ($auction_id < 0 || empty($auction_id))
 	{
-		$ERR = $ERR_622;
+		$ERR .= '<br/>' . $ERRMSG['622'];
 	}
 	else
 	{
@@ -56,7 +56,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'proceed')
 		$system->check_mysql($res, $query, __LINE__, __FILE__);
 		if (mysql_num_rows($res) == 0)
 		{
-			$ERR = $ERR_622;
+			$ERR .= '<br/>' . $ERRMSG['622'];
 		}
 		else
 		{

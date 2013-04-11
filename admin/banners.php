@@ -19,19 +19,19 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	$query = "UPDATE ".$DBPrefix."settings SET banners = '" . $system->cleanvars($_POST['banners']) . "'";
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['banners'] = $_POST['banners'];
-	$ERR = $MSG['600'];
+	$ERR .= '<br/>' . $MSG['600'];
 }
 
 loadblock($MSG['597'], '', 'batch', 'banners', $system->SETTINGS['banners'], array($MSG['030'], $MSG['029']));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'TYPENAME' => $MSG['25_0011'],
 		'PAGENAME' => $MSG['5205']
 		));

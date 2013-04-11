@@ -44,7 +44,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 			}
 		}
 	}
-	$ERR = $MSG['5073'];
+	$ERR .= '<br/>' . $MSG['5073'];
 	$system->SETTINGS['wordsfilter'] = $_POST['wordsfilter'];
 }
 
@@ -59,7 +59,7 @@ while ($word = mysql_fetch_assoc($res))
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'WORDLIST' => $WORDSLIST,
 		'WFYES' => ($system->SETTINGS['wordsfilter'] == 'y') ? ' checked="checked"' : '',

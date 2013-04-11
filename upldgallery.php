@@ -158,15 +158,15 @@ if (isset($_POST['uploadpicture']) && $_POST['uploadpicture'] == $MSG['681'])
 
 		if ($_FILES['userfile']['size'] > $system->SETTINGS['maxuploadsize'])
 		{
-			$ERR = $ERR_709 . '&nbsp;' . ($system->SETTINGS['maxuploadsize'] / 1024) . '&nbsp;' . $MSG['672'];
+			$ERR .= '<br/>' . $ERRMSG['709'] . '&nbsp;' . ($system->SETTINGS['maxuploadsize'] / 1024) . '&nbsp;' . $MSG['672'];
 		}
 		elseif (!in_array($file_ext, $file_types))
 		{
-			$ERR = $ERR_710 . ' (' . $file_ext . ')';
+			$ERR .= '<br/>' . $ERRMSG['710'] . ' (' . $file_ext . ')';
 		}
 		elseif (in_array($newname, $_SESSION['UPLOADED_PICTURES']))
 		{
-			$ERR = $MSG['2__0054'] . ' (' . $_FILES['userfile']['name'] . ')';
+			$ERR .= '<br/>' . $MSG['2__0054'] . ' (' . $_FILES['userfile']['name'] . ')';
 		}
 		else
 		{
@@ -238,7 +238,7 @@ else
 {
 	$template->assign_vars(array(
 			'MAXIMAGES' => $system->SETTINGS['maxpictures'],
-			'ERROR' => (isset($ERR)) ? $ERR : '',
+			'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 
 			'B_CANUPLOAD' => (!isset($_SESSION['UPLOADED_PICTURES']) || count($_SESSION['UPLOADED_PICTURES']) < $system->SETTINGS['maxpictures'])
 			));
@@ -277,7 +277,7 @@ for ($i = 0; $i < $system->SETTINGS['moneydecimals']; $i++)
 $template->assign_vars(array(
 		'SITENAME' => $system->SETTINGS['sitename'],
 		'THEME' => $system->SETTINGS['theme'],
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'IMAGE_COST' => ($image_fee != 0) ? sprintf($MSG['675'], $image_fee) : '',
 		'IMAGE_COST_PLAIN' => ($image_fee != 0) ? $image_fee : 0,
 		'PICINFO' => sprintf($MSG['673'], $system->SETTINGS['maxpictures'], $system->SETTINGS['maxuploadsize']),

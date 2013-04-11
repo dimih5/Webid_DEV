@@ -20,7 +20,7 @@ include 'loggedin.inc.php';
 
 unset($ERR);
 $html = '';
-
+$ERR;
 // Create currencies array
 $query = "SELECT id, valuta, symbol, ime FROM " . $DBPrefix . "rates ORDER BY ime";
 $res_ = mysql_query($query);
@@ -39,11 +39,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	// Data check
 	if (empty($_POST['currency']))
 	{
-		$ERR = $ERR_047;
+		$ERR .= '<br/>' . $ERRMSG['047'];
 	}
 	elseif (!empty($_POST['moneydecimals']) && !is_numeric($_POST['moneydecimals']))
 	{
-		$ERR = $ERR_051;
+		$ERR .= '<br/>' . $ERRMSG['051'];
 	}
 	else
 	{
@@ -58,7 +58,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 		$system->SETTINGS['moneyformat'] = $_POST['moneyformat'];
 		$system->SETTINGS['moneydecimals'] = $_POST['moneydecimals'];
 		$system->SETTINGS['moneysymbol'] = $_POST['moneysymbol'];
-		$ERR = $MSG['553'];
+		$ERR .= '<br/>' . $MSG['553'];
 	}
 }
 
@@ -77,7 +77,7 @@ loadblock($MSG['548'], $MSG['547'], 'decimals', 'moneydecimals', $system->SETTIN
 loadblock($MSG['549'], '', 'batchstacked', 'moneysymbol', $system->SETTINGS['moneysymbol'], array($MSG['550'], $MSG['551']));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'LINKURL' => $link,
 		'OPTIONHTML' => $html,

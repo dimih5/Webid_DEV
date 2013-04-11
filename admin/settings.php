@@ -19,17 +19,17 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	// Data check
 	if (empty($_POST['sitename']) || empty($_POST['siteurl']) || empty($_POST['adminmail']))
 	{
-		$ERR = $ERR_047;
+		$ERR .= '<br/>' . $ERRMSG['047'];
 	}
 	elseif (!is_numeric($_POST['archiveafter']))
 	{
-		$ERR = $ERR_043;
+		$ERR .= '<br/>' . $ERRMSG['043'];
 	}
 	else
 	{
@@ -45,7 +45,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 				https = '" . $_POST['https'] . "',
 				https_url = '" . $_POST['https_url'] . "'";
 		$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-		$ERR = $MSG['542'];
+		$ERR .= '<br/>' . $MSG['542'];
 	}
 
 	$system->SETTINGS['sitename'] = $_POST['sitename'];
@@ -83,7 +83,7 @@ loadblock($MSG['1023'], $MSG['1024'], 'yesno', 'https', $system->SETTINGS['https
 loadblock($MSG['801'], $MSG['802'], 'text', 'https_url', $system->SETTINGS['https_url']);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['5142'],
 		'PAGENAME' => $MSG['526']

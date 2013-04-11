@@ -19,7 +19,7 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	if ($_POST['auctions'] != 'y') $_POST['auctions'] = 'n';
@@ -34,7 +34,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	$system->SETTINGS['counter_auctions'] = $_POST['auctions'];
 	$system->SETTINGS['counter_users'] = $_POST['users'];
 	$system->SETTINGS['counter_online'] = $_POST['online'];
-	$ERR = $MSG['2__0063'];
+	$ERR .= '<br/>' . $MSG['2__0063'];
 }
 
 loadblock($MSG['2__0062'], $MSG['2__0058']);
@@ -43,7 +43,7 @@ loadblock($MSG['2__0061'], '', 'checkbox', 'users', $system->SETTINGS['counter_u
 loadblock($MSG['2__0058'], '', 'checkbox', 'online', $system->SETTINGS['counter_online']);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['25_0008'],
 		'PAGENAME' => $MSG['2__0057']

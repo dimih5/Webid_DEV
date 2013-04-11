@@ -105,7 +105,6 @@ function checkMissing()
 
 $first = true;
 unset($ERR);
-
 if (empty($_POST['action']))
 {
 	$action = 'first';
@@ -135,7 +134,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 {
 	if (!isset($_POST['terms_check']))
 	{
-		$ERR = $ERR_078;
+		$ERR = $ERRMSG['078'];
 	}
 	if (empty($_POST['TPL_name']))
 	{
@@ -207,7 +206,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 	}
 	if (checkMissing())
 	{
-		$ERR = $ERR_047;
+		$ERR .= '<br/>' . $ERRMSG['047'];
 	}
 	if (!isset($ERR))
 	{
@@ -223,43 +222,43 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 
 		if ($system->SETTINGS['spam_register'] == 2 && !$resp->is_valid)
 		{
-			$ERR = $MSG['752'];
+			$ERR .= '<br/>' . $MSG['752'];
 		}
 		elseif ($system->SETTINGS['spam_register'] == 1 && !$resp->check($_POST['captcha_code']))
 		{
-			$ERR = $MSG['752'];
+			$ERR .= '<br/>' . $MSG['752'];
 		}
 		elseif (strlen($_POST['TPL_nick']) < 6)
 		{
-			$ERR = $ERR_107;
+			$ERR .= '<br/>' . $ERRMSG['107'];
 		}
 		elseif (strlen ($_POST['TPL_password']) < 6)
 		{
-			$ERR = $ERR_108;
+			$ERR .= '<br/>' . $ERRMSG['108'];
 		}
 		elseif ($_POST['TPL_password'] != $_POST['TPL_repeat_password'])
 		{
-			$ERR = $ERR_109;
+			$ERR .= '<br/>' . $ERRMSG['109'];
 		}
 		elseif (strlen($_POST['TPL_email']) < 5)
 		{
-			$ERR = $ERR_110;
+			$ERR .= '<br/>' . $ERRMSG['110'];
 		}
 		elseif (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $_POST['TPL_email']))
 		{
-			$ERR = $ERR_008;
+			$ERR .= '<br/>' . $ERRMSG['008'];
 		}
 		elseif (!CheckAge($birth_day, $birth_month, $birth_year) && $MANDATORY_FIELDS['birthdate'] == 'y')
 		{
-			$ERR = $ERR_113;
+			$ERR .= '<br/>' . $ERRMSG['113'];
 		}
 		elseif (!empty($birth_month) && !empty($birth_day) && !empty($birth_year) && !checkdate($birth_month, $birth_day, $birth_year))
 		{
-			$ERR = $ERR_117;
+			$ERR .= '<br/>' . $ERRMSG['117'];
 		}
 		elseif (BannedEmail($_POST['TPL_email'], $BANNEDDOMAINS))
 		{
-			$ERR = sprintf($MSG['30_0053'], $TPL_domains_alert);
+			$ERR .= '<br/>' . sprintf($MSG['30_0053'], $TPL_domains_alert);
 		}
 		else
 		{
@@ -268,14 +267,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 			$system->check_mysql($res, $sql, __LINE__, __FILE__);
 			if (mysql_num_rows($res) > 0)
 			{
-				$ERR = $ERR_111; // Selected user already exists
+				$ERR .= '<br/>' . $ERRMSG['111']; // Selected user already exists
 			}
 			$query = "SELECT email FROM " . $DBPrefix . "users WHERE email = '" . $system->cleanvars($_POST['TPL_email']) . "'";
 			$res = mysql_query($query);
 			$system->check_mysql($res, $query, __LINE__, __FILE__);
 			if (mysql_num_rows($res) > 0)
 			{
-				$ERR = $ERR_115; // E-mail already used
+				$ERR .= '<br/>' . $ERRMSG['115']; // E-mail already used
 			}
 
 			if (!isset($ERR))
@@ -439,7 +438,7 @@ $selectsetting = (isset($_POST['TPL_timezone'])) ? $_POST['TPL_timezone'] : '';
 $time_correction = generateSelect('TPL_timezone', $TIMECORRECTION);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'L_COUNTRIES' => $country,
 		'L_DATEFORMAT' => ($system->SETTINGS['datesformat'] == 'USA') ? $dobmonth . ' ' . $dobday : $dobday . ' ' . $dobmonth,
 		'TIMEZONE' => $time_correction,

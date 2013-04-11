@@ -17,21 +17,21 @@ $current_page = 'contents';
 include '../common.php';
 include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	// Update database
 	$query = "UPDATE " . $DBPrefix . "settings set
 			boards = '" . $_POST['boards'] . "'";
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-	$ERR = $MSG['5051'];
+	$ERR .= '<br/>' . $MSG['5051'];
 	$system->SETTINGS['boards'] = $_POST['boards'];
 }
 
 loadblock($MSG['5048'], '', 'yesno', 'boards', $system->SETTINGS['aboutus'], array($MSG['030'], $MSG['029']));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['25_0018'],
 		'PAGENAME' => $MSG['5047']

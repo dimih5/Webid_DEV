@@ -17,7 +17,7 @@ $current_page = 'home';
 include '../common.php';
 include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
-
+$ERR;
 if (isset($_GET['action']))
 {
 	switch($_GET['action'])
@@ -213,7 +213,7 @@ if ($system->SETTINGS['activationtype'] == 0)
 // version check
 if (!($realversion = load_file_from_url('http://www.webidsupport.com/version.txt')))
 {
-	$ERR = $ERR_25_0002;
+	$ERR .= '<br/>' . $ERRMSG['25_0002'];
 	$realversion = 'Unknown';
 }
 

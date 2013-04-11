@@ -17,7 +17,7 @@ $current_page = 'interface';
 include '../common.php';
 include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
-
+$ERR;
 $theme_root = $main_path . 'themes/'; //theres no point repeatedly defining this
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
@@ -28,11 +28,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 				theme = '" . $_POST['dtheme'] . "'";
 		$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 		$system->SETTINGS['theme'] = $_POST['dtheme'];
-		$ERR = $MSG['26_0005'];
+		$ERR .= '<br/>' . $MSG['26_0005'];
 	}
 	else
 	{
-		$ERR = $ERR_068;
+		$ERR .= '<br/>' . $ERRMSG['068'];
 	}
 }
 elseif (isset($_POST['action']) && ($_POST['action'] == 'add' || $_POST['action'] == 'edit'))
@@ -109,7 +109,7 @@ elseif (isset($_GET['do']) && $_GET['do'] == 'addfile')
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 
 		'FILENAME' => isset($filename) ? $filename : '',

@@ -46,15 +46,15 @@ if (isset($_POST['action']) && isset($_POST['username']) && isset($_POST['passwo
 
 		if ($user_data['suspended'] == 1)
 		{
-			$ERR = $ERR_618;
+			$ERR .= '<br/>' . $ERRMSG['618'];
 		}
 		elseif ($user_data['suspended'] == 8)
 		{
-			$ERR = $ERR_620;
+			$ERR .= '<br/>' . $ERRMSG['620'];
 		}
 		elseif ($user_data['suspended'] == 10)
 		{
-			$ERR = $ERR_621;
+			$ERR .= '<br/>' . $ERRMSG['621'];
 		}
 		else
 		{
@@ -111,12 +111,12 @@ if (isset($_POST['action']) && isset($_POST['username']) && isset($_POST['passwo
 	}
 	else
 	{
-		$ERR = $ERR_038;
+		$ERR .= '<br/>' . $ERRMSG['038'];
 	}
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'USER' => (isset($_POST['username'])) ? $_POST['username'] : ''
 		));
 

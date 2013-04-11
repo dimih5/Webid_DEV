@@ -90,7 +90,7 @@ if (mysql_num_rows($res) > 0)
 }
 else
 {
-	$ERR = $ERR_105;
+	$ERR .= '<br/>' . $ERRMSG['105'];
 }
 
 $PREV = intval($PAGE - 1);
@@ -110,7 +110,7 @@ if ($PAGES > 1)
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ID' => $secid,
 		'NICK' => $arr['nick'],
 		'FB_NUM' => $arr['rate_num'],

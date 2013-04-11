@@ -48,12 +48,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'sendmail')
 	// check errors
 	if (empty($_POST['sender_name']) || empty($_POST['sender_email']) || empty($_POST['friend_name']) || empty($_POST['friend_email']))
 	{
-		$TPL_error_text = $ERR_031;
+		$TPL_error_text = $ERRMSG['031'];
 	}
 
 	if (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $_POST['sender_email']) || !preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $_POST['friend_email']))
 	{
-		$TPL_error_text = $ERR_008;
+		$TPL_error_text = $ERRMSG['008'];
 	}
 	
 	if ($system->SETTINGS['spam_sendtofriend'] == 2)

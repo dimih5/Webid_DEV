@@ -19,24 +19,24 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	if ($_POST['status'] == 'enabled' && (!is_numeric($_POST['timebefore']) || !is_numeric($_POST['extend'])))
 	{
-		$ERR = $MSG['2_0038'];
+		$ERR .= '<br/>' . $MSG['2_0038'];
 	}
 	elseif ($_POST['maxpicturesize'] == 0)
 	{
-		$ERR = $ERR_707;
+		$ERR .= '<br/>' . $ERRMSG['707'];
 	}
 	elseif (!empty($_POST['maxpicturesize']) && !intval($_POST['maxpicturesize']))
 	{
-		$ERR = $ERR_708;
+		$ERR .= '<br/>' . $ERRMSG['708'];
 	}
 	elseif (!empty($_POST['maxpictures']) && !intval($_POST['maxpictures']))
 	{
-		$ERR = $ERR_706;
+		$ERR .= '<br/>' . $ERRMSG['706'];
 	}
 	else
 	{
@@ -61,7 +61,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 				  maxuploadsize = " . ($_POST['maxpicturesize'] * 1024) . ",
 				  thumb_show = " . intval($_POST['thumb_show']);
 		$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-		$ERR = $MSG['5088'];
+		$ERR .= '<br/>' . $MSG['5088'];
 	}
 	$system->SETTINGS['edit_starttime'] = $_POST['edit_starttime'];
 	$system->SETTINGS['cust_increment'] = $_POST['cust_increment'];
@@ -113,7 +113,7 @@ loadblock($MSG['671'], $MSG['25_0187'], 'decimals', 'maxpicturesize', ($system->
 loadblock($MSG['25_0107'], $MSG['896'], 'decimals', 'thumb_show', $system->SETTINGS['thumb_show'], array($MSG['2__0045']));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['5142'],
 		'PAGENAME' => $MSG['5087']

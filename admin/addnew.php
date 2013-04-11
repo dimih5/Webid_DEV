@@ -20,13 +20,13 @@ include $include_path . 'htmLawed.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	// Data check
 	if (!isset($_POST['title']) || !isset($_POST['content']))
 	{
-		$ERR = $ERR_112;
+		$ERR .= '<br/>' . $ERRMSG['112'];
 	}
 	else
 	{
@@ -65,7 +65,7 @@ foreach ($LANGUAGES as $k => $language)
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'TITLE' => $MSG['518'],
 		'BUTTON' => $MSG['518'],
 

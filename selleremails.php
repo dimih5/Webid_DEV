@@ -28,7 +28,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 			  startemailmode = '" . $system->cleanvars($_POST['startemailmod']) . "',
 			  emailtype = '" . $system->cleanvars($_POST['emailtype']) . "'  WHERE id = " . $user->user_data['id'];
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-	$ERR = $MSG['25_0192'];
+	$ERR .= '<br/>' . $MSG['25_0192'];
 	$user->user_data = array_merge($user->user_data, $_POST); //update the array
 }
 

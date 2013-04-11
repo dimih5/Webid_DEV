@@ -14,6 +14,7 @@
 
 include 'common.php';
 include $include_path . 'membertypes.inc.php';
+$ERR;
 foreach ($membertypes as $idm => $memtypearr)
 {
 	$memtypesarr[$memtypearr['feedbacks']] = $memtypearr;
@@ -61,7 +62,7 @@ if (mysql_num_rows($res) == 0)
 {
 	$template->assign_vars(array(
 			'TITLE_MESSAGE' => $MSG['415'],
-			'BODY_MESSAGE' => $ERR_606
+			'BODY_MESSAGE' => $ERRMSG['606']
 			));
 	include 'header.php';
 	$template->set_filenames(array(
@@ -79,7 +80,7 @@ if ($Auction['closed'] == 1)
 }
 if ($Auction['starts'] > time())
 {
-	$ERR = $ERR_073;
+	$ERR .= '<br/>' . $ERRMSG['073'];
 }
 
 // If there are bids for this auction -> error
@@ -87,7 +88,7 @@ if ($Auction['bn_only'] == 'n')
 {
 	if (!($Auction['buy_now'] > 0 && ($Auction['num_bids'] == 0 || ($Auction['reserve_price'] > 0 && $Auction['current_bid'] < $Auction['reserve_price']) || ($Auction['current_bid'] < $Auction['buy_now']))))
 	{
-		$ERR = $ERR_712;
+		$ERR .= '<br/>' . $ERRMSG['712'];
 	}
 	else
 	{
@@ -97,7 +98,7 @@ if ($Auction['bn_only'] == 'n')
 		$maxbid = mysql_result($res, 0, 'maxbid');
 		if (($maxbid > 0 && $maxbid >= $Auction['reserve_price']))
 		{
-			$ERR = $ERR_712;
+			$ERR .= '<br/>' . $ERRMSG['712'];
 		}
 	}
 }
@@ -137,23 +138,23 @@ if (isset($_POST['action']) && $_POST['action'] == 'buy')
 		// check if password entered
 		if (strlen($_POST['password']) == 0)
 		{
-			$ERR = $ERR_610;
+			$ERR .= '<br/>' . $ERRMSG['610'];
 		}
 		// check if password is correct
 		if ($user->user_data['password'] != md5($MD5_PREFIX . $_POST['password']))
 		{
-			$ERR = $ERR_611;
+			$ERR .= '<br/>' . $ERRMSG['611'];
 		}
 	}
 	// check if buyer is not the seller
 	if ($user->user_data['id'] == $Auction['user'])
 	{
-		$ERR = $ERR_711;
+		$ERR .= '<br/>' . $ERRMSG['711'];
 	}
 	// check qty
 	if (isset($qty) && $qty > $Auction['quantity'])
 	{
-		$ERR = $ERR_608;
+		$ERR .= '<br/>' . $ERRMSG['608'];
 	}
 	// perform final actions
 	if (!isset($ERR))
@@ -285,7 +286,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'buy')
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ID' => $_REQUEST['id'],
 		'TITLE' => $Auction['title'],
 		'BN_PRICE' => $system->print_money($Auction['buy_now']),

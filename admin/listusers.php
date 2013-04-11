@@ -19,7 +19,7 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_GET['resend']) && isset($_GET['id']) && is_numeric($_GET['id']))
 {
 	$query = "SELECT id, nick, name, email FROM " . $DBPrefix . "users WHERE id = " . $_GET['id'];
@@ -39,7 +39,7 @@ if (isset($_GET['resend']) && isset($_GET['id']) && is_numeric($_GET['id']))
 				));
 		$emailer->email_uid = $USER['id'];
 		$emailer->email_sender($USER['email'], 'usermail.inc.php', $system->SETTINGS['sitename'] . ' ' . $MSG['098']);
-		$ERR = $MSG['059'];
+		$ERR .= '<br/>' . $MSG['059'];
 	}
 }
 
@@ -61,7 +61,7 @@ if (isset($_GET['payreminder']) && isset($_GET['id']) && is_numeric($_GET['id'])
 				));
 		$emailer->email_uid = $USER['id'];
 		$emailer->email_sender($USER['email'], 'payment_reminder.inc.php', $system->SETTINGS['sitename'] . ' ' . $MSG['766']);
-		$ERR = $MSG['765'];
+		$ERR .= '<br/>' . $MSG['765'];
 	}
 }
 
@@ -211,7 +211,7 @@ if ($PAGES > 1)
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'TOTALUSERS' => $TOTALUSERS,
 		'USERFILTER' => (isset($_SESSION['usersfilter'])) ? $_SESSION['usersfilter'] : '',
 

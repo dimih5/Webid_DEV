@@ -89,7 +89,7 @@ if ($PAGES > 1)
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'PAGE_TITLE' => $MSG['214'],
 		'NUM_AUCTIONS' => $num_auctions,
 

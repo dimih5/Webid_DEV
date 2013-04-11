@@ -21,19 +21,19 @@ if (isset($_GET['id']) && !isset($_POST['action']))
 	$system->check_mysql($result, $query, __LINE__, __FILE__);
 	if (mysql_num_rows($result) == 0)
 	{
-		$errmsg = $ERR_025;
+		$errmsg = $ERRMSG['025'];
 	}
 	elseif (!isset($_GET['hash']) || md5($MD5_PREFIX . $system->uncleanvars(mysql_result($result, 0, 'nick'))) != $_GET['hash'])
 	{
-		$errmsg = $ERR_033;
+		$errmsg = $ERRMSG['033'];
 	}
 	elseif (mysql_result($result, 0, 'suspended') == 0)
 	{
-		$errmsg = $ERR_039;
+		$errmsg = $ERRMSG['039'];
 	}
 	elseif (mysql_result($result, 0, 'suspended') == 2)
 	{
-		$errmsg = $ERR_039;
+		$errmsg = $ERRMSG['039'];
 	}
 
 	if (isset($errmsg))
@@ -48,7 +48,7 @@ if (isset($_GET['id']) && !isset($_POST['action']))
 
 if (!isset($_GET['id']) && !isset($_POST['action']))
 {
-	$errmsg = $ERR_025;
+	$errmsg = $ERRMSG['025'];
 	$page = 'error';
 }
 
@@ -96,7 +96,7 @@ if (isset($_POST['action']) && $_POST['action'] == $MSG['249'])
 	}
 	else
 	{
-		$errmsg = $ERR_033;
+		$errmsg = $ERRMSG['033'];
 		$page = 'error';
 	}
 }
@@ -119,7 +119,7 @@ if (isset($_POST['action']) && $_POST['action'] == $MSG['250'])
 	}
 	else
 	{
-		$errmsg = $ERR_033;
+		$errmsg = $ERRMSG['033'];
 		$page = 'error';
 	}
 }

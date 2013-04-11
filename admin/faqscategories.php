@@ -19,7 +19,7 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']))
 {
 	// add category
@@ -27,7 +27,7 @@ if (isset($_POST['action']))
 	{
 		if (empty($_POST['cat_name'][$system->SETTINGS['defaultlanguage']]))
 		{
-			$ERR = $ERR_047;
+			$ERR .= '<br/>' . $ERRMSG['047'];
 		}
 		else
 		{
@@ -120,7 +120,7 @@ if (isset($_POST['action']))
 		$message .= '</table>';
 		// build message
 		$template->assign_vars(array(
-				'ERROR' => (isset($ERR)) ? $ERR : '',
+				'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 				'ID' => '',
 				'MESSAGE' => (($counter > 0) ? $message : '') . '<p>' . $MSG['838'] . implode(', ', $names) . '</p>',
 				'TYPE' => 1
@@ -162,7 +162,7 @@ foreach ($LANGUAGES as $k => $v)
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'B_ADDCAT' => (isset($_GET['do']) && $_GET['do'] == 'add')
 		));
 

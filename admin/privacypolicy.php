@@ -30,7 +30,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['privacypolicy'] = $_POST['privacypolicy'];
 	$system->SETTINGS['privacypolicytext'] = $_POST['privacypolicytext'];
-	$ERR = $MSG['406'];
+	$ERR .= '<br/>' . $MSG['406'];
 }
 loadblock($MSG['403'], $MSG['405'], 'yesno', 'privacypolicy', $system->SETTINGS['privacypolicy'], array($MSG['030'], $MSG['029']));
 
@@ -43,7 +43,7 @@ $CKEditor->config['height'] = 400;
 loadblock($MSG['404'], $MSG['5080'], $CKEditor->editor('privacypolicytext', stripslashes($system->SETTINGS['privacypolicytext'])));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['25_0018'],
 		'PAGENAME' => $MSG['402']

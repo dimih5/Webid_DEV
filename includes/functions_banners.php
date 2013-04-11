@@ -33,7 +33,7 @@ if (!function_exists('view'))
 		}
 		elseif (strstr($_SERVER['SCRIPT_FILENAME'], 'item.php')) // check categories & item title
 		{
-			global $auction_data;
+			$auction_data = Rebuild('auction_data');
 			$joinings .= ' LEFT JOIN ' . $DBPrefix . 'bannerskeywords k ON (k.banner = b.id)';
 			$joinings .= ' LEFT JOIN ' . $DBPrefix . 'bannerscategories c ON (c.banner = b.id)';
 			$extra .=  " AND (k.keyword LIKE '%" . $auction_data['title'] . "%'

@@ -138,7 +138,7 @@ else
 {
 	$variables = array(
 		'B_VIEW' => false,
-		'MSG' => $ERR_025
+		'MSG' => $ERRMSG['025']
 		);
 }
 

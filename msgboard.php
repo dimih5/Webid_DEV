@@ -50,7 +50,7 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 
 if (isset($_POST['action']) && empty($_POST['newmessage']))
 {
-	$ERR = $ERR_624;
+	$ERR .= '<br/>' . $ERRMSG['624'];
 }
 
 $TOTALMSGS = mysql_num_rows($res);
@@ -298,7 +298,7 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 $COUNT = mysql_num_rows($res);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'BOARD_NAME' => $BOARD_TITLE,
 		'BOARD_ID' => $board_id,
 		'PREV' => ($PAGES > 1 && $PAGE > 1) ? '<a href="' . $system->SETTINGS['siteurl'] . 'msgboard.php?PAGE=' . $PREV . '&board_id=' . $board_id . '"><u>' . $MSG['5119'] . '</u></a>&nbsp;' : '',

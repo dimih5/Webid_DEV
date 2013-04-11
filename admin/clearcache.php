@@ -17,7 +17,7 @@ $current_page = 'interface';
 include '../common.php';
 include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	if (is_dir($main_path . 'cache'))
@@ -32,11 +32,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 		}
 		closedir($dir);
 	}
-	$ERR = $MSG['30_0033'];
+	$ERR .= '<br/>' . $MSG['30_0033'];
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl']
 		));
 

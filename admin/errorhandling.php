@@ -21,7 +21,7 @@ include $main_path . 'ckeditor/ckeditor.php';
 include $include_path . 'htmLawed.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	// Update database
@@ -29,7 +29,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 			  errortext = '" . htmLawed($_POST['errortext'], array('safe'=>1)) . "'";
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['errortext'] = $_POST['errortext'];
-	$ERR = $MSG['413'];
+	$ERR .= '<br/>' . $MSG['413'];
 }
 
 $CKEditor = new CKEditor();
@@ -41,7 +41,7 @@ $CKEditor->config['height'] = 400;
 loadblock($MSG['411'], $MSG['410'], $CKEditor->editor('errortext', stripslashes($system->SETTINGS['errortext'])));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['5142'],
 		'PAGENAME' => $MSG['409']

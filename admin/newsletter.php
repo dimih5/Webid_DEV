@@ -20,7 +20,7 @@ include 'loggedin.inc.php';
 include $main_path . 'ckeditor/ckeditor.php';
 
 unset($ERR);
-
+$ERR;
 $subject = (isset($_POST['subject'])) ? stripslashes($_POST['subject']) : '';
 $content = (isset($_POST['content'])) ? stripslashes($_POST['content']) : '';
 $is_preview = false;
@@ -29,7 +29,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'submit')
 {
 	if (empty($subject) || empty($content))
 	{
-		$ERR = $ERR_5014;
+		$ERR .= '<br/>' . $ERRMSG['5014'];
 	}
 	else
 	{
@@ -60,7 +60,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'submit')
 				$COUNTER++;
 			}
 		}
-		$ERR = $COUNTER . $MSG['5300'];
+		$ERR .= '<br/>' . $COUNTER . $MSG['5300'];
 	}
 }
 elseif (isset($_POST['action']) && $_POST['action'] == 'preview')
@@ -83,7 +83,7 @@ $CKEditor->config['width'] = 550;
 $CKEditor->config['height'] = 400;
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'SELECTBOX' => generateSelect('usersfilter', $USERSFILTER),
 		'SUBJECT' => $subject,

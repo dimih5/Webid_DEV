@@ -13,7 +13,7 @@
  ***************************************************************************/
 
 include 'common.php';
-
+$ERR;
 // If user is not logged in redirect to login page
 if (!$user->is_logged_in())
 {
@@ -49,7 +49,7 @@ if (isset($_POST['sendto']) && isset($_POST['subject']) && isset($_POST['message
 	{
 		if (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $sendto))
 		{
-			$_SESSION['message'] = $ERR_609;
+			$_SESSION['message'] = $ERRMSG['609'];
 			header('location: mail.php?x=1');
 			exit;
 		}
@@ -121,7 +121,7 @@ if (isset($_REQUEST['deleteid']) && is_array($_REQUEST['deleteid']))
 	}
 	$query = "DELETE FROM " . $DBPrefix . "messages WHERE id IN (" . $message_id . ")";
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-	$ERR = $MSG['444'];
+	$ERR .= '<br/>' . $MSG['444'];
 }
 
 // if sending a message
@@ -218,7 +218,7 @@ $messagespaceused = ($messages * 4) + 1;
 $messagespaceleft = (30 - $messages) * 4;
 $messagesleft = 30 - $messages;
 
-$ERR = (isset($_SESSION['message'])) ? $_SESSION['message'] : $ERR;
+$ERR .= '<br/>' . (isset($_SESSION['message'])) ? $_SESSION['message'] : $ERR;
 unset($_SESSION['message']);
 
 $template->assign_vars(array(

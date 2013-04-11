@@ -19,7 +19,7 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 // Delete boards
 if (isset($_POST['delete']) && is_array($_POST['delete']))
 {
@@ -31,7 +31,7 @@ if (isset($_POST['delete']) && is_array($_POST['delete']))
 		$query = "DELETE FROM " . $DBPrefix . "comm_messages WHERE boardid = " . $v;
 		$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	}
-	$ERR = $MSG['5044'];
+	$ERR .= '<br/>' . $MSG['5044'];
 }
 
 // get list of boards
@@ -50,7 +50,7 @@ while ($row = mysql_fetch_array($res))
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : ''
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : ''
 		));
 
 $template->set_filenames(array(

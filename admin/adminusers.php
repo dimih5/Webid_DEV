@@ -19,12 +19,12 @@ include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['delete']) && is_array($_POST['delete']))
 {
 	if (in_array($_SESSION['WEBID_ADMIN_IN'], $_POST['delete']))
 	{
-		$ERR = $MSG['1100'];
+		$ERR .= '<br/>' . $MSG['1100'];
 	}
 	else
 	{
@@ -39,7 +39,7 @@ if (isset($_POST['delete']) && is_array($_POST['delete']))
 		$query = "DELETE FROM " . $DBPrefix . "adminusers WHERE id IN (" . $delete . ")";
 		$res = mysql_query($query);
 		$system->check_mysql($res, $query, __LINE__, __FILE__);
-		$ERR = $MSG['1100'];
+		$ERR .= '<br/>' . $MSG['1100'];
 	}
 }
 
@@ -77,7 +77,7 @@ while ($User = mysql_fetch_assoc($res))
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : ''
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : ''
 		));
 		
 $template->set_filenames(array(

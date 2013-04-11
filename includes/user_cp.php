@@ -17,7 +17,7 @@ if (!defined('InWeBid')) exit();
 $template->assign_vars(array(
 	'B_ISERROR' => (!empty($ERR)),
 	'B_MENUTITLE' => (!empty($TMP_usmenutitle)),
-	'UCP_ERROR' => (isset($ERR)) ? $ERR : '',
+	'UCP_ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 	'UCP_TITLE' => (isset($TMP_usmenutitle)) ? $TMP_usmenutitle : ''
 ));
 ?>

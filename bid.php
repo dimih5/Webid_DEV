@@ -88,7 +88,7 @@ if (mysql_num_rows($res) == 0)
 {
 	$template->assign_vars(array(
 			'TITLE_MESSAGE' => $MSG['415'],
-			'BODY_MESSAGE' => $ERR_606
+			'BODY_MESSAGE' => $ERRMSG['606']
 			));
 	include 'header.php';
 	$template->set_filenames(array(
@@ -102,13 +102,13 @@ if (mysql_num_rows($res) == 0)
 // check user entered a bid
 if (empty($bid) && !isset($errmsg))
 {
-	$errmsg = $ERR_072;
+	$errmsg = $ERRMSG['072'];
 }
 
 // check the bid is valid
 if (!$system->CheckMoney($bid) && !isset($errmsg))
 {
-	$errmsg = $ERR_058;
+	$errmsg = $ERRMSG['058'];
 }
 
 // reformat bid to valid number
@@ -132,15 +132,15 @@ $cbid = ($current_bid == 0) ? $minimum_bid : $current_bid;
 
 if (($Data['ends'] <= time() || $Data['closed'] == 1) && !isset($errmsg))
 {
-	$errmsg = $ERR_614;
+	$errmsg = $ERRMSG['614'];
 }
 if (($Data['starts'] > time()) && !isset($errmsg))
 {
-	$errmsg = $ERR_073;
+	$errmsg = $ERRMSG['073'];
 }
 if ($aquantity < $qty)
 {
-	$errmsg = $ERR_608;
+	$errmsg = $ERRMSG['608'];
 }
 
 $query = "SELECT bid, bidder FROM " . $DBPrefix . "bids WHERE auction = " . $id . " ORDER BY bid DESC, id DESC LIMIT 1";
@@ -187,14 +187,14 @@ if (isset($_POST['action']) && !isset($errmsg))
 	{
 		if (strlen($_POST['password']) == 0)
 		{
-			$errmsg = $ERR_004;
+			$errmsg = $ERRMSG['004'];
 		}
 		$query = "SELECT * FROM " . $DBPrefix . "users WHERE id = " . $user->user_data['id'] . " AND password = '" . md5($MD5_PREFIX . $_POST['password']) . "'";
 		$res = mysql_query($query);
 		$system->check_mysql($res, $query, __LINE__, __FILE__);
 		if (mysql_num_rows($res) == 0)
 		{
-			$errmsg = $ERR_611;
+			$errmsg = $ERRMSG['611'];
 		}
 	}
 	$send_email = false;
@@ -235,7 +235,7 @@ if (isset($_POST['action']) && !isset($errmsg))
 				$WINNER_PROXYBID = mysql_result($res, 0, 'bid');
 				if ($WINNER_PROXYBID >= $bid)
 				{
-					$errmsg = $ERR_040;
+					$errmsg = $ERRMSG['040'];
 				}
 				else
 				{
@@ -407,7 +407,7 @@ if (isset($_POST['action']) && !isset($errmsg))
 			$PREVIOUSBID = mysql_fetch_array($res);
 			if (($bid * $qty) <= ($PREVIOUSBID['bid'] * $PREVIOUSBID['quantity']))
 			{
-				$errmsg = $ERR_059;
+				$errmsg = $ERRMSG['059'];
 			}
 		}
 		if (!isset($errmsg))

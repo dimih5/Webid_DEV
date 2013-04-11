@@ -21,7 +21,7 @@ include $main_path . 'language/' . $language . '/categories.inc.php';
 
 unset($ERR);
 $catscontrol = new MPTTcategories();
-
+$ERR;
 // Data check
 if (!isset($_REQUEST['id']))
 {
@@ -49,11 +49,11 @@ if (isset($_POST['action']))
 		// Check the input values for validity.
 		if ($_POST['quantity'] < 1) // 1 or more items being sold
 		{
-			$ERR = $ERR_701;
+			$ERR .= '<br/>' . $ERRMSG['701'];
 		}
 		elseif ($_POST['current_bid'] < $_POST['min_bid'] && $_POST['current_bid'] != 0) // bid > min_bid
 		{
-			$ERR = $ERR_702;
+			$ERR .= '<br/>' . $ERRMSG['702'];
 		}
 		else
 		{
@@ -191,7 +191,7 @@ if (isset($_POST['action']))
 	}
 	else
 	{
-		$ERR = $ERR_112;
+		$ERR .= '<br/>' . $ERRMSG['112'];
 	}
 }
 
@@ -316,7 +316,7 @@ foreach ($payment_options as $k => $v)
 }
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ID' => intval($_REQUEST['id']),
 		'USER' => $auction_data['nick'],
 		'TITLE' => $auction_data['title'],

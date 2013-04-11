@@ -20,21 +20,21 @@ include 'loggedin.inc.php';
 include $include_path . 'countries.inc.php';
 
 unset($ERR);
-
+$ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	// Update database
 	$query = "UPDATE " . $DBPrefix . "settings SET defaultcountry = '" . $_POST['country'] . "'";
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['defaultcountry'] = $_POST['country'];
-	$ERR = $MSG['5323'];
+	$ERR .= '<br/>' . $MSG['5323'];
 }
 
 $selectsetting = $system->SETTINGS['defaultcountry'];
 loadblock($MSG['5322'], $MSG['5321'], generateSelect('country', $countries, false));
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['25_0008'],
 		'PAGENAME' => $MSG['5322']

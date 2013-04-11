@@ -61,7 +61,8 @@ if (isset($_POST['act']))
 		$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	}
 	rebuild_html_file('countries');
-	$ERR = $MSG['1028'];
+	$ERR;
+	$ERR .= '<br/>' . $MSG['1028'];
 }
 
 include $include_path . 'countries.inc.php';

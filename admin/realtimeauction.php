@@ -29,12 +29,12 @@
 	realtimedata = '" . $_POST['realtimedata'] . "'";
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['realtimedata'] = $_POST['realtimedata'];
-	$ERR = $MSG['CM_2026_0018'];
+	$ERR .= '<br/>' . $MSG['CM_2026_0018'];
  }
   loadblock($MSG['CM_2026_0016'], $MSG['CM_2026_0017'], 'yesno', 'realtimedata', $system->SETTINGS['realtimedata'], array($MSG['030'], $MSG['029']));
   
    $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['CM_2026_0007'],
 		'PAGENAME' => $MSG['CM_2026_0008'],

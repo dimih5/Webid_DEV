@@ -20,14 +20,14 @@ include 'loggedin.inc.php';
 
 // Default for error message (blank)
 unset($ERR);
-
+$ERR;
 // Update message
 if (isset($_POST['action']) && $_POST['action'] == 'update')
 {
 	if (empty($_POST['question'][$system->SETTINGS['defaultlanguage']])
 		|| empty($_POST['answer'][$system->SETTINGS['defaultlanguage']]))
 	{
-		$ERR = $ERR_067;
+		$ERR .= '<br/>' . $ERRMSG['067'];
 		$faq = $_POST;
 	}
 	else
@@ -107,7 +107,7 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 $faq = mysql_fetch_assoc($res);
 
 $template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'ID' => $faq['id'],
 		'FAQ_NAME' => $faq['question'],
 		'FAQ_CAT' => $faq['category']

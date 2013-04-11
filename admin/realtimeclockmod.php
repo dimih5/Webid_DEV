@@ -29,12 +29,12 @@
 	realtimeclock = '" . $_POST['realtimeclock'] . "'";
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['realtimeclock'] = $_POST['realtimeclock'];
-	$ERR = $MSG['CM_2026_0021'];
+	$ERR .= '<br/>' . $MSG['CM_2026_0021'];
   }
  loadblock($MSG['CM_2026_0019'], $MSG['CM_2026_0020'], 'yesno', 'realtimeclock', $system->SETTINGS['realtimeclock'], array($MSG['030'], $MSG['029']));
   
 	$template->assign_vars(array(
-		'ERROR' => (isset($ERR)) ? $ERR : '',
+		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
 		'SITEURL' => $system->SETTINGS['siteurl'],
 		'TYPENAME' => $MSG['CM_2026_0007'],
 		'PAGENAME' => $MSG['CM_2026_0010'],

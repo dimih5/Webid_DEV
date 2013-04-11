@@ -59,7 +59,7 @@ if (isset($_POST['addfeedback'])) // submit the feedback
 				if ((intval($_REQUEST['sid']) == $user->user_data['id'] && $wsell['feedback_sel'] == 1) || (intval($_REQUEST['wid']) == $user->user_data['id'] && $wsell['feedback_win'] == 1))
 				{
 					$TPL_err = 1;
-					$TPL_errmsg = $ERR_074;
+					$TPL_errmsg = $ERRMSG['074'];
 				}
 				//elseif ((intval($_REQUEST['wid']) == $user->user_data['id'] && $wsell['paid'] == 1) || (intval($_REQUEST['sid']) == $user->user_data['id']))
 				else
@@ -98,32 +98,32 @@ if (isset($_POST['addfeedback'])) // submit the feedback
 					else
 					{
 						$TPL_err = 1;
-						$TPL_errmsg = $ERR_101;
+						$TPL_errmsg = $ERRMSG['101'];
 					}
 				}
 				/*
 				else
 				{
 					$TPL_err = 1;
-					$TPL_errmsg = $ERR_705;
+					$TPL_errmsg = $ERRMSG['705'];
 				}*/
 			}
 			else
 			{
 				$TPL_err = 1;
-				$TPL_errmsg = $ERR_103;
+				$TPL_errmsg = $ERRMSG['103'];
 			}
 		}
 		else
 		{
 			$TPL_err = 1;
-			$TPL_errmsg = $ERR_704;
+			$TPL_errmsg = $ERRMSG['704'];
 		}
 	}
 	else
 	{
 		$TPL_err = 1;
-		$TPL_errmsg = $ERR_104;
+		$TPL_errmsg = $ERRMSG['104'];
 	}
 }
 
@@ -174,7 +174,7 @@ if ((isset($_GET['wid']) && isset($_GET['sid'])) || isset($TPL_err)) // gets use
 	else
 	{
 		$TPL_err = 1;
-		$TPL_errmsg = $ERR_105;
+		$TPL_errmsg = $ERRMSG['105'];
 	}
 }
 

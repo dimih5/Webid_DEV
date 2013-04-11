@@ -23,8 +23,7 @@ function sendarray()
 	while ($requested)
 	{
 		set_time_limit(40);
-		$rebuild = new Realtimerebuild();
-		$vararray = $rebuild->;
+		$vararray = Rebuild('');
 		unset($vararray['ENDS']);
 		unset($vararray['TOPCATSPATH']);
 		unset($vararray['ENDS_IN']);

@@ -1,7 +1,7 @@
 <?php
 	function Rebuild($whatdoyouneed)
 		{
-			global $id, $system, $membertypes, $DBPrefix, $include_path, $uploaded_path, $MSG, $category_names, $user, $payment_methods, $ERRMSG;
+			global $id, $system, $membertypes, $DBPrefix, $include_path, $uploaded_path, $MSG, $category_names, $user, $payment_methods, $ERRMSG, $template;
 			
 			// Get parameters from the URL
 			foreach ($membertypes as $idm => $memtypearr)

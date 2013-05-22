@@ -192,6 +192,7 @@
                             that._trigger('completed', e, data);
                             that._trigger('finished', e, data);
                             deferred.resolve();
+							
                         }
                     );
                 }
@@ -322,22 +323,82 @@
                         deferred.resolve();
                     }
                 );
+				
             },
             // Callback for file deletion:
             destroy: function (e, data) {
-                var that = $(this).data('blueimp-fileupload') ||
-                        $(this).data('fileupload');
+				var that = $(this).data('blueimp-fileupload') ||
+					$(this).data('fileupload'),
+					button = $(e.currentTarget).closest('.template-download');
+					//Make sure you can't do anything with the file
+					button.find('.favorite').prop('disabled', true);
+					button.find('.delete').html('Deleting... Please wait');
+				if (data.url && data.context) {
+					$.ajax(data).done(function(getfiles) {
+						data.context.each(function (index) {
+							//check for empty or undefined
+							if (getfiles && typeof getfiles.files !== 'undefined') {
+								var file = getfiles.files,
+									template,	
+									deferred = that._addFinishedDeferreds(),
+									//find the new default file
+									favorite = $('.table').find('tr[name*="' + file.favorite_name + '"]');
+									if (file.error) {
+										that._adjustMaxNumberOfFiles(1);
+									}
+									//change to new default image
+									favorite.find('.favorite').prop('disabled', true);									
+									$('table').find('.default').html('Set as default');
+									favorite.find('.default').html('Default');
+									//Remove and others
+									data.context = $(this);
+									$(this).remove();
+									that._trigger('destroyed', e, data);
+									deferred.resolve();
+							} else {
+							//just delete the row in case of no json data
+								that._transition(data.context).done(
+									function () {
+										$(this).remove();
+										that._trigger('destroyed', e, data);
+									}
+								);	
+							}
+						});
+					});
+				} else {
+				//just delete the row in case of errors or no data
+					that._transition(data.context).done(
+						function () {
+							$(this).remove();
+							that._trigger('destroyed', e, data);
+						}
+					);	
+				}
+            },
+			// Callback for file favorite
+			favorite: function(e, data) {
+			var button = $(e.currentTarget);
                 if (data.url) {
-                    $.ajax(data);
-                    that._adjustMaxNumberOfFiles(1);
+					//We don't want anyone to click before a response
+                    $('table').find('.favorite').prop('disabled', true);
+                    $('table').find('.icon').prop('class', 'icon-white icon-star icon');
+                    $('table').find('.default').html('Set as default');
+					button.closest('.template-download').find('.default').html('Loading...');
+					$.ajax(data).done(function() {
+					//Set text and everything
+						$('table').find('.favorite').prop('disabled', false);
+						button.closest('.template-download').find('.favorite').prop('disabled', true);
+						button.closest('.template-download').find('.icon').prop('class', 'icon-white icon-ok icon');
+						button.closest('.template-download').find('.default').html('Default');
+
+					}).fail(function() {
+					//Alert if something fails
+						$('table').find('.favorite').prop('disabled', false);
+						alert('Something went wrong');
+					});
                 }
-                that._transition(data.context).done(
-                    function () {
-                        $(this).remove();
-                        that._trigger('destroyed', e, data);
-                    }
-                );
-            }
+			},			
         },
 
         _resetFinishedDeferreds: function () {
@@ -604,7 +665,17 @@
                 type: 'DELETE',
                 dataType: this.options.dataType
             }, button.data()));
+			button.prop('disabled', true);
         },
+		_favoriteHandler: function (e) {
+            e.preventDefault();
+            var button = $(e.currentTarget);
+            this._trigger('favorite', e, $.extend({
+                context: button.closest('.template-download'),
+                type: 'FAVORITE',
+                dataType: this.options.dataType
+            }, button.data()));
+		},
 
         _forceReflow: function (node) {
             return $.support.transition && node.length &&
@@ -657,6 +728,16 @@
                         .prop('checked', false);
                 }
             });
+			this._on(fileUploadButtonBar.find('.favorite'), {
+				click: function(e) {
+					e.preventDefault();
+					filesList.find('.toggle:checked')
+						.closes('.template-download')
+						.find('.favorite').click();
+					fileUploadButtonBar.find('.toggle')
+						.prop('checked', false);
+				}
+			});
             this._on(fileUploadButtonBar.find('.toggle'), {
                 change: function (e) {
                     filesList.find('.toggle').prop(
@@ -670,7 +751,7 @@
         _destroyButtonBarEventHandlers: function () {
             this._off(
                 this.element.find('.fileupload-buttonbar')
-                    .find('.start, .cancel, .delete'),
+                    .find('.start, .cancel, .delete, .favorite'),
                 'click'
             );
             this._off(
@@ -684,7 +765,8 @@
             this._on(this.options.filesContainer, {
                 'click .start': this._startHandler,
                 'click .cancel': this._cancelHandler,
-                'click .delete': this._deleteHandler
+                'click .delete': this._deleteHandler,
+				'click .favorite': this._favoriteHandler,
             });
             this._initButtonBarEventHandlers();
         },

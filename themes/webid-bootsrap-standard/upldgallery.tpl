@@ -117,14 +117,14 @@
 </script>
 <script id="template-download" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-download fade">
+    <tr class="template-download fade" name="{%=file.name%}">
         {% if (file.error) { %}
             <td></td>
             <td class="name"><span>{%=file.name%}</span></td>
             <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
             <td class="error" colspan="2"><span class="label label-important">Error</span> {%=file.error%}</td>
         {% } else { %}
-            <td class="preview">{% if (file.thumbnail_url) { %}
+            <td class="preview" >{% if (file.thumbnail_url) { %}
                 <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
             {% } %}</td>
             <td class="name">
@@ -132,6 +132,12 @@
             </td>
             <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
             <td colspan="2"></td>
+			<td>
+			<button {% if (file.name === file.favorite_name) { %} disabled {% } %} class="btn btn-warning favorite" data-type="{%=file.favorite_type%}"data-url="{%=file.favorite_url%}">
+				<i class="icon-white icon-star icon"></i>
+				<span class="default">{% if (file.name === file.favorite_name) { %} Default {% } else { %}Set as default {% } %}</span>			
+			</button>
+			</td>
         {% } %}
         <td>
             <button class="btn btn-danger delete" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}"{% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>

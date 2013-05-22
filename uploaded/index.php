@@ -3,6 +3,7 @@ include '../common.php';
 if (!$user->is_logged_in())
 {	
 	//if your not logged in you shouldn't be here
+	//Send error message to the file uploader
 	$content = array(
 	'files' => array(
 	array(

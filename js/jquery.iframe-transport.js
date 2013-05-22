@@ -55,7 +55,10 @@
                     } else if (options.type === 'PATCH') {
                         options.url = options.url + addParamChar + '_method=PATCH';
                         options.type = 'POST';
-                    }
+                    } else if (options.type === 'FAVORITE') {
+						options.url = options.url + addParamChar + '_method=FAVORITE';
+                        options.type = 'POST';
+					}
                     // javascript:false as initial iframe src
                     // prevents warning popups on HTTPS in IE6.
                     // IE versions below IE8 cannot set the name property of

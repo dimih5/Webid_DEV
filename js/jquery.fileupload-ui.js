@@ -398,7 +398,7 @@
 						alert('Something went wrong');
 					});
                 }
-			},			
+			}		
         },
 
         _resetFinishedDeferreds: function () {
@@ -766,7 +766,7 @@
                 'click .start': this._startHandler,
                 'click .cancel': this._cancelHandler,
                 'click .delete': this._deleteHandler,
-				'click .favorite': this._favoriteHandler,
+				'click .favorite': this._favoriteHandler
             });
             this._initButtonBarEventHandlers();
         },

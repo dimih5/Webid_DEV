@@ -54,7 +54,7 @@
                             s.url = s.url + addParamChar + '_method=PATCH';
                             s.type = 'POST';
                         } else if (s.type === 'FAVORITE') {
-							s.url = s.url + addParamChar _ '_method=FAVORITE';
+							s.url = s.url + addParamChar + '_method=FAVORITE';
 							s.type = 'POST';
 						}
                         xdr.open(s.type, s.url);

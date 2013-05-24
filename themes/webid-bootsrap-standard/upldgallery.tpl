@@ -6,11 +6,11 @@
 <title>{SITENAME}</title>
 <meta name="description" content="File Upload widget with multiple file selection, drag&amp;drop support, progress bar and preview images for jQuery. Supports cross-domain, chunked and resumable file uploads. Works with any server-side platform (Google App Engine, PHP, Python, Ruby on Rails, Java, etc.) that supports standard HTML form file uploads.">
 <meta name="viewport" content="width=device-width">
-<link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-responsive.min.css">
+<link rel="stylesheet" href="http://blueimp.github.io/cdn/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://blueimp.github.io/cdn/css/bootstrap-responsive.min.css">
 <!-- Bootstrap CSS fixes for IE6 -->
-<!--[if lt IE 7]><link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-ie6.min.css"><![endif]-->
-<link rel="stylesheet" href="http://blueimp.github.com/Bootstrap-Image-Gallery/css/bootstrap-image-gallery.min.css">
+<!--[if lt IE 7]><link rel="stylesheet" href="http://blueimp.github.io/cdn/css/bootstrap-ie6.min.css"><![endif]-->
+<link rel="stylesheet" href="http://blueimp.github.io/Bootstrap-Image-Gallery/css/bootstrap-image-gallery.min.css">
 <link rel="stylesheet" href="{SITEURL}/themes/{THEME}/css/jquery.fileupload-ui.css">
 <noscript><link rel="stylesheet" href="{SITEURL}/themes/{THEME}/css/jquery.fileupload-ui-noscript.css"></noscript>
 <!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
@@ -18,17 +18,16 @@
 </head>
 <body>
 <div class="container">
-    <div class="page-header">
+	<div class="page-header">
         <h1>Picture uploader</h1>
-    </div>
 	<blockquote>
 	<p>{MAXPICS}</p>
-	</blockquote>	
-    <br>
+	</blockquote>
+	</div>
     <form id="fileupload" action="{SITEURL}" method="POST" enctype="multipart/form-data">
-        <noscript><input type="hidden" name="redirect" value="http://blueimp.github.com/jQuery-File-Upload/"></noscript>
-        <div class="row fileupload-buttonbar">
-            <div class="span7">
+        <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
+        <div class="fileupload-buttonbar">
+            <div class="span9">
                 <span class="btn btn-success fileinput-button">
                     <i class="icon-plus icon-white"></i>
                     <span>Add files...</span>
@@ -151,11 +150,11 @@
 </script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="{SITEURL}/js/vendor/jquery.ui.widget.js"></script>
-<script src="http://blueimp.github.com/JavaScript-Templates/tmpl.min.js"></script>
-<script src="http://blueimp.github.com/JavaScript-Load-Image/load-image.min.js"></script>
-<script src="http://blueimp.github.com/JavaScript-Canvas-to-Blob/canvas-to-blob.min.js"></script>
-<script src="http://blueimp.github.com/cdn/js/bootstrap.min.js"></script>
-<script src="http://blueimp.github.com/Bootstrap-Image-Gallery/js/bootstrap-image-gallery.min.js"></script>
+<script src="http://blueimp.github.io/JavaScript-Templates/tmpl.min.js"></script>
+<script src="http://blueimp.github.io/JavaScript-Load-Image/load-image.min.js"></script>
+<script src="http://blueimp.github.io/JavaScript-Canvas-to-Blob/canvas-to-blob.min.js"></script>
+<script src="http://blueimp.github.io/cdn/js/bootstrap.min.js"></script>
+<script src="http://blueimp.github.io/Bootstrap-Image-Gallery/js/bootstrap-image-gallery.min.js"></script>
 <script src="{SITEURL}/js/jquery.iframe-transport.js"></script>
 <script src="{SITEURL}/js/jquery.fileupload.js"></script>
 <script src="{SITEURL}/js/jquery.fileupload-fp.js"></script>

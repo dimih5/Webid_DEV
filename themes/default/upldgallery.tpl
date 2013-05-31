@@ -1,166 +1,167 @@
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{SITENAME}</title>
-<link rel="stylesheet" type="text/css" href="themes/{THEME}/style.css">
-<link rel="stylesheet" type="text/css" href="themes/{THEME}/css/bootstrap.css">
-<style media="all" type="text/css">
-.imgareaselect-border1 {
-	background: url(images/border-v.gif) repeat-y left top;
-}
-
-.imgareaselect-border2 {
-    background: url(images/border-h.gif) repeat-x left top;
-}
-
-.imgareaselect-border3 {
-    background: url(images/border-v.gif) repeat-y right top;
-}
-
-.imgareaselect-border4 {
-    background: url(images/border-h.gif) repeat-x left bottom;
-}
-
-.imgareaselect-border1, .imgareaselect-border2,
-.imgareaselect-border3, .imgareaselect-border4 {
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-}
-
-.imgareaselect-handle {
-    background-color: #fff;
-    border: solid 1px #000;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-}
-
-.imgareaselect-outer {
-    background-color: #000;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-}
-</style>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript">
-$(document).ready(function () {
-	var num_images = $('#numimages', window.opener.document).val();
-	var now_images = {NUMIMAGES};
-	var image_cost = {IMAGE_COST};
-	if (num_images != now_images) {
-		var fee_diff = (now_images - num_images) * image_cost;
-		var nowfee = $("#fee_exact", window.opener.document).val() + fee_diff;
-		$("#fee_exact", window.opener.document).val(nowfee);
-		$("#to_pay").text(Math.round(nowfee*1{FEE_DECIMALS})/1{FEE_DECIMALS});
-		$('#numimages', window.opener.document).val(now_images);
-	}
-});
-</script>
-<!-- IF B_CROPSCREEN -->
-
-<script type="text/javascript">
-
-
-$(document).ready(function () {
-	$('#save_thumb').click(function() {
-		var x1 = 0;
-		var y1 = 0;
-		var x2 = 0;
-		var y2 = 0;
-		var w = 0;
-		var h = 0;
-		
-			return true;
-		
-	});
-});
-
-$(window).load(function () {
-	$('#thumbnail').imgAreaSelect({ aspectRatio: '{RATIO}', onSelectChange: preview, x1: 0, y1: 0, x2: 0, y2: 0 });
-});
-
-</script>
-<!-- ENDIF -->
-</head>
-<body>
-<div class="container-fluid" style="padding-bottom:10px">
-  <!-- IF B_CROPSCREEN -->
-  <div style="color:#000000;" align="center">
-    
-    <img src="{IMGPATH}" style="width:200px; height:200px;" id="thumbnail" alt="Create Thumbnail"><br>
-    <small>{L_613}</small>
-    <div style="overflow:hidden; display:none; border:#000000 double; {THUMBWH}"> <img src="{IMGPATH}" style="position: relative;" alt="Thumbnail Preview" id="thumbprev"> </div>
-    <form name="thumbnail" action="?action=crop&img={IMAGE}" method="post">
-      <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
-      <input type="hidden" name="x1" value="0" id="x1">
-      <input type="hidden" name="y1" value="0" id="y1">
-      <input type="hidden" name="x2" value="{STARTX}" id="x2">
-      <input type="hidden" name="y2" value="{STARTY}" id="y2">
-      <input type="hidden" name="w" value="50" id="w">
-      <input type="hidden" name="h" value="50" id="h">
-      <br>
-      <input type="submit" class="btn btn-primary" name="upload_thumbnail" value="{L_616}" id="save_thumb">
-      <input type="submit" class="btn" name="upload_thumbnail" value="{L_618}" style="display:none" >
-    </form>
-  
-  </div>
-  <!-- ELSE -->
-  <form name="upload" class="form-horizontal" action="" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
-    <legend>{L_663}</legend>
-    <div class="alert alert-info"> {L_673} {MAXIMAGES} {L_674}<br>
-      {L_679} </div>
-    <!-- IF ERROR ne '' -->
-    <div class="alert"> {ERROR} </div>
-    <!-- ENDIF -->
-    <!-- IF B_CANUPLOAD -->
-    <div class="control-group">
-      <label class="control-label" > <span class="badge badge-info">1</span><br>
-      {L_680} </label>
-
-      <div class="controls">
-        <input type="file" class="" name="userfile" size="5" >
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" > <span class="badge badge-info">2</span> <br>
-      {L_681}</label>
-      <div class="controls">
-        <input class="btn" type="submit" name="uploadpicture" value="{L_681}">
-      </div>
-    </div>
-    <div class="alert alert-info"> {L_682} </div>
-    <!-- ELSE -->
-    <div class="alert"> {L_688} {MAXIMAGES} {L_689} </div>
-    <!-- ENDIF -->
-    <!-- ENDIF -->
-    <br style="clear:both;">
-    <br>
-    <legend>{L_687}</legend>
-    <table class="table table-bordered table-striped">
-      <tr bgcolor="{HEADERCOLOUR}">
-        <td width="46%"><small>{L_684}</small></td>
-        <td width="30%"><small>{L_685}</small></td>
-        <td width="12%" align="center"><small>{L_008}</small></td>
-        <td width="12%" align="center"><small>{L_686}</small></td>
-      </tr>
-      <!-- BEGIN images -->
-      <tr>
-        <td> <small>{images.IMGNAME}</small> </td>
-        <td> <small>{images.IMGSIZE}</small> </td>
-        <td align="center"><a href="?action=delete&img={images.ID}"><i class="icon-trash"></i></a> </td>
-        <td align="center"><a href="?action=makedefault&img={images.IMGNAME}"><img src="images/{images.DEFAULT}" border="0"></a> </td>
-      </tr>
-      <!-- END images -->
-    </table>
-    <center>
-      <input type="submit" class="btn btn-primary" name="creategallery" value="{L_683}">
-    </center>
-  </form>
-  <br>
-  <br>
-  <center>
-    <a class="btn" href="javascript: window.close()">{L_678}</a>
-  </center>
-</div>
-</body>
-</html>
+<html>
+<head>
+<!-- Force latest IE rendering engine or ChromeFrame if installed -->
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+<meta charset="utf-8">
+<title>{SITENAME}</title>
+<meta name="description" content="File Upload widget with multiple file selection, drag&amp;drop support, progress bar and preview images for jQuery. Supports cross-domain, chunked and resumable file uploads. Works with any server-side platform (Google App Engine, PHP, Python, Ruby on Rails, Java, etc.) that supports standard HTML form file uploads.">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-responsive.min.css">
+<!-- Bootstrap CSS fixes for IE6 -->
+<!--[if lt IE 7]><link rel="stylesheet" href="http://blueimp.github.com/cdn/css/bootstrap-ie6.min.css"><![endif]-->
+<link rel="stylesheet" href="http://blueimp.github.com/Bootstrap-Image-Gallery/css/bootstrap-image-gallery.min.css">
+<link rel="stylesheet" href="{SITEURL}/themes/{THEME}/css/jquery.fileupload-ui.css">
+<noscript><link rel="stylesheet" href="{SITEURL}/themes/{THEME}/css/jquery.fileupload-ui-noscript.css"></noscript>
+<!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <h1>Picture uploader</h1>
+    </div>
+	<blockquote>
+	<p>{MAXPICS}</p>
+	</blockquote>	
+    <br>
+    <form id="fileupload" action="{SITEURL}" method="POST" enctype="multipart/form-data">
+        <noscript><input type="hidden" name="redirect" value="http://blueimp.github.com/jQuery-File-Upload/"></noscript>
+        <div class="row fileupload-buttonbar">
+            <div class="span7">
+                <span class="btn btn-success fileinput-button">
+                    <i class="icon-plus icon-white"></i>
+                    <span>Add files...</span>
+                    <input type="file" name="files[]" multiple>
+                </span>
+                <button type="submit" class="btn btn-primary start">
+                    <i class="icon-upload icon-white"></i>
+                    <span>Start upload</span>
+                </button>
+                <button type="reset" class="btn btn-warning cancel">
+                    <i class="icon-ban-circle icon-white"></i>
+                    <span>Cancel upload</span>
+                </button>
+                <button type="button" class="btn btn-danger delete">
+                    <i class="icon-trash icon-white"></i>
+                    <span>Delete</span>
+                </button>
+                <input type="checkbox" class="toggle">
+            </div>
+            <div class="span5 fileupload-progress fade">
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="bar" style="width:0%;"></div>
+                </div>
+                <div class="progress-extended">&nbsp;</div>
+            </div>
+        </div>
+        <div class="fileupload-loading"></div>
+        <br>
+        <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+    </form>
+</div>
+<div id="modal-gallery" class="modal modal-gallery hide fade" data-filter=":odd" tabindex="-1">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h3 class="modal-title"></h3>
+    </div>
+    <div class="modal-body"><div class="modal-image"></div></div>
+    <div class="modal-footer">
+        <a class="btn modal-download" target="_blank">
+            <i class="icon-download"></i>
+            <span>Download</span>
+        </a>
+        <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000">
+            <i class="icon-play icon-white"></i>
+            <span>Slideshow</span>
+        </a>
+        <a class="btn btn-info modal-prev">
+            <i class="icon-arrow-left icon-white"></i>
+            <span>Previous</span>
+        </a>
+        <a class="btn btn-primary modal-next">
+            <span>Next</span>
+            <i class="icon-arrow-right icon-white"></i>
+        </a>
+    </div>
+</div>
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td class="preview"><span class="fade"></span></td>
+        <td class="name"><span>{%=file.name%}</span></td>
+        <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        {% if (file.error) { %}
+            <td class="error" colspan="2"><span class="label label-important">Error</span> {%=file.error%}</td>
+        {% } else if (o.files.valid && !i) { %}
+            <td>
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
+            </td>
+            <td>{% if (!o.options.autoUpload) { %}
+                <button class="btn btn-primary start">
+                    <i class="icon-upload icon-white"></i>
+                    <span>Start</span>
+                </button>
+            {% } %}</td>
+        {% } else { %}
+            <td colspan="2"></td>
+        {% } %}
+        <td>{% if (!i) { %}
+            <button class="btn btn-warning cancel">
+                <i class="icon-ban-circle icon-white"></i>
+                <span>Cancel</span>
+            </button>
+        {% } %}</td>
+    </tr>
+{% } %}
+</script>
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        {% if (file.error) { %}
+            <td></td>
+            <td class="name"><span>{%=file.name%}</span></td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td class="error" colspan="2"><span class="label label-important">Error</span> {%=file.error%}</td>
+        {% } else { %}
+            <td class="preview">{% if (file.thumbnail_url) { %}
+                <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
+            {% } %}</td>
+            <td class="name">
+                <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
+            </td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td colspan="2"></td>
+        {% } %}
+		<td>
+			<button class="btn btn-warning favorite" data-type="{%=file.favorite_type%}"data-url="{%=file.favorite_url%}">
+				<i class="icon-white icon-star"></i>
+				<span>Set as default</span>			
+			</button>
+		</td>
+        <td>
+            <button class="btn btn-danger delete" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}"{% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                <i class="icon-trash icon-white"></i>
+                <span>Delete</span>
+            </button>
+            <input type="checkbox" name="delete" value="1" class="toggle">
+        </td>
+    </tr>
+{% } %}
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="{SITEURL}/js/vendor/jquery.ui.widget.js"></script>
+<script src="http://blueimp.github.com/JavaScript-Templates/tmpl.min.js"></script>
+<script src="http://blueimp.github.com/JavaScript-Load-Image/load-image.min.js"></script>
+<script src="http://blueimp.github.com/JavaScript-Canvas-to-Blob/canvas-to-blob.min.js"></script>
+<script src="http://blueimp.github.com/cdn/js/bootstrap.min.js"></script>
+<script src="http://blueimp.github.com/Bootstrap-Image-Gallery/js/bootstrap-image-gallery.min.js"></script>
+<script src="{SITEURL}/js/jquery.iframe-transport.js"></script>
+<script src="{SITEURL}/js/jquery.fileupload.js"></script>
+<script src="{SITEURL}/js/jquery.fileupload-fp.js"></script>
+<script src="{SITEURL}/js/jquery.fileupload-ui.js"></script>
+<script src="{SITEURL}/js/main.js"></script>
+<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->
+<!--[if gte IE 8]><script src="js/cors/jquery.xdr-transport.js"></script><![endif]-->
+</body> 
+</html>

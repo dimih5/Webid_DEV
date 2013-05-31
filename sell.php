@@ -22,8 +22,8 @@ include $include_path . 'htmLawed.php';
 
 $_SESSION['action'] = (!isset($_SESSION['action'])) ? 1 : $_SESSION['action'];
 $_SESSION['action'] = (!isset($_POST['action'])) ? $_SESSION['action'] : $_POST['action'];
-$ERR .= '<br/>' . 'ERR_';
 $catscontrol = new MPTTcategories();
+$ERR = 'ERR_';
 
 if (!isset($_SESSION['SELL_sellcat1']) || !is_numeric($_SESSION['SELL_sellcat1']))
 {
@@ -383,13 +383,13 @@ switch ($_SESSION['action'])
 			$description = $system->filter($description);
 		}
 		// check for errors
-		if ($ERR .= '<br/>' .= 'ERR_')
+		if ($ERR == 'ERR_')
 		{
 			if (count($_SESSION['UPLOADED_PICTURES']) > $system->SETTINGS['maxpictures'])
 			{
-				$ERR .= '<br/>' . sprintf($MSG['674'], $system->SETTINGS['maxpictures']);
+				$ERR = sprintf($MSG['674'], $system->SETTINGS['maxpictures']);
 			}
-			$ERR .= '<br/>' . 'ERR_' . CheckSellData();
+			$ERR = 'ERR_' . CheckSellData();
 			if ($ERR != 'ERR_')
 			{
 				$_SESSION['action'] = 1;
@@ -472,7 +472,7 @@ switch ($_SESSION['action'])
 				$template->assign_vars(array(
 						'TITLE' => $title,
 						'SUBTITLE' => $subtitle,
-						'ERROR' => ($ERR .= '<br/>' .= 'ERR_') ? '' : $$ERR,
+						'ERROR' => ($ERR == 'ERR_') ? '' : $ERR,
 						'PAGE' => 2,
 						'MINTEXT' => ($atype == 2) ? $MSG['038'] : $MSG['020'],
 
@@ -675,7 +675,7 @@ switch ($_SESSION['action'])
 
 		$template->assign_vars(array(
 				'TITLE' => $MSG['028'],
-				'ERROR' => ($ERR .= '<br/>' .= 'ERR_') ? '' : $$ERR,
+				'ERROR' => ($ERR == 'ERR_') ? '' : $ERR,
 				'CAT_LIST1' => $category_string1,
 				'CAT_LIST2' => $category_string2,
 				'ATYPE' => $TPL_auction_type,

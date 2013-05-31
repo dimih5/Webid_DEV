@@ -220,7 +220,7 @@ function updatefee(newfee) {
     <hr  />
     <legend>{L_663}</legend>
 	{MAXPICS}<br>
-    <a href="upldgallery.php" alt="gallery" class="new-window btn btn-primary">{L_677}</a>
+    <a onclick="window.open('upldgallery.php', '', 'resizable=yes,scrollbars=yes'); return false"  alt="gallery" class="new-window btn btn-primary">{L_677}</a>
     <input type="hidden" name="numimages" value="{NUMIMAGES}" id="numimages">
     <hr  />
     <!-- ENDIF -->

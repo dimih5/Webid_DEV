@@ -1722,4 +1722,5 @@ $MSG['CM_2026_0027'] = "VIPemails mod settings updated";
 
 $MSG['CM_2026_0028'] = "You have not reached the minimum price";
 $MSG['CM_2026_0029'] = "Closed auctions";
+$MSG['CM_2026_0030'] = "The following users participate in this auction:";
 ?>

@@ -455,7 +455,19 @@
 				}
 				$CONTRACT_DIR = $id;
 			}
-
+			// Participants
+			$query = "SELECT name FROM " . $DBPrefix . "users";
+			$res = mysql_query($query);
+			$system->check_mysql($res, $query, __LINE__, __FILE__);
+			$i = 2;
+			while($userfile = mysql_fetch_assoc($res))
+			{
+				$i++;
+				$template->assign_block_vars('newsticker', array(
+						'NAME' => $userfile['name'],
+						'ID' => $i
+						));
+			}
 			// payment methods
 			$payment = explode(',', $auction_data['payment']);
 			$query = "SELECT * FROM " . $DBPrefix . "gateways";
@@ -481,7 +493,7 @@
 					$payment_methods .= $system->SETTINGS['gatways'][$k];
 				}
 			}
-
+	
 			$payment_options = unserialize($system->SETTINGS['payment_options']);
 			foreach ($payment_options as $k => $v)
 			{

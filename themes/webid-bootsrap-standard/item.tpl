@@ -1,9 +1,9 @@
-
 <!-- IF B_COUNTDOWN -->
 <!-- ENDIF -->
 <!-- IF B_REALTIMEDATA -->
 <script type="text/javascript">
 $(document).ready(function () {
+
 	function is_array(input){
     return typeof(input)=='object'&&(input instanceof Array);
 	}
@@ -26,9 +26,17 @@ $(document).ready(function () {
 		});
 	}
 	setTimeout(getAuctionData, 1000);
+	
 });
 </script>
 <!-- ENDIF -->
+<link rel="stylesheet" href="{SITEURL}/themes/{THEME}/css/webticker.css" type="text/css" media="screen"> 
+<script type="text/javascript" src="{SITEURL}js/jquery.webticker.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#webticker").webTicker();
+	});
+</script>
 <div class="breadcrumb"> {L_041}: {TOPCATSPATH} </div>
 <!-- IF B_USERBID -->
 <div class="alert alert-success"> {YOURBIDMSG} </div>
@@ -217,7 +225,7 @@ $(document).ready(function () {
   <hr />
   <div class="row">
     <div class="span4">
-      <legend>{L_724} </legend>
+      <h4>{L_724}</h4>
       <small>
       <!-- IF COUNTRY ne '' or ZIP ne '' -->
       <b>{L_014}:</b> {COUNTRY} <br>
@@ -280,6 +288,17 @@ $(document).ready(function () {
   <!-- ENDIF -->
 </div>
 </div>
-<div id="cookiemonster">
+<div class="span11">
+	<ul id="webticker" >
+		<li id="item0">
+			{L_CM_2026_0030}
+		</li>
+<!-- BEGIN newsticker -->
 
+		<li id='item{newsticker.ID}'>
+			{newsticker.NAME}
+		</li>
+<!-- END newsticker -->
+	</ul>
 </div>
+

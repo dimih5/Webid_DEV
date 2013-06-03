@@ -1719,4 +1719,6 @@ $MSG['CM_2026_0024'] = "Set emails";
 $MSG['CM_2026_0025'] = "IMPORTANT!!! SEPERATE EMAILS WITH A COMMA";
 $MSG['CM_2026_0026'] = "VIPemails mod";
 $MSG['CM_2026_0027'] = "VIPemails mod settings updated";
+
+$MSG['CM_2026_0027'] = "You have not reached the minimum price";
 ?>

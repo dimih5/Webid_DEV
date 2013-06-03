@@ -72,6 +72,9 @@ $(document).ready(function(){
       </div>
     </form>
     <!-- ELSE -->
+	<!-- IF MESSAGE ne '' -->
+		<div class="alert"> {MESSAGE} </div>
+	<!-- ENDIF -->
     {L_272}&nbsp; <a href="{SITEURL}item.php?id={ID}">{SITEURL}item.php?id={ID}</a><br>
     {L_699} {BID} {L_700}
     <!-- ENDIF -->

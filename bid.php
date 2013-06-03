@@ -121,6 +121,7 @@ $seller_name = $Data['nick'];
 $seller_email = $Data['email'];
 $atype = $Data['auction_type'];
 $aquantity = $Data['quantity'];
+$starting_price = $Data['starting_price' ];
 $minimum_bid = $Data['minimum_bid'];
 $customincrement = $Data['increment'];
 $current_bid = $Data['current_bid'];
@@ -203,8 +204,19 @@ if (isset($_POST['action']) && !isset($errmsg))
 	{
 		if ($system->SETTINGS['proxy_bidding'] == 'n')
 		{
+			if ($minimum_bid > $cbid && $bid > $cbid)
+			{
+				$query = "UPDATE " . $DBPrefix . "auctions SET current_bid = " . $bid . ", num_bids = num_bids + 1 WHERE id = " . $id;
+				$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
+				// Also update bids table
+				$query = "INSERT INTO " . $DBPrefix . "bids VALUES (NULL, " . $id . ", " . $bidder_id . ", " . $bid . ", '" . $NOW . "', " . $qty . ")";
+				$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
+				extend_auction($item_id, $c);
+				$bidding_ended = true;
+			}
 			// is it the highest bid?
-			if ($current_bid < $bid)
+			
+			elseif ($current_bid < $bid)
 			{
 				// did you outbid someone?
 				$query = "SELECT u.id FROM " . $DBPrefix . "bids b, " . $DBPrefix . "users u WHERE b.auction = " . $id . " AND b.bidder = u.id and u.suspended = 0 ORDER BY bid DESC";
@@ -243,8 +255,21 @@ if (isset($_POST['action']) && !isset($errmsg))
 					$query = "UPDATE " . $DBPrefix . "proxybid SET bid = " . floatval($bid) . "
 							  WHERE userid = " . $user->user_data['id'] . "
 							  AND itemid = " . $id . " AND bid = " . $WINNER_PROXYBID;
-					$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-
+					$res = mysql_query($query);
+					$system->check_mysql($res, $query, __LINE__, __FILE__);
+					//update fakebid
+					$query = "UPDATE " . $DBPrefix . "bids SET bid = " . floatval($bid) . "
+							  WHERE bidder = " . $user->user_data['id'] . "
+							  AND bid = " . $WINNER_PROXYBID;
+					$res = mysql_query($query);
+					$system->check_mysql($res, $query, __LINE__, __FILE__);
+				
+					if ($current_bid < $bid) {
+						$query = "UPDATE " . $DBPrefix . "auctions SET current_bid = " . $bid . ", num_bids = num_bids + 1 WHERE id = " . $id;
+						$res = mysql_query($query);
+						$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
+					}
+					
 					if ($reserve > 0 && $reserve > $current_bid && $bid >= $reserve)
 					{
 						$query = "UPDATE " . $DBPrefix . "auctions SET current_bid = " . floatval($reserve) . ", num_bids = num_bids + 1 WHERE id = " . $id;
@@ -265,10 +290,13 @@ if (isset($_POST['action']) && !isset($errmsg))
 			$system->check_mysql($result, $query, __LINE__, __FILE__);
 			if (mysql_num_rows($result) == 0) // First bid
 			{
-				if ($next_bid < $bid)
+				if ($bid < $next_bid)
 				{
 					$query = "INSERT INTO " . $DBPrefix . "proxybid VALUES (" . intval($id) . "," . intval($bidder_id) . "," . floatval($bid) . ")";
 					$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
+					if($bid > $starting_price){
+						$errmsg = $MSG['CM_2026_0027'];
+					}
 				}
 
 				if ($reserve > 0 && $reserve > $current_bid && $bid >= $reserve)
@@ -276,10 +304,10 @@ if (isset($_POST['action']) && !isset($errmsg))
 					$next_bid = $reserve;
 				}
 				// Only updates current bid if it is a new bidder, not the current one
-				$query = "UPDATE " . $DBPrefix . "auctions SET current_bid = $next_bid, num_bids = num_bids + 1 WHERE id = " . $id;
+				$query = "UPDATE " . $DBPrefix . "auctions SET current_bid = $bid, num_bids = num_bids + 1 WHERE id = " . $id;
 				$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 				// Also update bids table
-				$query = "INSERT INTO " . $DBPrefix . "bids VALUES (NULL, " . $id . ", " . $bidder_id . ", " . floatval($next_bid) . ", '" . $NOW . "', " . $qty . ")";
+				$query = "INSERT INTO " . $DBPrefix . "bids VALUES (NULL, " . $id . ", " . $bidder_id . ", " . floatval($bid) . ", '" . $NOW . "', " . $qty . ")";
 				$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 				$query = "UPDATE " . $DBPrefix . "counters SET bids = (bids + 1)";
 				$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
@@ -320,12 +348,21 @@ if (isset($_POST['action']) && !isset($errmsg))
 						$fakebids = 0;
 					}
 					// Update bids table
-					$query = "INSERT INTO " . $DBPrefix . "bids VALUES (NULL, " . $id . ", " . $bidder_id . ", " . floatval($next_bid) . ", '" . $NOW . "', " . $qty . ")";
+					$query = "INSERT INTO " . $DBPrefix . "bids VALUES (NULL, " . $id . ", " . $bidder_id . ", " . floatval($cbid) . ", '" . $NOW . "', " . $qty . ")";
 					$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 					$query = "UPDATE " . $DBPrefix . "counters SET bids = (bids + (1 + " . $fakebids . "))";
 					$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
+					if ($bid > $next_bid)
+					{
 					$query = "UPDATE " . $DBPrefix . "auctions SET current_bid = " . $next_bid . ", num_bids = (num_bids + 1 + " . $fakebids . ") WHERE id = " . $id;
 					$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
+					}
+					elseif($bid > $starting_price && $bid < $next_bid)
+					{
+						$query = "UPDATE " . $DBPrefix . "auctions SET current_bid = " . $bid . ", num_bids = (num_bids + 1 + " . $fakebids . ") WHERE id = " . $id;
+						$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
+						$message = $MSG['CM_2026_0027'];
+					}
 				}
 				if ($proxy_max_bid == $bid)
 				{
@@ -487,6 +524,7 @@ if (!isset($_POST['action']) || isset($errmsg))
 	$template->assign_vars(array(
 			'PAGE' => 1,
 			'ERROR' => (isset($errmsg)) ? $errmsg : '',
+			'MESSAGE' => (isset($message)) ? $message : '',
 			'BID_HISTORY' => (isset($ARETHEREBIDS)) ? $ARETHEREBIDS : '',
 			'ID' => $id,
 			'IMAGE' => (!empty($pict_url_plain)) ? '<img src="getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $id . '/' . $pict_url_plain . '" border="0" align="center">' : '&nbsp;',

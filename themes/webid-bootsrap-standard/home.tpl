@@ -20,8 +20,7 @@
     <div class="span2 featured-item"> <a href="{SITEURL}item.php?id={featured.ID}"><img class="img-polaroid" src="{featured.IMAGE}" alt="{featured.TITLE}" height="160"></a> <br />
       <div><a href="{SITEURL}item.php?id={featured.ID}">{featured.TITLE}</a><br />
       <small>{featured.BID} <span class="muted">{featured.ENDS}</span></small></div> </div>	  </div>
-    <!-- END featured -->
-
+    <!-- END featured -->	<!-- IF !B_AUC_ENDSOON -->	  <div class="row">		<div class="span6">		  <h3>{L_CM_2026_0029}</h3>		</div>	  </div>	  	<div class="row">	<!-- BEGIN ended -->    <div class="span2 ended-item"> <a href="{SITEURL}item.php?id={ended.ID}"><img class="img-polaroid" src="{ended.IMAGE}" alt="{ended.TITLE}" height="160"></a> <br />      <div><a href="{SITEURL}item.php?id={ended.ID}">{ended.TITLE}</a><br />      <small>{ended.BID} <span class="muted">{ended.ENDS}</span></small></div> </div>	<!-- END ended -->		  </div>	<!-- ENDIF -->
   <!-- IF B_HOT_ITEMS -->
   <hr  />
   <div class="row">
@@ -36,8 +35,7 @@
          <small>{hotitems.BID}</div>		 <span class="ending_counter" time="{hotitems.TIMELEFT}">{hotitems.ENDS}</span>
       </small> </div>
     <!-- END hotitems -->
-    <hr  />
-  </div>
+  </div>      <hr  />
   <!-- ENDIF -->
   <!-- IF B_AUC_ENDSOON -->
   <div class="row">

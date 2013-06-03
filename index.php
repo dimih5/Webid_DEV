@@ -207,6 +207,41 @@ while ($row = mysql_fetch_assoc($res))
 }
 $hot_items = ($i > 0) ? true : false;
 
+//finished auctions
+$query = "SELECT a.id, a.title, a.current_bid, a.pict_url, a.ends, a.num_bids, a.minimum_bid 
+        FROM " . $DBPrefix . "auctions a 
+        LEFT JOIN " . $DBPrefix . "auccounter c ON (a.id = c.auction_id) 
+        WHERE closed = 1 AND suspended = 0
+        LIMIT " . 10;
+$res = mysql_query($query);
+$system->check_mysql($res, $query, __LINE__, __FILE__);
+
+
+$i = 0;
+while ($row = mysql_fetch_assoc($res))
+{
+	$i++;
+	$ends = $row['ends'];
+    $difference = $ends - time();
+    if ($difference > 0)
+	{
+        $ends_string = FormatTimeLeft($difference); 
+    }
+	else
+	{
+        $ends_string = $MSG['911'];
+    }
+    $high_bid = ($row['num_bids'] == 0) ? $row['minimum_bid'] : $row['current_bid'];
+    $template->assign_block_vars('ended', array(
+            'ENDS' => $ends_string,
+			'TIMELEFT' => $difference,
+            'ID' => $row['id'],
+            'BID' => $system->print_money($high_bid),
+            'IMAGE' => (!empty($row['pict_url'])) ? 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'] : 'images/email_alerts/default_item_img.jpg',
+            'TITLE' => $row['title']
+            ));
+}
+
 // Build list of help topics
 $query = "SELECT id, category FROM " . $DBPrefix . "faqscat_translated WHERE lang = '" . $language . "' ORDER BY category ASC";
 $res = mysql_query($query);

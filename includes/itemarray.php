@@ -542,6 +542,8 @@
 					'QTY' => $auction_data['quantity'],
 					'ENDS' => $ending_time,
 					'ENDS_IN' => ($ends - time()),
+					'ICSENDS' => $auction_data['ends'],
+					'ICSSTART' => $auction_data['starts'],
 					'STARTTIME' => ArrangeDateNoCorrection($start + $system->tdiff),
 					'ENDTIME' => ArrangeDateNoCorrection($ends + $system->tdiff),
 					'BUYNOW1' => $auction_data['buy_now'],

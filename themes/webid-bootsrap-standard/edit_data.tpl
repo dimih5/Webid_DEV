@@ -77,7 +77,7 @@
         <label>{L_013}</label>
         <input   class="span4"type="text" name="TPL_phone" size=40 maxlength=40 value="{PHONE}">
         <label>{L_346}</label>
-        {TOMEZONE} </div>
+        {TIMEZONE} </div>
     </div>
     <div class="row"  style="margin-left:0;">
       <div class="span4">

@@ -22,7 +22,11 @@ if (!$user->is_logged_in())
 	header('location: user_login.php');
 	exit;
 }
-
+//retrieve user data
+$query = "SELECT * FROM " . $DBPrefix . "users WHERE id = " . $user->user_data['id'];
+$result = mysql_query($query);
+$system->check_mysql($result, $query, __LINE__, __FILE__);
+$USER = mysql_fetch_assoc($result);
 // Retrieve users signup settings
 $MANDATORY_FIELDS = unserialize($system->SETTINGS['mandatory_fields']);
 
@@ -123,53 +127,128 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 			{
 				$TPL_birthdate = '';
 			}
-
-			$query = "UPDATE " . $DBPrefix . "users SET email='" . $system->cleanvars($_POST['TPL_email']) . "',
-					birthdate = '" . ((empty($TPL_birthdate)) ? 0 : $TPL_birthdate) . "',
-					address = '" . $system->cleanvars($_POST['TPL_address']) . "',
-					city = '" . $system->cleanvars($_POST['TPL_city']) . "',
-					prov = '" . $system->cleanvars($_POST['TPL_prov']) . "',
-					country = '" . $system->cleanvars($_POST['TPL_country']) . "',
-					zip = '" . $system->cleanvars($_POST['TPL_zip']) . "',
-					phone = '" . $system->cleanvars($_POST['TPL_phone']) . "',
-					timecorrection = '" . $system->cleanvars($_POST['TPL_timezone']) . "',
-					emailtype = '" . $system->cleanvars($_POST['TPL_emailtype']) . "',
-					nletter = '" . $system->cleanvars($_POST['TPL_nletter']) . "'";
-
-			if ($gateway_data['paypal_active'] == 1)
+			$query = "SELECT * FROM " . $DBPrefix . "usersupdate WHERE userid='" . $user->user_data['id'] . "'";
+			$res = mysql_query($query);
+			$system->check_mysql($res, $query, __LINE__, __FILE__);
+			$row = mysql_fetch_assoc($res);
+			if($row == 0)
 			{
-				$query .= ", paypal_email = '" . $system->cleanvars($_POST['TPL_pp_email']) . "'";
+				$query = "SELECT * FROM " . $DBPrefix . "users WHERE id='" . $user->user_data['id'] . "'";
+				$res = mysql_query($query);
+			    $system->check_mysql($res, $query, __LINE__, __FILE__);
+				$row = $row = mysql_fetch_assoc($res);
 			}
-
-			if ($gateway_data['authnet_active'] == 1)
+			
+			while($row)
 			{
-				$query .= ", authnet_id = '" . $system->cleanvars($_POST['TPL_authnet_id']) . "',
-							authnet_pass = '" . $system->cleanvars($_POST['TPL_authnet_pass']) . "'";
-			}
+				if(isset($row['userid']) && $row['userid'] == $user->user_data['id'])
+				{
+					$queryin = "UPDATE " . $DBPrefix . "usersupdate SET 
+					email='" . $system->cleanvars($_POST['TPL_email']) . "', 
+					birthdate='" . (empty($TPL_birthdate) ? 0 : $TPL_birthdate) . "', 
+					address='" . $system->cleanvars($_POST['TPL_address']) . "',
+					city='" . $system->cleanvars($_POST['TPL_city']) . "',
+					prov='" . $system->cleanvars($_POST['TPL_prov']) . "',
+					country='" . $system->cleanvars($_POST['TPL_country']) . "',
+					zip='" . $system->cleanvars($_POST['TPL_zip']) . "',
+					phone='" . $system->cleanvars($_POST['TPL_phone']) . "',
+					timecorrection='" . $system->cleanvars($_POST['TPL_timezone']) . "',
+					emailtype='" . $system->cleanvars($_POST['TPL_emailtype']) . "',
+					nletter='" . $system->cleanvars($_POST['TPL_nletter']). "'";
 
-			if ($gateway_data['worldpay_active'] == 1)
-			{
-				$query .= ", worldpay_id = '" . $system->cleanvars($_POST['TPL_worldpay_id']) . "'";
-			}
+					if ($gateway_data['paypal_active'] == 1)
+					{
+						$queryin .= ", paypal_email='" . $system->cleanvars($_POST['TPL_pp_email']) . "'";
+					}
 
-			if ($gateway_data['moneybookers_active'] == 1)
-			{
-				$query .= ", moneybookers_email = '" . $system->cleanvars($_POST['TPL_moneybookers_email']) . "'";
-			}
+					if ($gateway_data['authnet_active'] == 1)
+					{
+						$queryin .= ", authnet_id=" . $system->cleanvars($_POST['TPL_authnet_id']) . "', authnet_pass = '" . $system->cleanvars($_POST['TPL_authnet_pass']) . "'";
+					}
 
-			if ($gateway_data['toocheckout_active'] == 1)
-			{
-				$query .= ", toocheckout_id = '" . $system->cleanvars($_POST['TPL_toocheckout_id']) . "'";
-			}
+					if ($gateway_data['worldpay_active'] == 1)
+					{
+						$queryin .= ", worldpay_id='" . $system->cleanvars($_POST['TPL_worldpay_id']) . "'";
+					}
 
-			if (strlen($_POST['TPL_password']) > 0)
-			{
-				$query .= ", password = '" . md5($MD5_PREFIX . $_POST['TPL_password']) . "'";
-			}
+					if ($gateway_data['moneybookers_active'] == 1)
+					{
+						$queryin .= ", moneybookers_email=" .  $system->cleanvars($_POST['TPL_moneybookers_email']) . "'";
+					}
 
-			$query .= " WHERE id = " . $user->user_data['id'];
-			$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-			$ERR .= '<br/>' . $MSG['183'];
+					if (strlen($_POST['TPL_password']) > 0)
+					{
+						$querypass = "UPDATE " . $DBPrefix . "usersupdate SET  password=" . md5($MD5_PREFIX . $_POST['TPL_password']) . "'";
+						$res = mysql_query($querypass);
+						$system->check_mysql($res, $query, __LINE__, __FILE__);
+					}
+					
+					$queryin .= " WHERE userid='" . $user->user_data['id'] . "'";
+					$res = mysql_query($queryin);
+					$system->check_mysql($res, $queryin, __LINE__, __FILE__);
+					$ERR .= '<br/>' . $MSG['183'];
+					$row = null;
+				}
+				else
+				{
+					$querystart = "INSERT INTO " . $DBPrefix . "usersupdate";
+					$querymiddle = "(id, email, userid, birthdate, address, city, prov, country, zip, phone, timecorrection, emailtype, nletter";
+					$queryend = " VALUES ('" . null . "', '" . $system->cleanvars($_POST['TPL_email']) . "', '" . $user->user_data['id'] . "', '" . (empty($TPL_birthdate) ? 0 : $TPL_birthdate) . "', '" . $system->cleanvars($_POST['TPL_address']) . "', '" . $system->cleanvars($_POST['TPL_city']) . "', '" . $system->cleanvars($_POST['TPL_prov']) . "', '" . $system->cleanvars($_POST['TPL_country']) . "', '" . $system->cleanvars($_POST['TPL_zip']) . "', '" . $system->cleanvars($_POST['TPL_phone']) . "', '" . $system->cleanvars($_POST['TPL_timezone']) . "', '" . $system->cleanvars($_POST['TPL_emailtype']) . "', '" . $system->cleanvars($_POST['TPL_nletter']);
+
+					if ($gateway_data['paypal_active'] == 1)
+					{
+						$querymiddle .= ", paypal_email";
+						$queryend .= "', '" . $system->cleanvars($_POST['TPL_pp_email']);
+					}
+
+					if ($gateway_data['authnet_active'] == 1)
+					{
+						$querymiddle .= ", authnet_id, authnet_pass";
+						$queryend .= "', '" . $system->cleanvars($_POST['TPL_authnet_id']) . "', '" . $system->cleanvars($_POST['TPL_authnet_pass']);
+					}
+
+					if ($gateway_data['worldpay_active'] == 1)
+					{
+						$querymiddle .= ", worldpay_id";
+						$queryend .= "', '" . $system->cleanvars($_POST['TPL_worldpay_id']);
+					}
+
+					if ($gateway_data['moneybookers_active'] == 1)
+					{
+						$querymiddle .= ", moneybookers_email" ;
+						$queryend .= "', '" . $system->cleanvars($_POST['TPL_moneybookers_email']);
+					}
+
+					if ($gateway_data['toocheckout_active'] == 1)
+					{
+						$querymiddle .= ", toocheckout_id";
+						$queryend .= "', '" . $system->cleanvars($_POST['TPL_toocheckout_id']);
+					}
+
+					if (strlen($_POST['TPL_password']) > 0)
+					{
+						$querypass = "UPDATE " . $DBPrefix . "usersupdate SET  password=" . md5($MD5_PREFIX . $_POST['TPL_password']) . "'";
+						$res = mysql_query($querypass);
+						$system->check_mysql($res, $querypass, __LINE__, __FILE__);
+					}
+
+					$query = $querystart . $querymiddle . ") " . $queryend . "')";
+					$res = mysql_query($query);
+					$system->check_mysql($res, $query, __LINE__, __FILE__);
+					$ERR .= '<br/>' . $MSG['183'];
+					$row = null;
+				}
+			}
+			$emailer = new email_handler();
+			$emailer->assign_vars(array(
+			'SITENAME' => $system->SETTINGS['sitename'],
+			'SITEURL' => $system->SETTINGS['siteurl'],
+			'ADMINMAIL' => $system->SETTINGS['adminmail'],
+			'APPROVEURL' => $system->SETTINGS['siteurl'] . "admin/" . 'evaluateuserchanges.php?id=' . $USER['id'],
+			'C_NAME' => $USER['name']
+			));
+			$emailer->email_uid = $USER['id'];
+			$emailer->email_sender('maikel@qbil.nl', 'admin_user_changes_mail.inc.php', $system->SETTINGS['sitename'] . ' ' . 'User changed');
 		}
 	}
 	else
@@ -179,10 +258,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 }
 
 // Retrieve user's data
-$query = "SELECT * FROM " . $DBPrefix . "users WHERE id = " . $user->user_data['id'];
-$result = mysql_query($query);
-$system->check_mysql($result, $query, __LINE__, __FILE__);
-$USER = mysql_fetch_assoc($result);
 if ($USER['birthdate'] != 0)
 {
 	$TPL_day = substr($USER['birthdate'], 6, 2);

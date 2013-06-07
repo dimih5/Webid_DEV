@@ -137,6 +137,7 @@ $res = mysql_query($query);
 $system->check_mysql($res, $query, __LINE__, __FILE__);
 $TOTALUSERS = mysql_result($res, 0);
 
+
 // get page limits
 if (isset($_GET['PAGE']) && is_numeric($_GET['PAGE']))
 {
@@ -178,8 +179,14 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 $bg = '';
 while ($row = mysql_fetch_assoc($res))
 {
+	$queryin = "SELECT userid FROM " . $DBPrefix . "usersupdate WHERE userid = '" . $row['id'] . "'";
+	$resin = mysql_query($queryin);
+	$system->check_mysql($res, $query, __LINE__, __FILE__);
+	$rowin = mysql_fetch_assoc($resin);
+	
 	$template->assign_block_vars('users', array(
 			'ID' => $row['id'],
+			'USERUPDATE' => $rowin['userid'],
 			'NICK' => $row['nick'],
 			'NAME' => $row['name'],
 			'COUNTRY' => $row['country'],

@@ -357,7 +357,7 @@ $MSG['179'] = "To get another user's e-mail address, just fill in your username 
 $MSG['180'] = " is:";
 $MSG['181'] = "User's login";
 $MSG['182'] = "Edit your personal data";
-$MSG['183'] = "Your data has been updated";
+$MSG['183'] = "An email has been sent to the administrator to change your personal profile.";
 $MSG['184'] = "Categories table has been updated.";
 $MSG['185'] = "Currently viewing feedback for ";
 $MSG['186'] = "<a href=\"javascript:history.back()\">Back</a>";
@@ -1725,4 +1725,6 @@ $MSG['CM_2026_0029'] = "Closed auctions";
 $MSG['CM_2026_0030'] = "The following users participate in this auction:";
 
 $MSG['CM_2026_0031'] = "Add this auction to your personal agenda (outlook)";
+
+$MSG['CM_2026_0032'] = "Approve changes";
 ?>

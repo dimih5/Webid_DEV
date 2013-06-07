@@ -88,7 +88,11 @@ $(document).ready(function() {
                         <td nowrap>
                             <a href="edituser.php?userid={users.ID}&offset={PAGE}"><small>{L_298}</small></a><br>
                             <a href="deleteuser.php?id={users.ID}&offset={PAGE}"><small>{L_008}</small></a><br>
+							<!-- IF users.USERUPDATE ne '' -->
+							<a href="evaluateuserchanges.php?id={users.ID}&offset={PAGE}"><small>{L_CM_2026_0032}</a></small><br>
+							<!-- ENDIF -->
                             <a href="excludeuser.php?id={users.ID}&offset={PAGE}"><small>
+
     <!-- IF users.SUSPENDED eq 0 -->
                                 {L_305}
     <!-- ELSEIF users.SUSPENDED eq 8 -->

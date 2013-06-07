@@ -33,7 +33,7 @@ function setvars()
 {
 	global $with_reserve, $reserve_price, $minimum_bid, $pict_url, $contr_url, $imgtype, $title, $subtitle, $description, $atype, $iquantity, $buy_now, $buy_now_price, $is_taxed, $tax_included, $additional_shipping_cost;
 	global $duration, $relist, $increments, $customincrement, $shipping, $shipping_terms, $payment, $international, $sellcat1, $sellcat2, $buy_now_only, $a_starts, $shipping_cost, $is_bold, $is_highlighted, $is_featured, $start_now;
-	global $_POST, $_SESSION, $system;
+	global $_POST, $_SESSION, $system, $invited_emails, $extra_message;
 
 	$with_reserve = (isset($_POST['with_reserve'])) ? $_POST['with_reserve'] : $_SESSION['SELL_with_reserve'];
 	$reserve_price = (isset($_POST['reserve_price'])) ? $_POST['reserve_price'] : $_SESSION['SELL_reserve_price'];
@@ -76,6 +76,8 @@ function setvars()
 	$is_highlighted = (isset($_POST['is_highlighted'])) ? 'y' : $_SESSION['SELL_is_highlighted'];
 	$start_now = (isset($_POST['start_now'])) ? $_POST['start_now'] : '';
 	$start_now = (isset($_SESSION['SELL_start_now']) && (!isset($_POST['action']) || $_POST['action'] != 2)) ? $_SESSION['SELL_start_now'] : $start_now;
+	$invited_emails = (isset($_POST['invite'])) ? $_POST['invite'] : $_SESSION['SELL_invited_emails'];
+	$extra_message = (isset($_POST['extra_message'])) ? $_POST['extra_message'] : $_SESSION['SELL_extra_message'];
 	$is_taxed = (isset($_POST['is_taxed'])) ? 'y' : $_SESSION['SELL_is_taxed'];
 	$tax_included = (isset($_POST['tax_included'])) ? 'y' : $_SESSION['SELL_tax_included'];
 	if (isset($_POST['action']) && $_POST['action'] == 2)
@@ -92,7 +94,7 @@ function setvars()
 function makesessions()
 {
 	global $with_reserve, $reserve_price, $minimum_bid, $pict_url, $contr_url, $imgtype, $title, $subtitle, $description, $atype, $iquantity, $buy_now, $buy_now_price, $is_taxed, $tax_included, $additional_shipping_cost;
-	global $duration, $relist, $increments, $customincrement, $shipping, $shipping_terms, $payment, $international, $sendemail, $buy_now_only, $a_starts, $shipping_cost, $is_bold, $is_highlighted, $is_featured, $start_now, $_SESSION;
+	global $duration, $relist, $increments, $customincrement, $shipping, $shipping_terms, $payment, $international, $sendemail, $buy_now_only, $a_starts, $shipping_cost, $is_bold, $is_highlighted, $is_featured, $start_now, $_SESSION, $invited_emails, $extra_message;
 
 	$_SESSION['SELL_with_reserve'] = $with_reserve;
 	$_SESSION['SELL_reserve_price'] = $reserve_price;
@@ -123,6 +125,8 @@ function makesessions()
 	$_SESSION['SELL_is_highlighted'] = $is_highlighted;
 	$_SESSION['SELL_is_featured'] = $is_featured;
 	$_SESSION['SELL_start_now'] = $start_now;
+	$_SESSION['SELL_extra_message'] = $extra_message;
+	$_SESSION['SELL_invited_emails'] = $invited_emails;
 	$_SESSION['SELL_is_taxed'] = $is_taxed;
 	$_SESSION['SELL_tax_included'] = $tax_included;
 }
@@ -163,6 +167,8 @@ function unsetsessions()
 	$_SESSION['SELL_is_highlighted'] = 'n';
 	$_SESSION['SELL_is_featured'] = 'n';
 	$_SESSION['SELL_start_now'] = '';
+	$_SESSION['SELL_invited_emails'] = '';
+	$_SESSION['SELL_extra_message'] = '';
 	$_SESSION['SELL_is_taxed'] = 'n';
 	$_SESSION['SELL_tax_included'] = 'y';
 }

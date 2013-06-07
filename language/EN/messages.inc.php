@@ -1727,4 +1727,7 @@ $MSG['CM_2026_0030'] = "The following users participate in this auction:";
 $MSG['CM_2026_0031'] = "Add this auction to your personal agenda (outlook)";
 
 $MSG['CM_2026_0032'] = "Approve changes";
+
+$MSG['CM_2026_0033'] = "Invite people(1 email per line)";
+$MSG['CM_2026_0034'] = "Message for the email";
 ?>

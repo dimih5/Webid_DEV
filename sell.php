@@ -47,6 +47,7 @@ if (in_array($user->user_data['suspended'], array(5, 6, 7)))
 if (!$user->can_sell)
 {
 	$_SESSION['TMP_MSG'] = $MSG['818'];
+	$_SESSION['TMP_MSG'] = $MSG['818'];
 	header('location: user_menu.php?cptab=selling');
 	exit;
 }
@@ -286,6 +287,21 @@ switch ($_SESSION['action'])
 				}
 				rmdir($upload_path . session_id() . "/contracts");
 				rmdir($upload_path . session_id());
+			}
+			if (isset($_SESSION['SELL_invited_emails']))
+			{
+				$invited_emails = explode("\n", $_SESSION['SELL_invited_emails']);
+				$emailer=new email_handler();
+				$emailer->assign_vars(array(
+				'SITENAME' => $system->SETTINGS['sitename'],
+				'SITEURL' => $system->SETTINGS['siteurl'],
+				'ADMINMAIL' => $system->SETTINGS['adminmail'],
+				'AUCTION_URL' => $system->SETTINGS['siteurl'] . 'item.php?id=' . $auction_id,
+				'AUCTION_TITLE' => $_SESSION['SELL_title'],
+				'EXTRA_MESSAGE' => $_SESSION['SELL_extra_message'],
+				));
+				$emailer->email_uid = $system->SETTINGS['adminmail'];
+				$emailer->email_sender($invited_emails, 'invitemail.inc.php', $system->SETTINGS['sitename'] . '' . ' You have been invited to an auction');
 			}
 			if (!isset($_SESSION['SELL_action']) || empty($_SESSION['SELL_action']))
 			{

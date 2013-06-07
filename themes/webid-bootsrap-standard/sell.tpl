@@ -409,6 +409,18 @@ function updatefee(newfee) {
         <span id="to_pay"><strong>{FEE_VALUE_F}</strong></span> {CURRENCY} </div>
     </div>
     <!-- ENDIF -->
+	<div class="control-group">		
+		<label class="control-label">{L_CM_2026_0033}</label>
+		<div class="controls">
+		<textarea type="text" row="10" cols="34" id="invite" name="invite"></textarea>
+		</div>
+	</div>
+		<div class="control-group">		
+		<label class="control-label">{L_CM_2026_0034}</label>
+		<div class="controls">
+		<textarea type="text" row="10" cols="34" id="extra_message" name="extra_message"></textarea>
+		</div>
+	</div>
     <div class="form-actions">
       <input type="hidden" value="3" name="action">
       <button type="submit" class="btn btn-primary">{L_5189}</button>

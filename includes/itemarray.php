@@ -2,13 +2,17 @@
 	function Rebuild($whatdoyouneed)
 		{
 			global $id, $system, $membertypes, $DBPrefix, $include_path, $uploaded_path, $MSG, $category_names, $user, $payment_methods, $ERRMSG, $template;
+			$memtypesarr = array();
 			
 			// Get parameters from the URL
-			foreach ($membertypes as $idm => $memtypearr)
+			if(is_array($membertypes))
 			{
-				$memtypesarr[$memtypearr['feedbacks']] = $memtypearr;
+				foreach ($membertypes as $idm => $memtypearr)
+				{
+					$memtypesarr[$memtypearr['feedbacks']] = $memtypearr;
+				}
+				ksort($memtypesarr, SORT_NUMERIC);
 			}
-			ksort($memtypesarr, SORT_NUMERIC);
 
 			if (!is_numeric($id)) $id = 0;
 			$bidderarray = array();
@@ -479,7 +483,7 @@
 			foreach ($gateways_data as $k => $v)
 			{
 				$v = strtolower($v);
-				if ($gateways_data[$k] == 1 && _in_array($v, $payment))
+				if ($gateways_data[$k] == 1 && in_array($v, $payment))
 				{
 					if (!$p_first)
 					{
@@ -493,21 +497,24 @@
 					$payment_methods .= $system->SETTINGS['gatways'][$k];
 				}
 			}
-	
+			
 			$payment_options = unserialize($system->SETTINGS['payment_options']);
-			foreach ($payment_options as $k => $v)
+			if(is_array($payment_options))
 			{
-				if (_in_array($k, $payment))
+				foreach ($payment_options as $k => $v)
 				{
-					if (!$p_first)
+					if (in_array($k, $payment))
 					{
-						$payment_methods .= ', ';
+						if (!$p_first)
+						{
+							$payment_methods .= ', ';
+						}
+						else
+						{
+							$p_first = false;
+						}
+						$payment_methods .= $v;
 					}
-					else
-					{
-						$p_first = false;
-					}
-					$payment_methods .= $v;
 				}
 			}
 

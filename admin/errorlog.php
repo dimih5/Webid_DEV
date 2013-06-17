@@ -18,14 +18,13 @@ include '../common.php';
 include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
 
-unset($ERR);
-$ERR;
+global $ERR;
 if (isset($_POST['action']) && $_POST['action'] == 'clearlog')
 {
 	$query = "DELETE FROM " . $DBPrefix . "logs WHERE type = 'error'";
 	$res = mysql_query($query);
 	$system->check_mysql($res, $query, __LINE__, __FILE__);
-	$ERR .= '<br/>' . $MSG['889'];
+	$ERR .= $MSG['889'];
 }
 
 $data = '';

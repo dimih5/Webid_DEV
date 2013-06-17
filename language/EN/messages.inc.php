@@ -1385,7 +1385,7 @@ $MSG['2_0037'] = " seconds";
 $MSG['2_0038'] = "Please enter valid numeric values";
 $MSG['2__0001'] = "Choose language";
 $MSG['2__0002'] = "Multilingual support";
-$MGS['2__0003'] = "<br>The default language is English.<br>
+$MSG['2__0003'] = "<br>The default language is English.<br>
 				If you want to enable multilingual support or change the default language you must follow the steps below:
 				<ul>
 				<li>If you want to add a new language make a duplicate of language/EN and name it with the
@@ -1409,7 +1409,7 @@ $MGS['2__0003'] = "<br>The default language is English.<br>
 				<li>Select the default language below. All the other available languages will be available in the home page (the corresponding flags will be shown).
 				</ul>
 				";
-$MGS['2__0004'] = "Default language";
+$MSG['2__0004'] = "Default language";
 $MSG['2__0005'] = '<span style="color:#CD0000;"><b>Current default language</b></span>';
 $MSG['2__0016'] = "Starting date";
 $MSG['2__0025'] = "Buy it now";
@@ -1422,15 +1422,15 @@ $MSG['2__0037'] = "Submit auction";
 $MSG['2__0038'] = "Select your category";
 $MSG['2__0039'] = "If you lost your password, please enter in your username or e-mail address below.";
 $MSG['2__0041'] = "Select secondary category";
-$MGS['2__0045'] = " pixels ";
+$MSG['2__0045'] = " pixels ";
 $MSG['2__0047'] = "SELECT CATEGORY &gt;&gt;";
 $MSG['2__0048'] = "Close Now!";
 $MSG['2__0050'] = "Sell similar";
 $MSG['2__0051'] = "Relist";
-$MGS['2__0054'] = '<span style="#CD0000;"><b>Already selected</b></span>';
+$MSG['2__0054'] = '<span style="#CD0000;"><b>Already selected</b></span>';
 $MSG['2__0056'] = "Suspended auctions";
 $MSG['2__0057'] = "Show counters";
-$MGS['2__0058'] = "You can decide to show some counters in the header of your site's pages.<br>
+$MSG['2__0058'] = "You can decide to show some counters in the header of your site's pages.<br>
 				There are three different counters available:
 				<ul>
 				<li>Active auctions</li>
@@ -1438,14 +1438,14 @@ $MGS['2__0058'] = "You can decide to show some counters in the header of your si
 				<li>Online users</li>
 				</ul>
 				You can enable/disable each counter below";
-$MGS['2__0059'] = "Online users";
-$MGS['2__0060'] = "Active auctions";
-$MGS['2__0061'] = "Registered users";
-$MGS['2__0062'] = "Counters you want to show";
-$MGS['2__0063'] = "Counters Settings Updated";
+$MSG['2__0059'] = "Online users";
+$MSG['2__0060'] = "Active auctions";
+$MSG['2__0061'] = "Registered users";
+$MSG['2__0062'] = "Counters you want to show";
+$MSG['2__0063'] = "Counters Settings Updated";
 $MSG['2__0064'] = "USERS ONLINE";
-$MGS['2__0066'] = "Enabled";
-$MGS['2__0067'] = "Disabled";
+$MSG['2__0066'] = "Enabled";
+$MSG['2__0067'] = "Disabled";
 $MSG['25_0001'] = "WINNER";
 $MSG['25_0002'] = "SELLER";
 $MSG['25_0004'] = "User name";

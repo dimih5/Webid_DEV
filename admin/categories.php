@@ -22,7 +22,7 @@ $catscontrol = new MPTTcategories();
 
 function search_cats($parent_id, $level)
 {
-	global $DBPrefix, $catscontrol;
+	global $DBPrefix, $catscontrol, $catstr;
 	$root = $catscontrol->get_virtual_root();
 	$tree = $catscontrol->display_tree($root['left_id'], $root['right_id'], '|___');
 	foreach ($tree as $k => $v)
@@ -84,7 +84,7 @@ if (isset($_POST['action']))
 				if (!isset($_POST['delete'][$k]))
 				{
 					$query = "UPDATE " . $DBPrefix . "categories SET cat_name = '" . $system->cleanvars($_POST['categories'][$k]) . "',
-							cat_colour = '" . mysql_escape_string($_POST['colour'][$k]) . "', cat_image = '" . mysql_escape_string($_POST['image'][$k]) . "'
+							cat_colour = '" . mysql_real_escape_string($_POST['colour'][$k]) . "', cat_image = '" . mysql_real_escape_string($_POST['image'][$k]) . "'
 							WHERE cat_id = " . intval($k);
 					$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 				}

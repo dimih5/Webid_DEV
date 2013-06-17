@@ -4,25 +4,23 @@
 <div class="flags-icons"><small><span class="muted">{L_2__0001}</span></small> {FLAGS} </div>
 <!-- ENDIF -->
 <div class="row">
-<div class="span3 hidden-phone">
+<div class="span3 hidden-phone"><div class="well hidden-phone">
   <ul class="nav nav-list ">
-    <li class="nav-header">{L_276}</li>
-    <li class="divider"></li>
-    <li><a href="{SITEURL}browse.php?id=0"><i class="icon-tags"></i> {L_277}</a></li>
+    <li class="nav-header" style="text-align: center;">{L_276}</li>
+    <li><a href="{SITEURL}browse.php?id=0"><i class="icon-th-large"></i> {L_277}</a></li>
     <li class="divider"></li>
     <!-- BEGIN cat_list -->
-    <li> <a href="browse.php?id={cat_list.ID}">{cat_list.IMAGE}{cat_list.NAME}</a></li>
+    <li> <a href="browse.php?id={cat_list.ID}"><i class="icon-share-alt"></i> {cat_list.IMAGE}{cat_list.NAME}</a></li>
     <!-- END cat_list -->
-  </ul>
+  </ul> </div>
 </div>
 <div class="span6">
     <!-- BEGIN featured -->	<div class="row">
-    <div class="span2 featured-item"> <a href="{SITEURL}item.php?id={featured.ID}"><img class="img-polaroid" src="{featured.IMAGE}" alt="{featured.TITLE}" height="160"></a> <br />
+    <div class="span2 featured-item" style="text-align: center;"> <a href="{SITEURL}item.php?id={featured.ID}"><img class="img-polaroid" src="{featured.IMAGE}" alt="{featured.TITLE}" height="160"></a> <br />
       <div><a href="{SITEURL}item.php?id={featured.ID}">{featured.TITLE}</a><br />
       <small>{featured.BID} <span class="muted">{featured.ENDS}</span></small></div> </div>	  </div>
-    <!-- END featured -->	<!-- IF B_AUC_ENDSOON -->		<!-- ELSE -->	  <div class="row">		<div class="span6">		  <h3>{L_CM_2026_0029}</h3>		</div>	  </div>	  	<div class="row">	<!-- BEGIN ended -->    <div class="span2 ended-item"> <a href="{SITEURL}item.php?id={ended.ID}"><img class="img-polaroid" src="{ended.IMAGE}" alt="{ended.TITLE}" height="160"></a> <br />      <div><a href="{SITEURL}item.php?id={ended.ID}">{ended.TITLE}</a><br />      <small>{ended.BID} <span class="muted">{ended.ENDS}</span></small></div> </div>	<!-- END ended -->		  </div>	<!-- ENDIF -->
+    <!-- END featured -->	<!-- IF B_AUC_ENDSOON -->		<!-- ELSE -->	  <div class="row">		<div class="span6" style="text-align:center;">		  <h3>{L_CM_2026_0029}</h3>		</div>	  </div>	  	<div class="row" style="text-align: center;">	<!-- BEGIN ended -->    <div class="span2 ended-item" style="text-align: center;"> <a href="{SITEURL}item.php?id={ended.ID}"><img class="img-polaroid" src="{ended.IMAGE}" alt="{ended.TITLE}" height="160"></a> <br />      <div><a href="{SITEURL}item.php?id={ended.ID}">{ended.TITLE}</a><br />      <small>{ended.BID} <span class="muted">{ended.ENDS}</span></small></div> </div>	<!-- END ended -->		  </div>		  		  <hr />	<!-- ENDIF -->
   <!-- IF B_HOT_ITEMS -->
-  <hr  />
   <div class="row">
     <div class="span6">
       <h3>{L_279}</h3>
@@ -30,7 +28,7 @@
   </div>
   <div class="row">
     <!-- BEGIN hotitems -->
-    <div class="span2 featured-item"><a href="{SITEURL}item.php?id={hotitems.ID}"><img class="img-polaroid" src="{hotitems.IMAGE}" alt="{hotitems.TITLE}" ></a>
+    <div class="span2 featured-item" ><a href="{SITEURL}item.php?id={hotitems.ID}"><img class="img-polaroid" src="{hotitems.IMAGE}" alt="{hotitems.TITLE}" ></a>
       <div><a href="{SITEURL}item.php?id={hotitems.ID}">{hotitems.TITLE}</a><br>
          <small>{hotitems.BID}</div>		 <span class="ending_counter" time="{hotitems.TIMELEFT}">{hotitems.ENDS}</span>
       </small> </div>
@@ -93,4 +91,4 @@
       </table>
     </div>
     <!-- ENDIF -->
-  </div></div><div class="span3">  <!-- IF B_LOGIN_BOX -->  <!-- IF B_LOGGED_IN -->  <div class="well" style="padding: 8px 0;">    <ul class="nav nav-list">      <li class="nav-header">{L_200} {YOURUSERNAME}</li>      <li class="divider"></li>      <li><a href="{SITEURL}edit_data.php?">{L_244}</a></li>      <li><a href="{SITEURL}user_menu.php">{L_622}</a></li>      <li><a href="{SITEURL}logout.php">{L_245}</a></li>    </ul>  </div>  <!-- ELSE -->  <div class="visible-desktop" style="padding:8px;">    <form class="login-home" name="login" action="{SSLURL}user_login.php" method="post">      <fieldset>      <span class="nav-header">{L_221}</span>      <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">      <i class="icon-user"></i>      <input type="text" name="username" id="username" placeholder="{L_003}">      <br />      <i class="icon-lock"></i>      <input  type="password" name="password" id="password" placeholder="{L_004}">      <br />      <div style="text-align:center">        <button type="submit" name="action" value="{L_275}" class="btn"> {L_275} </button>      </div>      <label class="checkbox login-checkbox">      <input type="checkbox" name="rememberme" id="rememberme" value="1">      <small>{L_25_0085}</small> </label>      <div>        <div style="text-align:center"> <small><a href="{SITEURL}forgotpasswd.php">{L_215}</a></small> </div>      </div>      </fieldset>    </form>  </div>  <!-- ENDIF -->  <!-- ENDIF -->  <!-- IF B_NEWS_BOX -->  <div style="padding: 8px 0;">    <ul class="nav nav-list ">      <li class="nav-header">{L_282}</li>      <li class="divider"></li>      <!-- BEGIN newsbox -->      <small><a href="viewnew.php?id={newsbox.ID}">{newsbox.TITLE}</a><br />      <span class="muted">{newsbox.DATE}</span></small>      <hr />      <!-- END newsbox -->      <div class="clearfix"></div>    </ul>  </div>  <!-- ENDIF -->  <!-- IF B_HELPBOX -->  <div style="max-width: 340px; padding: 8px 0;">    <ul class="nav nav-list">      <li class="nav-header">{L_281}</li>      <li class="divider"></li>      <!-- IF B_BOARDS -->      <li><a href="{SITEURL}boards.php">{L_5030}</a></li>      <!-- ENDIF -->      <!-- BEGIN helpbox -->      <li><a href="{SITEURL}viewfaqs.php?cat={helpbox.ID}" alt="faqs"  class="new-window">{helpbox.TITLE}</a></li>      <!-- END helpbox -->    </ul>  </div>  <!-- ENDIF --></div>
+  </div></div><div class="span3">  <!-- IF B_LOGIN_BOX -->  <!-- IF B_LOGGED_IN -->  <div class="well" style="padding: 8px 0;">    <ul class="nav nav-list">      <li class="nav-header">{L_200} {YOURUSERNAME}</li>      <li class="divider"></li>      <li><a href="{SITEURL}edit_data.php?">{L_244}</a></li>      <li><a href="{SITEURL}user_menu.php">{L_622}</a></li>      <li><a href="{SITEURL}logout.php">{L_245}</a></li>    </ul>  </div>  <!-- ELSE -->  <div class="visible-desktop" style="padding:8px;">    <form class="login-home" name="login" action="{SSLURL}user_login.php" method="post">      <fieldset>      <span class="nav-header">{L_221}</span>      <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">      <i class="icon-user"></i>      <input type="text" name="username" id="username" placeholder="{L_003}">      <br />      <i class="icon-lock"></i>      <input  type="password" name="password" id="password" placeholder="{L_004}">      <br />      <div style="text-align:center">        <button type="submit" name="action" value="{L_275}" class="btn"> {L_275} </button>      </div>      <label class="checkbox login-checkbox">      <input type="checkbox" name="rememberme" id="rememberme" value="1">      <small>{L_25_0085}</small> </label>      <div>        <div style="text-align:center"> <small><a href="{SITEURL}forgotpasswd.php">{L_215}</a></small> </div>      </div>      </fieldset>    </form>  </div>  <!-- ENDIF -->  <!-- ENDIF --><div class="well">  <!-- IF B_NEWS_BOX -->  <div style="padding: 8px 0;">    <ul class="nav nav-list ">      <li class="nav-header"><i class="icon-bullhorn"></i> {L_282}</li>      <li class="divider"></li>      <!-- BEGIN newsbox -->      <small><a href="viewnew.php?id={newsbox.ID}">{newsbox.TITLE}</a><br />      <span class="muted">{newsbox.DATE}</span></small>      <hr />      <!-- END newsbox -->      <div class="clearfix"></div>    </ul>  </div>  <!-- ENDIF -->  <!-- IF B_HELPBOX -->  <div style="max-width: 340px; padding: 8px 0;">    <ul class="nav nav-list">      <li class="nav-header"><i class="icon-question-sign"></i> {L_281}</li>      <li class="divider"></li>      <!-- IF B_BOARDS -->      <li><a href="{SITEURL}boards.php">{L_5030}</a></li>      <!-- ENDIF -->      <!-- BEGIN helpbox -->      <li><a href="{SITEURL}viewfaqs.php?cat={helpbox.ID}" alt="faqs"  class="new-window">{helpbox.TITLE}</a></li>      <!-- END helpbox -->    </ul>  </div>  <!-- ENDIF -->  </div></div>

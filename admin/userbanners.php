@@ -89,9 +89,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'insert')
 
 				// Update database
 				$query = "INSERT INTO " . $DBPrefix . "banners VALUES
-						(NULL, '" . mysql_escape_string($_FILES['bannerfile']['name']) . "',
+						(NULL, '" . mysql_real_escape_string($_FILES['bannerfile']['name']) . "',
 						'" . $FILETYPE . "', 0, 0, '" . $_POST['url'] . "',
-						'" . mysql_escape_string($_POST['sponsortext']) . "', '" . mysql_escape_string($_POST['alt']) . "',
+						'" . mysql_real_escape_string($_POST['sponsortext']) . "', '" . mysql_real_escape_string($_POST['alt']) . "',
 						" . intval($_POST['purchased']) . ", " . $imagewidth . ", " . $imageheight . ", " . $id . ")";
 				$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 				$ID = mysql_insert_id();

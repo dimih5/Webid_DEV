@@ -55,12 +55,15 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 }
 
 $payment_options = unserialize($system->SETTINGS['payment_options']);
-foreach ($payment_options as $k => $v)
+if(is_array($payment_options))
 {
-	$template->assign_block_vars('payments', array(
-			'PAYMENT' => $v,
-			'ID' => $k
-			));
+	foreach ($payment_options as $k => $v)
+	{
+		$template->assign_block_vars('payments', array(
+				'PAYMENT' => $v,
+				'ID' => $k
+				));
+	}
 }
 
 

@@ -165,7 +165,7 @@ if (isset($_POST['action']))
 					duration = '" . $system->cleanvars($_POST['duration']) . "',
 					category = '" . intval($_POST['category']) . "',
 					secondcat = '" . intval($_POST['secondcat']) . "',
-					description = '" . mysql_escape_string($_POST['description']) . "',
+					description = '" . mysql_real_escape_string($_POST['description']) . "',
 					quantity = '" . intval($_POST['quantity']) . "',
 					minimum_bid = '" . $system->input_money($_POST['min_bid']) . "',
 					shipping_cost = '" . $system->input_money($_POST['shipping_cost']) . "',

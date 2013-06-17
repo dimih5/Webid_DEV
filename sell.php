@@ -424,21 +424,14 @@ switch ($_SESSION['action'])
 			foreach ($gateway_list as $v)
 			{
 				$v = strtolower($v);
-				if ($gateways_data[$v . '_active'] == 1 && _in_array($v, $payment))
+				if (isset($gateways_data[$v . '_active']) && $gateways_data[$v . '_active'] == 1 && _in_array($v, $payment))
 				{
 					$payment_methods .= '<p>' . $system->SETTINGS['gatways'][$v] . '</p>';
 				}
 			}
 			$payment_options = unserialize($system->SETTINGS['payment_options']);
-			foreach ($payment_options as $k => $v)
+			if(is_array($payment_options))
 			{
-				if (_in_array($k, $payment))
-				{
-					$payment_methods .= '<p>' . $v . '</p>';
-				}
-			}
-
-				$payment_options = unserialize($system->SETTINGS['payment_options']);
 				foreach ($payment_options as $k => $v)
 				{
 					if (_in_array($k, $payment))
@@ -446,6 +439,7 @@ switch ($_SESSION['action'])
 						$payment_methods .= '<p>' . $v . '</p>';
 					}
 				}
+			}
 
 				// category name
 				$category_string1 = get_category_string($sellcat1);
@@ -561,6 +555,7 @@ switch ($_SESSION['action'])
 		}
 
 		// payments
+		global $payment;
 		$payment_methods = '';
 		$query = "SELECT * FROM " . $DBPrefix . "gateways";
 		$res = mysql_query($query);
@@ -569,21 +564,23 @@ switch ($_SESSION['action'])
 		$gateway_list = explode(',', $gateways_data['gateways']);
 		foreach ($gateway_list as $v)
 		{
-			if ($gateways_data[$v . '_active'] == 1 && check_gateway($v))
+			if (isset($gateways_data[$v . '_active']) && $gateways_data[$v . '_active'] == 1 && check_gateway($v))
 			{
 				$v = strtolower($v);
-				$checked = (_in_array($v, $payment)) ? 'checked' : '';
+				$checked = (in_array($v, $payment)) ? '' : '';
 				$payment_methods .= '<label class="checkbox"><input type="checkbox" name="payment[]" value="' . $v . '" ' . $checked . '>' . $system->SETTINGS['gatways'][$v] . '</label>';
 			}
 		}
 
 		$payment_options = unserialize($system->SETTINGS['payment_options']);
-		foreach ($payment_options as $k => $v)
+		if(is_array($payment_options))
 		{
-			$checked = (_in_array($k, $payment)) ? 'checked' : '';
-			$payment_methods .= '<label class="checkbox"><input type="checkbox" name="payment[]" value="' . $k . '" ' . $checked . '>' . $v . '</label>';
+			foreach ($payment_options as $k => $v)
+			{
+				$checked = (_in_array($k, $payment)) ? 'checked' : '';
+				$payment_methods .= '<label class="checkbox"><input type="checkbox" name="payment[]" value="' . $k . '" ' . $checked . '>' . $v . '</label>';
+			}
 		}
-
 		// make hour
 		if ($system->SETTINGS['datesformat'] == 'USA')
 		{

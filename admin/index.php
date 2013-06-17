@@ -17,7 +17,7 @@ $current_page = 'home';
 include '../common.php';
 include $include_path . 'functions_admin.php';
 include 'loggedin.inc.php';
-$ERR;
+global $ERR;
 if (isset($_GET['action']))
 {
 	switch($_GET['action'])

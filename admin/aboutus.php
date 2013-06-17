@@ -26,7 +26,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 	// Update database
 	$query = "UPDATE ". $DBPrefix . "settings SET
 			  aboutus = '" . $_POST['aboutus'] . "',
-			  aboutustext = '" . mysql_escape_string($_POST['aboutustext']) . "'";
+			  aboutustext = '" . mysql_real_escape_string($_POST['aboutustext']) . "'";
 	$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 	$system->SETTINGS['aboutus'] = $_POST['aboutus'];
 	$system->SETTINGS['aboutustext'] = $_POST['aboutustext'];

@@ -40,13 +40,13 @@ if (isset($_GET['action']))
 		//Set the development state
 		case 'development':
 			if($system->SETTINGS['development'] == 0){
-				$query = "UPDATE `" . $DbDatabase . "`.`" . $DBPrefix . "settings` SET `development` = '1' WHERE `" . $DBPrefix . "settings`.`sitename` = 'WeBid' LIMIT 1";
+				$query = "UPDATE `" . $DbDatabase . "`.`" . $DBPrefix . "settings` SET `development` = '1' LIMIT 1";
 				$res = mysql_query($query);
 				$system->check_mysql($res, $query, __LINE__, __FILE__);
 			}
 			else
 			{
-				$query = "UPDATE `" . $DbDatabase . "`.`" . $DBPrefix . "settings` SET `development` = '0' WHERE `" . $DBPrefix . "settings`.`sitename` = 'WeBid' LIMIT 1";
+				$query = "UPDATE `" . $DbDatabase . "`.`" . $DBPrefix . "settings` SET `development` = '0' LIMIT 1";
 				$res = mysql_query($query);
 				$system->check_mysql($res, $query, __LINE__, __FILE__);
 			}
@@ -55,13 +55,13 @@ if (isset($_GET['action']))
 		//Fix or revert development number
 		case 'makecurrent':
 			if($system->SETTINGS['development'] == 1 && isset($_POST["submit"])){
-					$query = "UPDATE `" . $DbDatabase . "`.`" . $DBPrefix . "settings` SET `version` = '" . $system->SETTINGS['developmentversion'] . "' WHERE `" . $DBPrefix . "settings`.`sitename` = 'WeBid' LIMIT 1;";
+					$query = "UPDATE `" . $DbDatabase . "`.`" . $DBPrefix . "settings` SET `version` = '" . $system->SETTINGS['developmentversion'] . "' LIMIT 1;";
 					$res = mysql_query($query);
 					$system->check_mysql($res, $query, __LINE__, __FILE__);
 					$system->loadsettings();
 			}
 			if($system->SETTINGS['development'] == 1 && isset($_POST["submit_r"])){
-					$query = "UPDATE `" . $DbDatabase . "`.`" . $DBPrefix . "settings` SET `developmentversion` = '" . $system->SETTINGS['version'] . "' WHERE `" . $DBPrefix . "settings`.`sitename` = 'WeBid' LIMIT 1;";
+					$query = "UPDATE `" . $DbDatabase . "`.`" . $DBPrefix . "settings` SET `developmentversion` = '" . $system->SETTINGS['version'] . "' LIMIT 1;";
 					$res = mysql_query($query);
 					$system->check_mysql($res, $query, __LINE__, __FILE__);
 					$system->loadsettings();
@@ -72,7 +72,7 @@ if (isset($_GET['action']))
 		case 'setdevelopment':
 			if (isset($_POST["text_"])){
 				$number = $_POST["text_"];
-				$query = "UPDATE `" . $DbDatabase . "`.`" . $DBPrefix . "settings` SET `developmentversion` = '" . $number . "'WHERE `" . $DBPrefix . "settings`.`sitename` = 'WeBid' LIMIT 1";
+				$query = "UPDATE `" . $DbDatabase . "`.`" . $DBPrefix . "settings` SET `developmentversion` = '" . $number . "' LIMIT 1";
 				$res = mysql_query($query);
 				$system->check_mysql($res, $query, __LINE__, __FILE__);
 				$system->loadsettings();

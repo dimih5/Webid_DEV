@@ -1108,6 +1108,7 @@ $query[] = "CREATE TABLE `" . $DBPrefix . "groups` (
   `can_buy` int(1) NOT NULL default '0',
   `count` int(15) NOT NULL default '0',
   `auto_join` int(15) NOT NULL default '0',
+  `excludeuser` varchar(30000) NOT NULL DEFAULT '',
   PRIMARY KEY  (`id`)
 ) ;";
 
@@ -1445,6 +1446,8 @@ $query[] = "CREATE TABLE `" . $DBPrefix . "settings` (
   `siteurl` varchar(255) NOT NULL default '',
   `copyright` varchar(255) NOT NULL default '',
   `version` varchar(10) NOT NULL default '',
+  `development` INT(2) NOT NULL DEFAULT '0',
+  `developmentversion` varchar(6) NOT NULL DEFAULT '1.0.6',
   `loginbox` int(1) NOT NULL default '0',
   `newsbox` int(1) NOT NULL default '0',
   `newstoshow` int(11) NOT NULL default '0',
@@ -1465,6 +1468,8 @@ $query[] = "CREATE TABLE `" . $DBPrefix . "settings` (
   `errortext` text NOT NULL,
   `picturesgallery` int(1) NOT NULL default '0',
   `maxpictures` int(11) NOT NULL default '0',
+  `contractsmap` ENUM('y',  'n') NOT NULL DEFAULT 'y',
+  ALTER TABLE  `webid_settings` ADD  `realtimedata` ENUM('y',  'n') NOT NULL DEFAULT,
   `buy_now` int(1) NOT NULL default '1',
   `thumb_show` smallint(6) NOT NULL default '120',
   `thumb_list` smallint(6) NOT NULL default '120',
@@ -1535,7 +1540,10 @@ $query[] = "CREATE TABLE `" . $DBPrefix . "settings` (
   `autorelist` ENUM('y','n') NOT NULL default 'y',
   `autorelist_max` int(3) NOT NULL default '10',
   `invoice_yellow_line` varchar(255) NOT NULL default '',
-  `invoice_thankyou` varchar(255) NOT NULL default ''
+  `invoice_thankyou` varchar(255) NOT NULL default '',
+  `VIPemail` VARCHAR( 300 ) NOT NULL,
+  `VIPemailStatuas` ENUM('y',  'n') NOT NULL DEFAULT  'y'
+  
 );";
 
 # 

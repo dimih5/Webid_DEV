@@ -67,6 +67,10 @@
 					$_SESSION['WEBID_VIEWED_AUCTIONS'][] = $id;
 				}
 			}
+			if ($whatdoyouneed == 'auction_data')
+			{
+				return $auction_data;
+			}
 
 			// get watch item data
 			if ($user->logged_in)
@@ -616,14 +620,7 @@
 					);
 			unset($_SESSION['browse_id']);
 			session_write_close();
-			if ($whatdoyouneed == 'auction_data')
-			{
-			return $auction_data;
-			}
-			else
-			{
 			return $vararray;
-			}
 		}
 	
 ?>

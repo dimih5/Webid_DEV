@@ -1116,8 +1116,8 @@ $query[] = "CREATE TABLE `" . $DBPrefix . "groups` (
 # Dumping data for table `" . $DBPrefix . "groups`
 # 
 
-$query[] = "INSERT INTO `" . $DBPrefix . "groups` VALUES (NULL, 'Sellers', 1, 0, 0, 1);";
-$query[] = "INSERT INTO `" . $DBPrefix . "groups` VALUES (NULL, 'Buyers', 0, 1, 0, 1);";
+$query[] = "INSERT INTO `" . $DBPrefix . "groups` VALUES (NULL, 'Sellers', 1, 0, 0, 1, '');";
+$query[] = "INSERT INTO `" . $DBPrefix . "groups` VALUES (NULL, 'Buyers', 0, 1, 0, 1, '');";
 
 # ############################
 
@@ -1469,7 +1469,7 @@ $query[] = "CREATE TABLE `" . $DBPrefix . "settings` (
   `picturesgallery` int(1) NOT NULL default '0',
   `maxpictures` int(11) NOT NULL default '0',
   `contractsmap` ENUM('y',  'n') NOT NULL DEFAULT 'y',
-  ALTER TABLE  `webid_settings` ADD  `realtimedata` ENUM('y',  'n') NOT NULL DEFAULT,
+  `realtimedata` ENUM('y',  'n') NOT NULL DEFAULT 'y',
   `buy_now` int(1) NOT NULL default '1',
   `thumb_show` smallint(6) NOT NULL default '120',
   `thumb_list` smallint(6) NOT NULL default '120',
@@ -1555,6 +1555,8 @@ $query[] = "INSERT INTO `" . $DBPrefix . "settings` VALUES
 '" . $siteURL . "',
 '',
 '" . this_version() . "',
+0,
+'1.0.6',
 1,
 1,
 5,
@@ -1575,6 +1577,8 @@ $query[] = "INSERT INTO `" . $DBPrefix . "settings` VALUES
 'An unexpected error occurred. The error has been forwarded to our technical team and will be fixed shortly',
 1,
 5,
+'y',
+'',
 2,
 120,
 120,
@@ -1645,7 +1649,9 @@ $query[] = "INSERT INTO `" . $DBPrefix . "settings` VALUES
 'y',
 10,
 '',
-'Thank you for shopping with us and we hope to see you return soon!');";
+'Thank you for shopping with us and we hope to see you return soon!',
+'',
+'y');";
 
 
 # ############################
@@ -1770,7 +1776,7 @@ $query[] = "CREATE TABLE `" . $DBPrefix . "useraccounts` (
   `balance` double(8,2) NOT NULL default '0',
   `total` double(8,2) NOT NULL,
   `paid` int(1) NOT NULL default '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`useracc_id`)
 );";
 
 # 

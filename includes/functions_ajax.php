@@ -39,6 +39,7 @@ function converter_call($post_data = true, $data = array())
 	$CURRENCIES = CurrenciesList();
 
 	$conversion = ConvertCurrency($from, $to, $amount);
+	
 	// construct string
 	echo $amount . ' ' . $CURRENCIES[$from] . ' = ' . $system->print_money_nosymbol($conversion, true) . ' ' . $CURRENCIES[$to];
 }

@@ -45,9 +45,11 @@ function ConvertCurrency($FROM, $INTO, $AMOUNT)
 	$CURRENCIES = CurrenciesList();
 
 	$rate = findconversionrate($FROM, $INTO);
+	
 	if ($rate == 0)
 	{
 		$conversion = googleconvert($AMOUNT, $FROM, $INTO);
+		
 		$conversionarray[1][] = array('from' => $FROM, 'to' => $INTO, 'rate' => $conversion);
 		buildcache($conversionarray[1]);
 		return $AMOUNT * $conversion;
@@ -108,6 +110,20 @@ function findconversionrate($FROM, $INTO)
 
 function googleconvert($amount, $fromCurrency , $toCurrency)
 {
+    // Call Google API
+    $google_url = "https://www.google.com/finance/converter?a=" . $amount . "&from=" . $fromCurrency . "&to=" . $toCurrency;
+    // Get and Store API results into a variable
+    $get = file_get_contents($google_url);
+    // Parse result
+    $get = explode("<span class=bld>",$get);
+    $get = explode("</span>",$get[1]);  
+    $converted_amount = preg_replace("/[^0-9\.]/", null, $get[0]);
+    return $converted_amount;
+
+
+/*
+    // Deprecated as of Nov 2013, because of the shutdown of iGoogle
+
 	//Call Google API
 	$google_url = "http://www.google.com/ig/calculator?hl=en&q=1" . $fromCurrency . "=?" . $toCurrency;
 	//Get and Store API results into a variable
@@ -117,5 +133,6 @@ function googleconvert($amount, $fromCurrency , $toCurrency)
 	// get value
 	$converted_amount = explode(' ', $result[3]);
 	return $converted_amount[0];
+*/
 }
 ?>

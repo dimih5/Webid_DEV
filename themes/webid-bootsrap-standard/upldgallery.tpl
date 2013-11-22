@@ -18,7 +18,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <![endif]-->
 <meta charset="utf-8">
-<title>jQuery File Upload Demo</title>
+<title>{SITEURL}</title>
 <meta name="description" content="File Upload widget with multiple file selection, drag&amp;drop support, progress bars, validation and preview images, audio and video for jQuery. Supports cross-domain, chunked and resumable file uploads and client-side image resizing. Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard HTML form file uploads.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap styles -->
@@ -36,7 +36,14 @@
 </head>
 <body>
 <div class="container">
+    <div class="page-header">
+        <h1>Picture uploader</h1>
+	<blockquote>
+	<p>{MAXPICS}</p>
+	</blockquote>
+	</div>
     <form id="fileupload" action="{SITEURL}uploaded/" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="type" value="image">
         <!-- Redirect browsers with JavaScript disabled to the origin page -->
         <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->

@@ -610,13 +610,13 @@ class UploadHandler
 							fopen($uploaded_file, 'r'),
 							FILE_APPEND
 						);
-						array_push($_SESSION['UPLOADED_PICTURES'], $file->name);
+						array_push($_SESSION[$this->options['session_key']], $file->name);
 					} else {
 						move_uploaded_file($uploaded_file, $file_path);
-						if (empty($_SESSION['UPLOADED_PICTURES'])) {
-							$_SESSION['UPLOADED_PICTURES'] = array();
+						if (empty($_SESSION[$this->options['session_key']])) {
+							$_SESSION[$this->options['session_key']] = array();
 						}
-						array_push($_SESSION['UPLOADED_PICTURES'], $file->name);
+						array_push($_SESSION[$this->options['session_key']], $file->name);
 					}
 				} else {
 					// Non-multipart uploads (PUT method support)
@@ -625,7 +625,7 @@ class UploadHandler
 						fopen('php://input', 'r'),
 						$append_file ? FILE_APPEND : 0
 					);
-					array_push($_SESSION['UPLOADED_PICTURES'], $file->name);
+					array_push($_SESSION[$this->options['session_key']], $file->name);
 				}
 				$file_size = $this->get_file_size($file_path, $append_file);
 				if ($file_size === $file->size) {
@@ -846,15 +846,15 @@ class UploadHandler
 			$file_path = $this->get_upload_path($file_name);
 			$success = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
 			if ($success) {
-				$keysearch = array_search($file_name, $_SESSION['UPLOADED_PICTURES']);
-				if (array_key_exists($keysearch, $_SESSION['UPLOADED_PICTURES'])) {
-					unset ($_SESSION['UPLOADED_PICTURES'][$keysearch]);
+				$keysearch = array_search($file_name, $_SESSION[$this->options['session_key']]);
+				if (array_key_exists($keysearch, $_SESSION[$this->options['session_key']])) {
+					unset ($_SESSION[$this->options['session_key']][$keysearch]);
 				}
 				if ($file_name == $_SESSION['SELL_pict_url']) {
 					unset($_SESSION['SELL_pict_url']);
-					if (!empty($_SESSION['UPLOADED_PICTURES'])) {
-					reset($_SESSION['UPLOADED_PICTURES']);
-					$_SESSION['SELL_pict_url'] = $_SESSION['UPLOADED_PICTURES'][key($_SESSION['UPLOADED_PICTURES'])];
+					if (!empty($_SESSION[$this->options['session_key']])) {
+					reset($_SESSION[$this->options['session_key']]);
+					$_SESSION['SELL_pict_url'] = $_SESSION[$this->options['session_key']][key($_SESSION[$this->options['session_key']])];
 					$response = array(
 						$this->options['param_name'] => $this->get_file_object($_SESSION['SELL_pict_url'])
 						);

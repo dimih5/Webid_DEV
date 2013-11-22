@@ -19,5 +19,13 @@ if (!$user->is_logged_in())
 else
 {
 include $include_path . 'UploadHandler.php';
-$upload_handle = new UploadHandler($system->SETTINGS['maxuploadsize'], $system->SETTINGS['maxpictures']);
+
+$contract = isset($_POST['type']) && $_POST['type'] == 'contract';
+$options = array(
+    'upload_dir' => dirname($_SERVER['SCRIPT_FILENAME']).'/'.session_id().'/' . ($contract ? 'contracts/' : ''),
+    'session_key' => $contract ? 'UPLOADED_CONTRACTS' : 'UPLOADED_PICTURES',
+    'inline_file_types' => $contract ? '' : '/\.(gif|jpe?g|png)$/i',
+    'accept_file_types' => $contract ? '/.(pdf)$/i' : '/.(gif|jpe?g|png)$/i', // TODO: Add more filetypes
+);
+$upload_handle = new UploadHandler($system->SETTINGS['maxuploadsize'], $system->SETTINGS['maxpictures'], $options);
 }

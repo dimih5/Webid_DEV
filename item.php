@@ -21,6 +21,7 @@
  $vararray = Rebuild('');
  $template->assign_vars($vararray);
 
+ $template->assign_vars(array('B_SHOWHISTORY' => false)); // Never show history
  $template->assign_vars(array('B_USER_AUTHENTICATED' => (isset($_SESSION['WEBID_LOGGED_IN']) && $_SESSION['WEBID_LOGGED_IN'] > 0)));
 
  include 'header.php';

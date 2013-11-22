@@ -104,7 +104,7 @@ $(function(){
   <!-- IF B_HASRESERVE -->
   &nbsp;<small>{L_514}</small>
   <!-- ENDIF -->
-  <small>{L_119}: {NUMBIDS} {VIEW_HISTORY2}</small><br />
+  <small>{L_119}: {NUMBIDS}</small><br />
   <!-- ENDIF -->
   {L_023}: {SHIPPING_COST}<br />
   <small>{L_118}:

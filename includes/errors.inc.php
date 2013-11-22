@@ -20,6 +20,11 @@ if (!function_exists('MySQLError'))
 	function MySQLError($Q, $line = '', $page = '')
 	{
 		global $ERR, $system, $_SESSION;
+		
+		print_r('<pre>');
+		print_r(mysql_error());
+		print_r($Q);
+		die();
 
 		$SESSION_ERROR = $ERRMSG['001'] . "\t" . $Q . "\n\t" . mysql_error() . "\n\tpage:" . $page . " line:" . $line;
 		if (!isset($_SESSION['SESSION_ERROR']) || !is_array($_SESSION['SESSION_ERROR']))

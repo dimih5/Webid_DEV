@@ -287,6 +287,8 @@ $template->assign_vars(array(
 		'B_LOGIN_BOX' => ($system->SETTINGS['loginbox'] == 1),
 		'B_NEWS_BOX' => ($system->SETTINGS['newsbox'] == 1)
 		));
+		
+$template->assign_vars(array('B_USER_AUTHENTICATED' => (isset($_SESSION['WEBID_LOGGED_IN']) && $_SESSION['WEBID_LOGGED_IN'] > 0)));
 
 include 'header.php';
 $template->set_filenames(array(

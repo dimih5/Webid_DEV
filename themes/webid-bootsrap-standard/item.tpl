@@ -47,14 +47,14 @@ $(function(){
 <div class="row">
 <div class="span12">
 <ul class="inline pull-right" style="margin-bottom:8px;">
-  <li><small><a class="btn btn-mini" href="{SITEURL}friend.php?id={ID}"><i class="icon-user"></i> {L_106}</a></small></li>
-  <!-- IF B_CANCONTACTSELLER -->
-  <li><small><a class="btn btn-mini" href="{SITEURL}send_email.php?auction_id={ID}"><i class="icon-question-sign"></i> {L_922}</a></small> </li>
-  <!-- ENDIF -->
-  <!-- IF B_LOGGED_IN -->
-  <li><small><a class="btn btn-mini" href="{SITEURL}item_watch.php?{WATCH_VAR}={ID}"><i class="icon-eye-open"></i> {WATCH_STRING}</a></small></li>
+  <!-- IF B_USER_AUTHENTICATED -->
+      <li><small><a class="btn btn-mini" href="{SITEURL}friend.php?id={ID}"><i class="icon-user"></i> {L_106}</a></small></li>
+      <li><small><a class="btn btn-mini" href="{SITEURL}send_email.php?auction_id={ID}"><i class="icon-question-sign"></i> {L_922}</a></small> </li>
+      <li><small><a class="btn btn-mini" href="{SITEURL}item_watch.php?{WATCH_VAR}={ID}"><i class="icon-eye-open"></i> {WATCH_STRING}</a></small></li>
   <!-- ELSE -->
-  <li><small><a class="btn btn-mini" href="{SITEURL}user_login.php?"><i class="icon-eye-open"></i> {L_5202}</a></small></li>
+      <li><small><a class="btn btn-mini disabled" href="{SITEURL}user_login.php?"><i class="icon-user"></i> {L_106}</a></small></li>
+      <li><small><a class="btn btn-mini disabled" href="{SITEURL}user_login.php?"><i class="icon-question-sign"></i> {L_922}</a></small> </li>
+      <li><small><a class="btn btn-mini disabled" href="{SITEURL}user_login.php?"><i class="icon-eye-open"></i> {L_5202}</a></small></li>
   <!-- ENDIF -->
 </ul>
 <div class="clearfix"></div>
@@ -76,6 +76,13 @@ $(function(){
 <!-- ELSE -->
 <div class="span3"> <img class="img-polaroid" src="{SITEURL}/themes/{THEME}/img/no-picture-gallery.png" alt="no picture" /> </div>
 <!-- ENDIF -->
+
+
+
+<!-- IF B_USER_AUTHENTICATED -->
+
+
+
 <div class="span5">
   <h3> {TITLE} </h3>
   <!-- IF SUBTITLE ne '' -->
@@ -118,18 +125,6 @@ $(function(){
   <small>
   <!-- auction type -->
   {L_261}: {AUCTION_TYPE}<br />
-  <!-- higher bidder -->
-  <!-- IF B_HASBUYER -->
-  {L_117}:
-  <!-- BEGIN high_bidders -->
-  <!-- IF B_BIDDERPRIV -->
-  <b>{high_bidders.BUYER_NAME}</b>
-  <!-- ELSE -->
-  <a href="{SITEURL}profile.php?user_id={high_bidders.BUYER_ID}&auction_id={ID}"><b>{high_bidders.BUYER_NAME}</b></a> <b>(<a href="{SITEURL}feedback.php?id={high_bidders.BUYER_ID}&faction=show">{high_bidders.BUYER_FB}</a>)</b>
-  <!-- ENDIF -->
-  {high_bidders.BUYER_FB_ICON}<br />
-  <!-- END high_bidders -->
-  <!-- ENDIF -->
   <!-- IF QTY gt 1 -->
   {L_901}: {QTY}<br />
   <!-- ENDIF -->
@@ -223,12 +218,20 @@ $(function(){
   <!-- END questions -->
 </div>
 <!-- ENDIF -->
+
+
+<!-- ENDIF -->
+
+
 <div class="span12">
   <hr />
   <div class="row">
     <div class="span4">
       <h4>{L_724}</h4>
       <small>
+      
+      <!-- IF B_USER_AUTHENTICATED -->
+      
       <!-- IF COUNTRY ne '' or ZIP ne '' -->
       <b>{L_014}:</b> {COUNTRY} <br>
       <!-- ENDIF -->
@@ -245,9 +248,17 @@ $(function(){
       <!-- ENDIF -->
       :</b> {MINBID}<br>
       <!-- ENDIF -->
+      
+      <!-- ENDIF -->
+      
       <b>{L_111}:</b> {STARTTIME}<br>
       <b>{L_112}:</b> {ENDTIME}<br>
+      
+      <!-- IF B_USER_AUTHENTICATED -->
+      
       <b>{L_113}:</b> {ID}<br>
+      
+      <!-- ENDIF -->
       </small> </div>
     <!-- IF B_SHOWHISTORY -->
     <div class="span8">

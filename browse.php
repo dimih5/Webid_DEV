@@ -257,10 +257,11 @@ while ($row = mysql_fetch_assoc($res))
 			'CUR_CAT' => $current_cat_name,
 			//
 			'CAT_STRING' => $TPL_categories_string,
-			'NUM_AUCTIONS' => $TOTALAUCTIONS
+			'NUM_AUCTIONS' => $TOTALAUCTIONS,
 			));
 }
 
+$template->assign_vars(array('B_USER_AUTHENTICATED' => (isset($_SESSION['WEBID_LOGGED_IN']) && $_SESSION['WEBID_LOGGED_IN'] > 0)));
 include 'header.php';
 $template->set_filenames(array(
 		'body' => 'browsecats.tpl'

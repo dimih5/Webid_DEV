@@ -223,7 +223,7 @@ $MSG['041'] = "Item category";
 $MSG['043'] = "Will NOT ship internationally";
 $MSG['044'] = "Fill in your username and password and submit the form.";
 $MSG['045'] = "Users management";
-$MSG['046'] = "You can still <a href='sell.php?mode=recall'>make changes</a> to your auction";
+$MSG['046'] = "Did you enter all the information? You might not get bids if information is missing. Click <a href='sell.php?mode=recall'>here</a> to make changes your auction.";
 $MSG['047'] = " new";
 $MSG['048'] = "User Registration Fields";
 $MSG['049'] = "If you are not registered, ";

@@ -76,7 +76,7 @@ function browseItems($result, $feat_res, $total, $current_page, $extravar = '')
 			'BIDFORM' => $system->print_money($row['current_bid']),
 			'CLOSES' => ArrangeDateNoCorrection($row['ends']),
 			'NUMBIDS' => sprintf($MSG['950'], $row['num_bids']),
-			'TIMELEFT' => ($row['ends'] - time()),
+			'TIMELEFT' => $ends_string,
 			'DIVNAME' => "ending_counter" . $c,
 			
 			'B_BOLD' => ($row['bold'] == 'y')

@@ -5,8 +5,10 @@
   <tr>
     <th class="tr-image"> </th>
     <th class="tr-title"> </th>
+    <!-- IF B_USER_AUTHENTICATED -->
     <th class="tr-bids"> <small>{L_169}</small> </th>
     <th class="hidden-phone tr-bindsno"> <small>{L_170}</small> </th>
+    <!-- ENDIF -->
     <th class="tr-timeleft hidden-phone"> <small>{L_171}</small> </th>
   </tr>
   <!-- BEGIN featured_items -->
@@ -23,8 +25,10 @@
       <span class="truncate-table"> {featured_items.SUBTITLE} </span>
       <!-- ENDIF -->
     </td>
+    <!-- IF B_USER_AUTHENTICATED -->
     <td> {featured_items.BIDFORM} <em>{featured_items.BUY_NOW}</em></td>
     <td class="hidden-phone"><small>{featured_items.NUMBIDS}</small> </td>
+    <!-- ENDIF -->
     <td class="hidden-phone"><small><span class="muted">{featured_items.TIMELEFT}</span></small> </td>
   </tr>
   <!-- END featured_items -->
@@ -34,8 +38,10 @@
   <tr>
     <th class="tr-image"> </th>
     <th class="tr-title"> </th>
+    <!-- IF B_USER_AUTHENTICATED -->
     <th class="tr-bids"> <small>{L_169}</small> </th>
     <th class="hidden-phone tr-bindsno"> <small>{L_170}</small> </th>
+    <!-- ENDIF -->
     <th class="tr-timeleft  hidden-phone"> <small>{L_171}</small> </th>
   </tr>
   <!-- BEGIN items -->
@@ -53,9 +59,11 @@
       <span class="truncate-table"> {items.SUBTITLE} </span>
       <!-- ENDIF -->
     </td>
+    <!-- IF B_USER_AUTHENTICATED -->
     <td> {items.BIDFORM} <em>{items.BUY_NOW}</em> </td>
     <td  class="hidden-phone"  style="text-align:center;"><small>{items.NUMBIDS}</small> </td>
-    <td class="hidden-phone"><small><span id="{items.DIVNAME}" time="{items.TIMELEFT}" class="ending_counter"></span></small> </td>
+    <!-- ENDIF -->
+    <td class="hidden-phone"><small><span id="{items.DIVNAME}" time="{items.TIMELEFT}" class="ending_counter">{items.TIMELEFT}</span></small> </td>
   </tr>
   <!-- END items -->
 </table>

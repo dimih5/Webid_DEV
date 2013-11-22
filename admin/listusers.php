@@ -155,6 +155,7 @@ else
 	$PAGE = 1;
 }
 
+
 $_SESSION['RETURN_LIST'] = 'listusers.php';
 $_SESSION['RETURN_LIST_OFFSET'] = $PAGE;
 $PAGES = ($TOTALUSERS == 0) ? 1 : ceil($TOTALUSERS / $system->SETTINGS['perpage']);
@@ -172,6 +173,9 @@ else
 {
 	$query = "SELECT * FROM " . $DBPrefix . "users";
 }
+
+$OFFSET = $OFFSET < 0 ? 0 : $OFFSET;
+
 $query .= " ORDER BY nick"; // ordered by
 $query .= " LIMIT " . $OFFSET . ", " . $system->SETTINGS['perpage'];
 $res = mysql_query($query);

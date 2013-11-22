@@ -163,7 +163,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 
 					if ($gateway_data['authnet_active'] == 1)
 					{
-						$queryin .= ", authnet_id=" . $system->cleanvars($_POST['TPL_authnet_id']) . "', authnet_pass = '" . $system->cleanvars($_POST['TPL_authnet_pass']) . "'";
+						$queryin .= ", authnet_id='" . $system->cleanvars($_POST['TPL_authnet_id']) . "', authnet_pass = '" . $system->cleanvars($_POST['TPL_authnet_pass']) . "'";
 					}
 
 					if ($gateway_data['worldpay_active'] == 1)
@@ -173,12 +173,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 
 					if ($gateway_data['moneybookers_active'] == 1)
 					{
-						$queryin .= ", moneybookers_email=" .  $system->cleanvars($_POST['TPL_moneybookers_email']) . "'";
+						$queryin .= ", moneybookers_email='" .  $system->cleanvars($_POST['TPL_moneybookers_email']) . "'";
 					}
 
 					if (strlen($_POST['TPL_password']) > 0)
 					{
-						$querypass = "UPDATE " . $DBPrefix . "usersupdate SET  password=" . md5($MD5_PREFIX . $_POST['TPL_password']) . "'";
+						$querypass = "UPDATE " . $DBPrefix . "usersupdate SET  password='" . md5($MD5_PREFIX . $_POST['TPL_password']) . "'";
 						$res = mysql_query($querypass);
 						$system->check_mysql($res, $query, __LINE__, __FILE__);
 					}
@@ -193,7 +193,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 				{
 					$querystart = "INSERT INTO " . $DBPrefix . "usersupdate";
 					$querymiddle = "(id, email, userid, birthdate, address, city, prov, country, zip, phone, timecorrection, emailtype, nletter";
-					$queryend = " VALUES ('" . null . "', '" . $system->cleanvars($_POST['TPL_email']) . "', '" . $user->user_data['id'] . "', '" . (empty($TPL_birthdate) ? 0 : $TPL_birthdate) . "', '" . $system->cleanvars($_POST['TPL_address']) . "', '" . $system->cleanvars($_POST['TPL_city']) . "', '" . $system->cleanvars($_POST['TPL_prov']) . "', '" . $system->cleanvars($_POST['TPL_country']) . "', '" . $system->cleanvars($_POST['TPL_zip']) . "', '" . $system->cleanvars($_POST['TPL_phone']) . "', '" . $system->cleanvars($_POST['TPL_timezone']) . "', '" . $system->cleanvars($_POST['TPL_emailtype']) . "', '" . $system->cleanvars($_POST['TPL_nletter']);
+					$queryend = " VALUES (NULL, '" . $system->cleanvars($_POST['TPL_email']) . "', '" . $user->user_data['id'] . "', '" . (empty($TPL_birthdate) ? 0 : $TPL_birthdate) . "', '" . $system->cleanvars($_POST['TPL_address']) . "', '" . $system->cleanvars($_POST['TPL_city']) . "', '" . $system->cleanvars($_POST['TPL_prov']) . "', '" . $system->cleanvars($_POST['TPL_country']) . "', '" . $system->cleanvars($_POST['TPL_zip']) . "', '" . $system->cleanvars($_POST['TPL_phone']) . "', '" . $system->cleanvars($_POST['TPL_timezone']) . "', '" . $system->cleanvars($_POST['TPL_emailtype']) . "', '" . $system->cleanvars($_POST['TPL_nletter']);
 
 					if ($gateway_data['paypal_active'] == 1)
 					{
@@ -227,12 +227,13 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 
 					if (strlen($_POST['TPL_password']) > 0)
 					{
-						$querypass = "UPDATE " . $DBPrefix . "usersupdate SET  password=" . md5($MD5_PREFIX . $_POST['TPL_password']) . "'";
+						$querypass = "UPDATE " . $DBPrefix . "usersupdate SET  password='" . md5($MD5_PREFIX . $_POST['TPL_password']) . "'";
 						$res = mysql_query($querypass);
 						$system->check_mysql($res, $querypass, __LINE__, __FILE__);
 					}
 
 					$query = $querystart . $querymiddle . ") " . $queryend . "')";
+					
 					$res = mysql_query($query);
 					$system->check_mysql($res, $query, __LINE__, __FILE__);
 					$ERR .= '<br/>' . $MSG['183'];
@@ -248,7 +249,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 			'C_NAME' => $USER['name']
 			));
 			$emailer->email_uid = $USER['id'];
-			$emailer->email_sender('maikel@qbil.nl', 'admin_user_changes_mail.inc.php', $system->SETTINGS['sitename'] . ' ' . 'User changed');
+			$emailer->email_sender($system->SETTINGS['adminmail'], 'admin_user_changes_mail.inc.php', $system->SETTINGS['sitename'] . ' ' . 'User changed');
+            
 		}
 	}
 	else

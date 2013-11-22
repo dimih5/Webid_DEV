@@ -548,7 +548,7 @@ function updatefee(newfee) {
       </tr>
       <!-- ENDIF -->
     </table>
-    <div class="alert alert-info">{L_264}<a href="{SITEURL}sell.php?mode=recall">{L_265}</a>{L_266}</div>
+    <div class="alert alert-info">{L_046}</div>
     <div class="form-actions">
       <input type="hidden" value="4" name="action">
       <input type="submit" name="" value="{L_2__0037}" class="btn btn-primary">

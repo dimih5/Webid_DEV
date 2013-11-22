@@ -77,6 +77,12 @@ setvars();
 if (isset($_GET['mode']) && $_GET['mode'] == 'recall')
 	$_SESSION['action'] = 1;
 
+/*
+print_r('<pre>');
+print_r($_SESSION);
+die();
+*/
+
 switch ($_SESSION['action'])
 {
 	case 4: // finalise auction (submit to db)
@@ -97,6 +103,7 @@ switch ($_SESSION['action'])
 		}
 		else
 		{
+		    
 			// clean up sell description
 			$conf = array();
 			$conf['safe'] = 1;

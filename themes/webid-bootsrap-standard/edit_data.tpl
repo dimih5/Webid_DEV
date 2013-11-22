@@ -63,7 +63,7 @@
         <label>{L_010}</label>
         <input  class="span4" type="text" name="TPL_city" size=25 maxlength=25 value="{CITY}">
         <label>{L_011}</label>
-        <input  class="span4" type="text" name="TPL_prov" size=10 maxlength=10 value="{PROV}">
+        <input  class="span4" type="text" name="TPL_prov" size=20 maxlength=20 value="{PROV}">
       </div>
       <div class="span4">
         <label>{L_014}</label>

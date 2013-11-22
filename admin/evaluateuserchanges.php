@@ -37,11 +37,14 @@ $system->check_mysql($res, $query, __LINE__, __FILE__);
 $user_data = mysql_fetch_assoc($res);
 //
 
+
+/*
 if (isset($_POST['action']) && $_POST['action'] == $MSG['030'])
 {
 	if ($_POST['mode'] == 'approve')
 	{
-		$query = "UPDATE " . $DBPrefix . "usersupdate SET 
+*/
+		$query = "UPDATE " . $DBPrefix . "users SET 
 					email='" . $update_data['email']  . "', 
 					birthdate='" . $update_data['birthdate'] . "', 
 					address='" . $update_data['address'] . "',
@@ -57,21 +60,23 @@ if (isset($_POST['action']) && $_POST['action'] == $MSG['030'])
 					$query .= ", authnet_id='" . $update_data['authnet_id'] . "', authnet_pass = '" . $update_data['authnet_pass'] . "'";
 					$query .= ", worldpay_id='" . $update_data['worldpay_id'] . "'";
 					$query .= ", moneybookers_email='" . $update_data['moneybookers_email'] . "'";
-					$query .= ", toocheckout_id='" . $update_data['toocheckout_id'] . "' WHERE userid = " . $_POST['id'];
+					$query .= ", toocheckout_id='" . $update_data['toocheckout_id'] . "' WHERE id = " . $_GET['id'];
 		$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-				$query = "DELETE FROM " . $DBPrefix . "usersupdate WHERE userid=" . $_POST['id'];
+				$query = "DELETE FROM " . $DBPrefix . "usersupdate WHERE userid=" . $_GET['id'];
 		$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 
 		include $include_path . 'email_user_approved.php';
-	}
+/* 	} */
 	header('location: listusers.php?PAGE=' . intval($_POST['offset']));
 	exit;
+/*
 }
 elseif (isset($_POST['action']) && $_POST['action'] == $MSG['029'])
 {
-	header('location: listusers.php?PAGE=' . intval($_POST['offset']));
-	exit;
+	header('location: listusers.php?PAGE=' . intval($_POST['offset']));	
+    exit;
 }
+*/
 
 // load the page
 $birth_day = substr($update_data['birthdate'], 6, 2);

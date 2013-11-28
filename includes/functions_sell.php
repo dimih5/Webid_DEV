@@ -34,6 +34,7 @@ function setvars()
 	global $with_reserve, $reserve_price, $minimum_bid, $pict_url, $contr_url, $imgtype, $title, $subtitle, $description, $atype, $iquantity, $buy_now, $buy_now_price, $is_taxed, $tax_included, $additional_shipping_cost;
 	global $duration, $relist, $increments, $customincrement, $shipping, $shipping_terms, $payment, $international, $sellcat1, $sellcat2, $buy_now_only, $a_starts, $shipping_cost, $is_bold, $is_highlighted, $is_featured, $start_now;
 	global $_POST, $_SESSION, $system, $invited_emails, $extra_message;
+	global $contract_products, $contract_specs_brands, $contract_quantity, $contract_price_unit, $contract_currency, $contract_amount, $contract_origin, $contract_packing, $contract_incoterms, $contract_delivery_dates, $contract_delivery_address, $contract_delivery_details, $contract_payment_condition, $contract_remarks_disclaimers;
 
 	$with_reserve = (isset($_POST['with_reserve'])) ? $_POST['with_reserve'] : $_SESSION['SELL_with_reserve'];
 	$reserve_price = (isset($_POST['reserve_price'])) ? $_POST['reserve_price'] : $_SESSION['SELL_reserve_price'];
@@ -89,13 +90,29 @@ function setvars()
 		$tax_included = (isset($_POST['tax_included'])) ? 'y' : 'n';
 		$payment = (isset($_POST['payment'])) ? $payment : array();
 	}
+	
+	$contract_products = (isset($_POST['contract_products'])) ? $_POST['contract_products'] : $_SESSION['contract_products'];
+	$contract_specs_brands = (isset($_POST['contract_specs_brands'])) ? $_POST['contract_specs_brands'] : $_SESSION['contract_specs_brands'];
+	$contract_quantity = (isset($_POST['contract_quantity'])) ? $_POST['contract_quantity'] : $_SESSION['contract_quantity'];
+	$contract_price_unit = (isset($_POST['contract_price_unit'])) ? $_POST['contract_price_unit'] : $_SESSION['contract_price_unit'];
+    $contract_currency = (isset($_POST['contract_currency'])) ? $_POST['contract_currency'] : $_SESSION['contract_currency']; // ?
+    $contract_amount = (isset($_POST['contract_amount'])) ? $_POST['contract_amount'] : $_SESSION['contract_amount'];
+    $contract_origin = (isset($_POST['contract_origin'])) ? $_POST['contract_origin'] : $_SESSION['contract_origin'];
+    $contract_packing = (isset($_POST['contract_packing'])) ? $_POST['contract_packing'] : $_SESSION['contract_packing'];
+    $contract_incoterms = (isset($_POST['contract_incoterms'])) ? $_POST['contract_incoterms'] : $_SESSION['contract_incoterms'];
+    $contract_delivery_dates = (isset($_POST['contract_delivery_dates'])) ? $_POST['contract_delivery_dates'] : $_SESSION['contract_delivery_dates'];
+    $contract_delivery_address = (isset($_POST['contract_delivery_address'])) ? $_POST['contract_delivery_address'] : $_SESSION['contract_delivery_address'];
+    $contract_delivery_details = (isset($_POST['contract_delivery_details'])) ? $_POST['contract_delivery_details'] : $_SESSION['contract_delivery_details'];
+    $contract_payment_condition = (isset($_POST['contract_payment_condition'])) ? $_POST['contract_payment_condition'] : $_SESSION['contract_payment_condition'];
+    $contract_remarks_disclaimers = (isset($_POST['contract_remarks_disclaimers'])) ? $_POST['contract_remarks_disclaimers'] : $_SESSION['contract_remarks_disclaimers'];
 }
 
 function makesessions()
 {
 	global $with_reserve, $reserve_price, $minimum_bid, $pict_url, $contr_url, $imgtype, $title, $subtitle, $description, $atype, $iquantity, $buy_now, $buy_now_price, $is_taxed, $tax_included, $additional_shipping_cost;
 	global $duration, $relist, $increments, $customincrement, $shipping, $shipping_terms, $payment, $international, $sendemail, $buy_now_only, $a_starts, $shipping_cost, $is_bold, $is_highlighted, $is_featured, $start_now, $_SESSION, $invited_emails, $extra_message;
-
+	global $contract_products, $contract_specs_brands, $contract_quantity, $contract_price_unit, $contract_currency, $contract_amount, $contract_origin, $contract_packing, $contract_incoterms, $contract_delivery_dates, $contract_delivery_address, $contract_delivery_details, $contract_payment_condition, $contract_remarks_disclaimers;
+	
 	$_SESSION['SELL_with_reserve'] = $with_reserve;
 	$_SESSION['SELL_reserve_price'] = $reserve_price;
 	$_SESSION['SELL_minimum_bid'] = $minimum_bid;
@@ -129,6 +146,21 @@ function makesessions()
 	$_SESSION['SELL_invited_emails'] = $invited_emails;
 	$_SESSION['SELL_is_taxed'] = $is_taxed;
 	$_SESSION['SELL_tax_included'] = $tax_included;
+	
+    $_SESSION['SELL_contract_products'] = $contract_products;
+    $_SESSION['SELL_contract_specs_brands'] = $contract_specs_brands;
+    $_SESSION['SELL_contract_quantity'] = $contract_quantity;
+    $_SESSION['SELL_contract_price_unit'] = $contract_price_unit;
+    $_SESSION['SELL_contract_currency'] = $contract_currency;
+    $_SESSION['SELL_contract_amount'] = $contract_amount;
+    $_SESSION['SELL_contract_origin'] = $contract_origin;
+    $_SESSION['SELL_contract_packing'] = $contract_packing;
+    $_SESSION['SELL_contract_incoterms'] = $contract_incoterms;
+    $_SESSION['SELL_contract_delivery_dates'] = $contract_delivery_dates;
+    $_SESSION['SELL_contract_delivery_address'] = $contract_delivery_address;
+    $_SESSION['SELL_contract_delivery_details'] = $contract_delivery_details;
+    $_SESSION['SELL_contract_payment_condition'] = $contract_payment_condition;
+    $_SESSION['SELL_contract_remarks_disclaimers'] = $contract_remarks_disclaimers;
 }
 
 function unsetsessions()
@@ -171,6 +203,21 @@ function unsetsessions()
 	$_SESSION['SELL_extra_message'] = '';
 	$_SESSION['SELL_is_taxed'] = 'n';
 	$_SESSION['SELL_tax_included'] = 'y';
+	
+	$_SESSION['SELL_contract_products'] = '';
+    $_SESSION['SELL_contract_specs_brands'] = '';
+    $_SESSION['SELL_contract_quantity'] = '';
+    $_SESSION['SELL_contract_price_unit'] = '';
+    $_SESSION['SELL_contract_currency'] = '';
+    $_SESSION['SELL_contract_amount'] = '';
+    $_SESSION['SELL_contract_origin'] = '';
+    $_SESSION['SELL_contract_packing'] = '';
+    $_SESSION['SELL_contract_incoterms'] = '';
+    $_SESSION['SELL_contract_delivery_dates'] = '';
+    $_SESSION['SELL_contract_delivery_address'] = '';
+    $_SESSION['SELL_contract_delivery_details'] = '';
+    $_SESSION['SELL_contract_payment_condition'] = '';
+    $_SESSION['SELL_contract_remarks_disclaimers'] = '';
 }
 
 function updateauction($type)
@@ -215,6 +262,24 @@ function updateauction($type)
 		tax = '" . $_SESSION['SELL_is_taxed'] . "',
 		taxinc = '" . $_SESSION['SELL_tax_included'] . "',
 		current_fee = current_fee + " . $fee;
+		
+	    // Add contract information if needed
+		if($_SESSION['SELL_contract_products']) $query .= ', contract_products = "' . $_SESSION['SELL_contract_products'] . '"';	
+		if($_SESSION['SELL_contract_specs_brands']) $query .= ', contract_specs_brands = "' . $_SESSION['SELL_contract_specs_brands'] . '"';
+		if($_SESSION['SELL_contract_quantity']) $query .= ', contract_quantity = "' . $_SESSION['SELL_contract_quantity'] . '"';
+		if($_SESSION['SELL_contract_price_unit']) $query .= ', contract_price_unit = "' . $_SESSION['SELL_contract_price_unit'] . '"';
+		if($_SESSION['SELL_contract_currency']) $query .= ', contract_currency = "' . $_SESSION['SELL_contract_currency'] . '"';
+		if($_SESSION['SELL_contract_amount']) $query .= ', contract_amount = "' . $_SESSION['SELL_contract_amount'] . '"';
+		if($_SESSION['SELL_contract_origin']) $query .= ', contract_origin = "' . $_SESSION['SELL_contract_origin'] . '"';
+		if($_SESSION['SELL_contract_packing']) $query .= ', contract_packing = "' . $_SESSION['SELL_contract_packing'] . '"';
+		if($_SESSION['SELL_contract_incoterms']) $query .= ', contract_incoterms = "' . $_SESSION['SELL_contract_incoterms'] . '"';
+		if($_SESSION['SELL_contract_delivery_dates']) $query .= ', contract_delivery_dates = "' . $_SESSION['SELL_contract_delivery_dates'] . '"';
+		if($_SESSION['SELL_contract_delivery_address']) $query .= ', contract_delivery_address = "' . $_SESSION['SELL_contract_delivery_address'] . '"';
+		if($_SESSION['SELL_contract_delivery_details']) $query .= ', contract_delivery_details = "' . $_SESSION['SELL_contract_delivery_details'] . '"';
+		if($_SESSION['SELL_contract_payment_condition']) $query .= ', contract_payment_condition = "' . $_SESSION['SELL_contract_payment_condition'] . '"';
+		if($_SESSION['SELL_contract_remarks_disclaimers']) $query .= ', contract_remarks_disclaimers = "' . $_SESSION['SELL_contract_remarks_disclaimers'] . '"';
+
+		
 		$query .= $extraquery;
 		$query .= " WHERE id = " . $_SESSION['SELL_auction_id'];
 	return $query;
@@ -228,8 +293,110 @@ function addauction()
 	$min_bid = $system->input_money(($_SESSION['SELL_buy_now_only'] == 'n') ? $_SESSION['SELL_minimum_bid'] : $_SESSION['SELL_buy_now_price']);
 	$reserve_price = $system->input_money(($_SESSION['SELL_with_reserve'] == 'yes') ? $_SESSION['SELL_reserve_price'] : 0);
 	$bn_price = $system->input_money(($_SESSION['SELL_with_buy_now'] == 'yes') ? $_SESSION['SELL_buy_now_price'] : 0);
-	return "INSERT INTO " . $DBPrefix . "auctions (user,title,subtitle,starts,description,pict_url,contr_url,category,secondcat,minimum_bid,shipping_cost,shipping_cost_additional,reserve_price,buy_now,auction_type,duration,increment,shipping,payment,international,ends,photo_uploaded,quantity,relist,shipping_terms,bn_only,bold,highlighted,featured,current_fee,tax,taxinc,conditions) VALUES
-	(" . $user->user_data['id'] . ", '" . $system->cleanvars($_SESSION['SELL_title']) . "', '" . $system->cleanvars($_SESSION['SELL_subtitle']) . "', '" .  $a_starts . "', '" . addslashes($_SESSION['SELL_description']) . "', '" . $system->cleanvars($_SESSION['SELL_pict_url']) . "',  '" . $system->cleanvars($_SESSION['SELL_contr_url']) . "', " . $_SESSION['SELL_sellcat1'] . ", " . intval($_SESSION['SELL_sellcat2']) . ", '" . $min_bid . "', '" . $system->input_money($_SESSION['SELL_shipping_cost']) . "', '" . $system->input_money($_SESSION['SELL_additional_shipping_cost']) . "', '" . $reserve_price . "', '" . $bn_price . "', '" . $_SESSION['SELL_atype'] . "', '" . $_SESSION['SELL_duration'] . "', '" . $system->input_money($_SESSION['SELL_customincrement']) . "', '" . $_SESSION['SELL_shipping'] . "', '" . $payment_text . "', " . (($_SESSION['SELL_international']) ? 1 : 0) . ", '" . $a_ends . "', " . (($_SESSION['SELL_file_uploaded']) ? 1 : 0) . ", " . $_SESSION['SELL_iquantity'] . ", " . intval($_SESSION['SELL_relist']) . ", '" . $system->cleanvars($_SESSION['SELL_shipping_terms']) . "', '" . $_SESSION['SELL_buy_now_only'] . "', '" . $_SESSION['SELL_is_bold'] . "', '" . $_SESSION['SELL_is_highlighted'] . "', '" . $_SESSION['SELL_is_featured'] . "', " . $fee . ", '" . $_SESSION['SELL_is_taxed'] . "', '" . $_SESSION['SELL_tax_included'] . "', '" . $user->getActiveConditions() . "')";
+	$query =  
+        "INSERT INTO " . $DBPrefix . "auctions (
+            user,
+	        title,
+	        subtitle,
+	        starts,
+	        description,
+	        pict_url,
+	        contr_url,
+	        category,
+	        secondcat,
+	        minimum_bid,
+	        shipping_cost,
+	        shipping_cost_additional,
+	        reserve_price,
+	        buy_now,
+	        auction_type,
+	        duration,
+	        increment,
+	        shipping,
+	        payment,
+	        international,
+	        ends,
+	        photo_uploaded,
+	        quantity,
+	        relist,
+	        shipping_terms,
+	        bn_only,
+	        bold,
+	        highlighted,
+	        featured,
+	        current_fee,
+	        tax,
+	        taxinc,
+	        conditions";
+	        
+	        if($_SESSION['SELL_contract_products']) $query .= ', contract_products';	
+    		if($_SESSION['SELL_contract_specs_brands']) $query .= ', contract_specs_brands';
+    		if($_SESSION['SELL_contract_quantity']) $query .= ', contract_quantity';
+    		if($_SESSION['SELL_contract_price_unit']) $query .= ', contract_price_unit';
+    		if($_SESSION['SELL_contract_currency']) $query .= ', contract_currency';
+    		if($_SESSION['SELL_contract_amount']) $query .= ', contract_amount';
+    		if($_SESSION['SELL_contract_origin']) $query .= ', contract_origin';
+    		if($_SESSION['SELL_contract_packing']) $query .= ', contract_packing';
+    		if($_SESSION['SELL_contract_incoterms']) $query .= ', contract_incoterms';
+    		if($_SESSION['SELL_contract_delivery_dates']) $query .= ', contract_delivery_dates';
+    		if($_SESSION['SELL_contract_delivery_address']) $query .= ', contract_delivery_address';
+    		if($_SESSION['SELL_contract_delivery_details']) $query .= ', contract_delivery_details';
+    		if($_SESSION['SELL_contract_payment_condition']) $query .= ', contract_payment_condition';
+    		if($_SESSION['SELL_contract_remarks_disclaimers']) $query .= ', contract_remarks_disclaimers';
+    		
+    $query .= "
+        ) VALUES (" . 
+            $user->user_data['id'] .
+            ",  '" . $system->cleanvars($_SESSION['SELL_title']) . "'" .
+            ", '" . $system->cleanvars($_SESSION['SELL_subtitle']) . "'" .
+            ", '" .  $a_starts . "', '" . addslashes($_SESSION['SELL_description']) . "'" .
+            ", '" . $system->cleanvars($_SESSION['SELL_pict_url']) . "'" .
+            ", '" . $system->cleanvars($_SESSION['SELL_contr_url']) . "'" .
+            ",  " . $_SESSION['SELL_sellcat1'] . "" .
+            ",   " . intval($_SESSION['SELL_sellcat2']) . "" .
+            ",  '" . $min_bid . "'" .
+            ", '" . $system->input_money($_SESSION['SELL_shipping_cost']) . "'" .
+            ", '" . $system->input_money($_SESSION['SELL_additional_shipping_cost']) . "'" .
+            ", '" . $reserve_price . "'" .
+            ", '" . $bn_price . "'" .
+            ", '" . $_SESSION['SELL_atype'] . "'" .
+            ", '" . $_SESSION['SELL_duration'] . "'" .
+            ", '" . $system->input_money($_SESSION['SELL_customincrement']) . "'" .
+            ", '" . $_SESSION['SELL_shipping'] . "'" .
+            ", '" . $payment_text . "'" .
+            ",  " . (($_SESSION['SELL_international']) ? 1 : 0) . "" .
+            ",  '" . $a_ends . "'" .
+            ",  " . (($_SESSION['SELL_file_uploaded']) ? 1 : 0) . "" .
+            ",   " . $_SESSION['SELL_iquantity'] . "" .
+            ",   " . intval($_SESSION['SELL_relist']) . "" .
+            ",  '" . $system->cleanvars($_SESSION['SELL_shipping_terms']) . "'" .
+            ", '" . $_SESSION['SELL_buy_now_only'] . "'" .
+            ", '" . $_SESSION['SELL_is_bold'] . "'" .
+            ", '" . $_SESSION['SELL_is_highlighted'] . "'" .
+            ", '" . $_SESSION['SELL_is_featured'] . "'" .
+            ",  " . $fee . "" .
+            ",  '" . $_SESSION['SELL_is_taxed'] . "'" .
+            ", '" . $_SESSION['SELL_tax_included'] . "'" .
+            ", '" . $user->getActiveConditions() . "'";
+    
+    if($_SESSION['SELL_contract_products']) $query .= ', "' . $_SESSION['SELL_contract_products'] . '"';	
+	if($_SESSION['SELL_contract_specs_brands']) $query .= ', "' . $_SESSION['SELL_contract_specs_brands'] . '"';
+	if($_SESSION['SELL_contract_quantity']) $query .= ', "' . $_SESSION['SELL_contract_quantity'] . '"';
+	if($_SESSION['SELL_contract_price_unit']) $query .= ', "' . $_SESSION['SELL_contract_price_unit'] . '"';
+	if($_SESSION['SELL_contract_currency']) $query .= ', "' . $_SESSION['SELL_contract_currency'] . '"';
+	if($_SESSION['SELL_contract_amount']) $query .= ', "' . $_SESSION['SELL_contract_amount'] . '"';
+	if($_SESSION['SELL_contract_origin']) $query .= ', "' . $_SESSION['SELL_contract_origin'] . '"';
+	if($_SESSION['SELL_contract_packing']) $query .= ', "' . $_SESSION['SELL_contract_packing'] . '"';
+	if($_SESSION['SELL_contract_incoterms']) $query .= ', "' . $_SESSION['SELL_contract_incoterms'] . '"';
+	if($_SESSION['SELL_contract_delivery_dates']) $query .= ', "' . $_SESSION['SELL_contract_delivery_dates'] . '"';
+	if($_SESSION['SELL_contract_delivery_address']) $query .= ', "' . $_SESSION['SELL_contract_delivery_address'] . '"';
+	if($_SESSION['SELL_contract_delivery_details']) $query .= ', "' . $_SESSION['SELL_contract_delivery_details'] . '"';
+	if($_SESSION['SELL_contract_payment_condition']) $query .= ', "' . $_SESSION['SELL_contract_payment_condition'] . '"';
+	if($_SESSION['SELL_contract_remarks_disclaimers']) $query .= ', "' . $_SESSION['SELL_contract_remarks_disclaimers'] . '"';
+    		
+    $query .= ")";
+        
+    return $query;
 }
 
 function addoutstanding()

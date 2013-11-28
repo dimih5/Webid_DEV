@@ -103,7 +103,6 @@ switch ($_SESSION['action'])
 		}
 		else
 		{
-		    
 			// clean up sell description
 			$conf = array();
 			$conf['safe'] = 1;
@@ -693,6 +692,15 @@ switch ($_SESSION['action'])
 		}
 		$relist_options .= '</select>';
 
+        $query = "SELECT * FROM " . $DBPrefix . "rates";
+        $res = mysql_query($query);
+        $system->check_mysql($res, $query, __LINE__, __FILE__);
+        $contract_currency_list = '';
+        while($rates_data = mysql_fetch_assoc($res)) {
+            $selected = $rates_data['symbol'] == $contract_currency ? 'selected' : '';
+            $contract_currency_list .= '<option value="'.$rates_data['symbol'].'" ' . $selected . '>'.$rates_data['symbol'].'</option>';   
+        }
+
 		$template->assign_vars(array(
 				'TITLE' => $MSG['028'],
 				'ERROR' => ($ERR == 'ERR_') ? '' : $ERR,
@@ -772,7 +780,25 @@ switch ($_SESSION['action'])
 				'B_MKHIGHLIGHT' => ($system->SETTINGS['ao_hi_enabled'] == 'y'),
 				'B_FEES' => ($system->SETTINGS['fees'] == 'y'),
 				'B_SUBTITLE' => ($system->SETTINGS['subtitle'] == 'y'),
-				'B_AUTORELIST' => ($system->SETTINGS['autorelist'] == 'y')
+				'B_AUTORELIST' => ($system->SETTINGS['autorelist'] == 'y'),
+				
+				
+				
+				'CONTRACT_PRODUCTS'                 => $contract_products,
+				'CONTRACT_SPECS_BRANDS'             => $contract_specs_brands,
+				'CONTRACT_QUANTITY'                 => $contract_quantity,
+				'CONTRACT_PRICE_UNIT'               => $system->print_money_nosymbol($contract_price_unit, false),
+				'CONTRACT_CURRENCY'                 => $contract_currency,
+				'CONTRACT_AMOUNT'                   => $system->print_money_nosymbol($contract_amount, false),
+				'CONTRACT_ORIGIN'                   => $contract_origin,
+				'CONTRACT_PACKING'                  => $contract_packing,
+				'CONTRACT_INCOTERMS'                => $contract_incoterms,
+				'CONTRACT_DELIVERY_DATES'           => $contract_delivery_dates,
+				'CONTRACT_DELIVERY_ADDRESS'         => $contract_delivery_address,
+				'CONTRACT_DELIVERY_DETAILS'         => $contract_delivery_details,
+				'CONTRACT_PAYMENT_CONDITION'        => $contract_payment_condition,
+				'CONTRACT_REMARKS_DISCLAIMERS'      => $contract_remarks_disclaimers,
+				'CONTRACT_CURRENCY_LIST'            => $contract_currency_list
 				));
 		break;
 	}

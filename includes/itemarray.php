@@ -540,6 +540,7 @@
 			elseif ($auction_data['shipping'] == 3)
 				$shipping = $MSG['867'];
 				
+				
 			$vararray = array(
 					'ID' => $auction_data['id'],
 					'TITLE' => $auction_data['title'],
@@ -618,7 +619,23 @@
 					'B_COUNTDOWN' => ($system->SETTINGS['hours_countdown'] > (($ends - time()) / 3600)),
 					'B_HAS_QUESTIONS' => ($num_questions > 0),
 					'B_CAN_BUY' => $user->can_buy && !($start > time()),
-					'B_SHOWENDTIME' => $showendtime
+					'B_SHOWENDTIME' => $showendtime,
+					
+					'CONTRACT_PRODUCTS'                 => $auction_data['contract_products'],
+    				'CONTRACT_SPECS_BRANDS'             => $auction_data['contract_specs_brands'],
+    				'CONTRACT_QUANTITY'                 => $auction_data['contract_quantity'],
+    				'CONTRACT_PRICE_UNIT'               => $auction_data['contract_price_unit'],
+    				'CONTRACT_CURRENCY'                 => $auction_data['contract_currency'],
+    				'CONTRACT_AMOUNT'                   => $auction_data['contract_amount'],
+    				'CONTRACT_ORIGIN'                   => $auction_data['contract_origin'],
+    				'CONTRACT_PACKING'                  => $auction_data['contract_packing'],
+    				'CONTRACT_INCOTERMS'                => $auction_data['contract_incoterms'],
+    				'CONTRACT_DELIVERY_DATES'           => $auction_data['contract_delivery_dates'],
+    				'CONTRACT_DELIVERY_ADDRESS'         => $auction_data['contract_delivery_address'],
+    				'CONTRACT_DELIVERY_DETAILS'         => $auction_data['contract_delivery_details'],
+    				'CONTRACT_PAYMENT_CONDITION'        => $auction_data['contract_payment_condition'],
+    				'CONTRACT_REMARKS_DISCLAIMERS'      => $auction_data['contract_remarks_disclaimers']
+    				
 					);
 			unset($_SESSION['browse_id']);
 			session_write_close();

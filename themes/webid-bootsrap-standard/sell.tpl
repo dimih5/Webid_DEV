@@ -234,85 +234,87 @@ function updatefee(newfee) {
         <div class="control-group">
             <label class="control-label">Product(s)</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_producs" id="contract_producs" value="">
+                <input type="text" size="10" name="contract_products" id="contract_products" value="{CONTRACT_PRODUCTS}">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Specifications & Brand(s)</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_specs_brands" id="contract_specs_brands" value="">
+                <textarea name="contract_specs_brands" id="contract_specs_brands" rows="3" cols="34">{CONTRACT_SPECS_BRANDS}</textarea>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Quantity</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_quantity" id="contract_quantity" value="">
+                <input type="text" size="10" name="contract_quantity" id="contract_quantity" value="{CONTRACT_QUANTITY}">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Price per unit</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_price_unit" id="contract_price_unit" value="">
+                <input type="text" size="10" name="contract_price_unit" id="contract_price_unit" value="{CONTRACT_PRICE_UNIT}">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Currency</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_currency" id="contract_currency" value="">
+                <select class="span5" name="contract_currency" id="contract_currency">
+				    {CONTRACT_CURRENCY_LIST}
+                </select>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Total Amount</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_amount" id="contract_amount" value="">
+                <input type="text" size="10" name="contract_amount" id="contract_amount" value="{CONTRACT_AMOUNT}">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Origin</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_origin" id="contract_origin" value="">
+                <input type="text" size="10" name="contract_origin" id="contract_origin" value="{CONTRACT_ORIGIN}">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Packing</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_packing" id="contract_packing" value="">
+                <textarea name="contract_packing" rows="3" cols="34">{CONTRACT_PACKING}</textarea>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Incoterms</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_incoterms" id="contract_incoterms" value="">
+                <textarea name="contract_incoterms" rows="3" cols="34">{CONTRACT_INCOTERMS}</textarea>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Delivery Date(s)</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_delivery_dates" id="contract_delivery_dates" value="">
+                <textarea name="contract_delivery_dates" rows="3" cols="34">{CONTRACT_DELIVERY_DATES}</textarea>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Delivery Address</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_delivery_address" id="contract_delivery_address" value="">
+                <textarea name="contract_delivery_address" rows="3" cols="34">{CONTRACT_DELIVERY_ADDRESS}</textarea>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Delivery Details</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_delivery_details" id="contract_delivery_details" value="">
+                <textarea name="contract_delivery_details" rows="3" cols="34">{CONTRACT_DELIVERY_DETAILS}</textarea>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Payment Condition</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_payment_condition" id="contract_payment_condition" value="">
+                <textarea name="contract_payment_condition" rows="3" cols="34">{CONTRACT_PAYMENT_CONDITION}</textarea>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Remarks & Disclaimers</label>
             <div class="controls">
-                <input type="text" size="10" name="contract_remarks_disclaimenrs" id="contract_remakrs_disclaimers" value="">
+                <textarea name="contract_remarks_disclaimers" rows="3" cols="34">{CONTRACT_REMARKS_DISCLAIMERS}</textarea>
             </div>
         </div>
     </div>

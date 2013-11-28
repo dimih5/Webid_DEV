@@ -1,4 +1,4 @@
-<div class="span11">
+<div class="span13">
 	<ul id="webticker" >
 
 <!-- BEGIN companyticker -->

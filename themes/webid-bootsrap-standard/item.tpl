@@ -184,23 +184,153 @@ $(document).ready(function () {
   <hr />
   <h3>{L_018}</h3>
   {AUCTION_DESCRIPTION} </div>
-<!-- IF B_HASCONTRACTS -->
 
-		<div class="span12">
-				<hr />
-			<a name="contracts"></a><h3>{L_CM_2026_0002}</h3>
-		<div class="table2" style="text-align:center; overflow-y:auto;" id="contracts">
+
+	<div class="span12">
+		<hr />
+		<a name="contracts"></a><h3>{L_CM_2026_0002}</h3>
+		<div class="table2" style="text-align: left; overflow-y:auto;" id="contracts">
 		<table>
+<!-- IF B_HASCONTRACTS -->
 			<tr>
 				<td>
-				<a href="{SITEURL}{UPLOADEDPATH}download.php?file={SITEURL}{CONTR_URL}&filename=AUCTION_{TITLE}_AUCTION_ID_{ID}" >{L_CM_2026_0003}
-				</a>
+    				<a href="{SITEURL}{UPLOADEDPATH}download.php?file={SITEURL}{CONTR_URL}&filename=AUCTION_{TITLE}_AUCTION_ID_{ID}" >{L_CM_2026_0003}</a>
 				</td>
 			</tr>
+<!-- ELSE -->
+			<tr>
+				<th>
+	    			Product(s):
+				</th>
+				<td>
+				    {CONTRACT_PRODUCTS}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Specifications & Brand(s):
+				</th>
+				<td>
+				    {CONTRACT_SPECS_BRANDS}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Quantity:
+				</th>
+				<td>
+				    {CONTRACT_QUANTITY}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Price per unit:
+				</th>
+				<td>
+				    {CONTRACT_PRICE_UNIT}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Currency:
+				</th>
+				<td>
+				    {CONTRACT_CURRENCY}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Total Amount:
+				</th>
+				<td>
+				    {CONTRACT_AMOUNT}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Origin:
+				</th>
+				<td>
+				    {CONTRACT_ORIGIN}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Packing:
+				</th>
+				<td>
+				    {CONTRACT_PACKING}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Incoterms:
+				</th>
+				<td>
+				    {CONTRACT_INCOTERMS}
+				</td>
+				
+			</tr>            
+            <tr>
+				<th>
+	    			Delivery date(s):
+				</th>
+				<td>
+				    {CONTRACT_DELIVERY_DATES}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Delivery address:
+				</th>
+				<td>
+				    {CONTRACT_DELIVERY_ADDRESS}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Delivery details:
+				</th>
+				<td>
+				    {CONTRACT_DELIVERY_DETAILS}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Payment condition:
+				</th>
+				<td>
+				    {CONTRACT_PAYMENT_CONDITION}
+				</td>
+				
+			</tr>            
+			<tr>
+				<th>
+	    			Remarks and disclaimers:
+				</th>
+				<td>
+				    {CONTRACT_REMARKS_DISCLAIMERS}
+				</td>
+				
+			</tr>            
+<!-- ENDIF -->
 		</table>
 		</div>
 	</div>
-<!-- ENDIF -->
+
+
+
 <!-- IF B_HAS_QUESTIONS -->
 <div class="span12">
   <hr />

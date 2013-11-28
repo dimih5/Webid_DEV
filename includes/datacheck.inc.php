@@ -103,7 +103,22 @@ function CheckSellData()
 	global $title, $description, $minimum_bid, $with_reserve, $reserve_price, $buy_now, $buy_now_only, $buy_now_price, $payment, $category;
 	global $atype, $iquantity, $increments, $customincrement, $system, $_SESSION;
 	global $payments, $num, $nnum, $a_starts, $start_now, $relist;
+	
+	global $contract_products, $contract_specs_brands, $contract_quantity, $contract_price_unit, $contract_currency, $contract_amount, $contract_origin, $contract_packing, $contract_incoterms, $contract_delivery_dates, $contract_delivery_address, $contract_delivery_details, $contract_payment_condition, $contract_remarks_disclaimers;
 
+    if (!$system->CheckMoney($contract_price_unit))
+	{
+		return '058';
+	}
+	
+    if (!$system->CheckMoney($contract_amount))
+	{
+		return '058';
+	}	
+	
+	
+	
+	
 	if (empty($title))
 	{
 		return '017';

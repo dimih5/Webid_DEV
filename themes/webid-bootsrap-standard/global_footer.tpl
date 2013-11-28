@@ -1,3 +1,17 @@
+<div class="span11">
+	<ul id="webticker" >
+
+<!-- BEGIN companyticker -->
+        <li>
+		<div class="span2 ended-item" style="text-align: center;"> 
+		    <a title="{companyticker.NAME}">
+		        <img class="img-polaroid" src="{SITEURL}/images/company/{companyticker.IMAGE}" alt="eqwrqwreqw" height="90" width="90">
+            </a>
+		</div>
+        </li>
+<!-- END companyticker -->
+	</ul>
+</div>
 </div>
 </div>
 <div class="clearfix"></div>

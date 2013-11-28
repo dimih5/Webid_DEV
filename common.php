@@ -88,4 +88,14 @@ if($user->logged_in)
 }
 
 $template->set_template();
+$query = "SELECT name, image FROM " . $DBPrefix . "companies";
+$res = mysql_query($query);
+$system->check_mysql($res, $query, __LINE__, __FILE__);
+while($company = mysql_fetch_assoc($res)) {
+    $template->assign_block_vars('companyticker', array(
+    	'NAME' => $company['name'],
+    	'IMAGE' => $company['image']
+    ));    
+}
+
 ?>

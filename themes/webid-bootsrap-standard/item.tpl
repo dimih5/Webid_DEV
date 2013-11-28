@@ -30,13 +30,6 @@ $(document).ready(function () {
 });
 </script>
 <!-- ENDIF -->
-<link rel="stylesheet" href="{SITEURL}/themes/{THEME}/css/webticker.css" type="text/css" media="screen"> 
-<script type="text/javascript" src="{SITEURL}js/jquery.webticker.js"></script>
-<script type="text/javascript">
-$(function(){
-	$("#webticker").webTicker();
-	});
-</script>
 <div class="breadcrumb"> {L_041}: {TOPCATSPATH} </div>
 <!-- IF B_USERBID -->
 <div class="alert alert-success"> {YOURBIDMSG} </div>
@@ -303,18 +296,5 @@ $(function(){
   <div class="breadcrumb">{L_814}:</b> {SECCATSPATH}</div>
   <!-- ENDIF -->
 </div>
-</div>
-<div class="span11">
-	<ul id="webticker" >
-		<li id="item0">
-			{L_CM_2026_0030}
-		</li>
-<!-- BEGIN newsticker -->
-
-		<li id='item{newsticker.ID}'>
-			{newsticker.NAME}
-		</li>
-<!-- END newsticker -->
-	</ul>
 </div>
 

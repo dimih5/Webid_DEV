@@ -588,6 +588,8 @@
 					'SELLER_NUMFB' => $num_feedbacks,
 					'SELLER_FBPOS' => ($num_feedbacks > 0) ? '(' . ceil($fb_pos * 100 / $num_feedbacks) . '%)' : '100%',
 					'SELLER_FBNEG' => ($fb_neg > 0) ? $MSG['5507'] . ' (' . ceil($fb_neg * 100 / $total_rate) . '%)' : '0',
+					'CONDITIONSURL' => $uploaded_path . 'users/' . $auction_data['user'] . '/conditions/' . $auction_data['conditions'],
+					'B_HASCONDITIONS' => strlen($auction_data['conditions']) > 3 ? true : false,
 
 					'WATCH_VAR' => $watch_var,
 					'WATCH_STRING' => $watch_string,

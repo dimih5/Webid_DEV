@@ -101,6 +101,14 @@
         <span class="help-block alert alert-info">{L_609}</span> </div>
     </div>
     <!-- ENDIF -->
+    
+    <div class="row" style="margin-left:0;">
+    	{MAXDOCS}<br>
+        <a href="upldtermsandconditions.php" alt="contracts" class="new-window btn btn-primary">{L_CM_2026_0035}</a>
+        <input type="hidden" name="numcons" value="{NUMDOCS}" id="num">
+    </div>
+    
+    
     <div class="form-actions">
       <button  type="submit" name="Input" class="btn btn-primary">{L_530}</button>
       <input type="reset" name="Input" class="btn">

@@ -67,7 +67,19 @@ class user
 			$this->check_balance();
 		}
 	}
+	
+	function hasActiveConditions() {
+    	return $this->user_data['active_conditions'] && strlen($this->user_data['active_conditions'] > 3);
+	}
+	
+	function getActiveConditions() {
+    	return $this->hasActiveConditions() ? $this->user_data['active_conditions'] : null;
+	}
 
+    function getId() {
+        return $this->is_logged_in() ? $this->user_data['id'] : 0;
+    }
+    
 	function is_logged_in()
 	{
 		if(isset($_SESSION['csrftoken']))

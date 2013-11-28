@@ -1730,4 +1730,9 @@ $MSG['CM_2026_0032'] = "Approve changes";
 
 $MSG['CM_2026_0033'] = "Invite people(1 email per line)";
 $MSG['CM_2026_0034'] = "Message for the email";
+
+$MSG['CM_2026_0035'] = 'Upload your Terms and Conditions';
+$MSG['CM_2026_0036'] = "You can upload up to %s documents. Each document must be smaller than %s bytes.";
+$MSG['CM_2026_0037'] = 'Download Terms & Conditions';
+
 ?>

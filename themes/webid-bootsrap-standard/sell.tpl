@@ -229,6 +229,93 @@ function updatefee(newfee) {
 	{MAXCONS}<br>
     <a href="upldcontract.php" alt="contracts" class="new-window btn btn-primary">{L_CM_2026_0005}</a>
     <input type="hidden" name="numcons" value="{NUMCONS}" id="num">
+    <div style="margin-top: 10px;">
+        <i>Upload a contract or provide information below.</i>
+        <div class="control-group">
+            <label class="control-label">Product(s)</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_producs" id="contract_producs" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Specifications & Brand(s)</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_specs_brands" id="contract_specs_brands" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Quantity</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_quantity" id="contract_quantity" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Price per unit</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_price_unit" id="contract_price_unit" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Currency</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_currency" id="contract_currency" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Total Amount</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_amount" id="contract_amount" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Origin</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_origin" id="contract_origin" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Packing</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_packing" id="contract_packing" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Incoterms</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_incoterms" id="contract_incoterms" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Delivery Date(s)</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_delivery_dates" id="contract_delivery_dates" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Delivery Address</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_delivery_address" id="contract_delivery_address" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Delivery Details</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_delivery_details" id="contract_delivery_details" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Payment Condition</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_payment_condition" id="contract_payment_condition" value="">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Remarks & Disclaimers</label>
+            <div class="controls">
+                <input type="text" size="10" name="contract_remarks_disclaimenrs" id="contract_remakrs_disclaimers" value="">
+            </div>
+        </div>
+    </div>
     <hr  />
     <!-- ENDIF -->
     <div class="alert alert-info"> {L_640} </div>

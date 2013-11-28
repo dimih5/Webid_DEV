@@ -22,6 +22,7 @@ if (!$user->is_logged_in())
 	header('location: user_login.php');
 	exit;
 }
+
 //retrieve user data
 $query = "SELECT * FROM " . $DBPrefix . "users WHERE id = " . $user->user_data['id'];
 $result = mysql_query($query);
@@ -183,6 +184,45 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 						$system->check_mysql($res, $query, __LINE__, __FILE__);
 					}
 					
+					// Handle terms and conditions
+					$UPLOADED_CONDITIONS = (isset($_SESSION['UPLOADED_CONDITIONS'])) ? $_SESSION['UPLOADED_CONDITIONS'] : array();
+                    if (count($UPLOADED_CONDITIONS) > 0)
+        			{
+        				// Create dirctory
+        				umask();
+        				$newfilename = '';
+        				$path = $uploaded_path . 'users/' . $user->getId() . '/conditions';
+        				if (!is_dir($path))
+        				{
+        					if(!is_dir($upload_path . 'users/' . $user->getId()))
+        					{
+        						mkdir($upload_path . 'users/' . $user->getId(), 0777);
+        					}
+        					mkdir($path, 0777);
+        				}
+        				// Copy files
+        				foreach ($UPLOADED_CONDITIONS as $k => $v)
+        				{
+        				    $newfilename = time() . substr(strrchr($v,'.'),0);
+        					$system->move_file($upload_path . session_id() . '/conditions/' . $v, $path . '/' . $newfilename);
+        					chmod($path . $newfilename, 0777);
+        				}
+        				// Delete files, using dir (to eliminate eventual odd files)
+        				if ($dir = opendir($upload_path . session_id() . "/conditions"))
+        				{
+        					while (($file = readdir($dir)) !== false)
+        					{
+        						if (!is_dir($upload_path . session_id() . '/conditions/' . $file))
+        							unlink($upload_path . session_id() . '/conditions/' . $file);
+        					}
+        					closedir($dir);
+        				}
+        				rmdir($upload_path . session_id() . "/conditions");
+        				rmdir($upload_path . session_id());
+        				
+        				$queryin .= ", active_conditions='" . $newfilename . "'";
+        			}
+					
 					$queryin .= " WHERE userid='" . $user->user_data['id'] . "'";
 					$res = mysql_query($queryin);
 					$system->check_mysql($res, $queryin, __LINE__, __FILE__);
@@ -232,6 +272,48 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 						$system->check_mysql($res, $querypass, __LINE__, __FILE__);
 					}
 
+
+                    // Handle terms and conditions
+					$UPLOADED_CONDITIONS = (isset($_SESSION['UPLOADED_CONDITIONS'])) ? $_SESSION['UPLOADED_CONDITIONS'] : array();
+                    if (count($UPLOADED_CONDITIONS) > 0)
+        			{
+        				// Create dirctory
+        				umask();
+        				$newfilename = '';
+        				$path = $uploaded_path . 'users/' . $user->getId() . '/conditions';
+        				if (!is_dir($path))
+        				{
+        					if(!is_dir($upload_path . 'users/' . $user->getId()))
+        					{
+        						mkdir($upload_path . 'users/' . $user->getId(), 0777);
+        					}
+        					mkdir($path, 0777);
+        				}
+        				// Copy files
+        				foreach ($UPLOADED_CONDITIONS as $k => $v)
+        				{
+        				    $newfilename = time() . substr(strrchr($v,'.'),0);
+        					$system->move_file($upload_path . session_id() . '/conditions/' . $v, $path . '/' . $newfilename);
+        					chmod($path . $newfilename, 0777);
+        				}
+        				// Delete files, using dir (to eliminate eventual odd files)
+        				if ($dir = opendir($upload_path . session_id() . "/conditions"))
+        				{
+        					while (($file = readdir($dir)) !== false)
+        					{
+        						if (!is_dir($upload_path . session_id() . '/conditions/' . $file))
+        							unlink($upload_path . session_id() . '/conditions/' . $file);
+        					}
+        					closedir($dir);
+        				}
+        				rmdir($upload_path . session_id() . "/conditions");
+        				rmdir($upload_path . session_id());
+        				
+        				$querymiddle .= ", active_conditions";
+        				$queryend .= "', '" . $newfilename;
+        			}
+        			
+        			
 					$query = $querystart . $querymiddle . ") " . $queryend . "')";
 					
 					$res = mysql_query($query);
@@ -342,7 +424,10 @@ $template->assign_vars(array(
 		'B_AUTHNET' => ($gateway_data['authnet_active'] == 1),
 		'B_WORLDPAY' => ($gateway_data['worldpay_active'] == 1),
 		'B_TOOCHECKOUT' => ($gateway_data['toocheckout_active'] == 1),
-		'B_MONEYBOOKERS' => ($gateway_data['moneybookers_active'] == 1)
+		'B_MONEYBOOKERS' => ($gateway_data['moneybookers_active'] == 1),
+		
+		'MAXDOCS' => sprintf($MSG['CM_2026_0036'], $system->SETTINGS['maxtermsandconditions'], $system->SETTINGS['maxuploadsize']),
+		'NUMDOCS' => 1
 		));
 
 $TMP_usmenutitle = $MSG['509'];

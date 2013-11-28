@@ -120,7 +120,10 @@ $(function(){
   <p> {L_923}: {COUNTRY}<br />
     <b>{L_026}:</b> {PAYMENTS} </p>
   </small>
-   <b class="icsgen"><a href="{SITEURL}ics.php?id={ID}&title={TITLE}&address=&description={AUCTION_DESCRIPTION}&datestart={ICSSTART}&dateend={ICSENDS}">{L_CM_2026_0031}</a></b>
+    <!-- IF B_HASCONDITIONS -->
+       <b class="icsgen"><a href="{CONDITIONSURL}">{L_CM_2026_0037}</a></b><br/>
+    <!-- ENDIF -->
+       <b class="icsgen"><a href="{SITEURL}ics.php?id={ID}&title={TITLE}&address=&description={AUCTION_DESCRIPTION}&datestart={ICSSTART}&dateend={ICSENDS}">{L_CM_2026_0031}</a></b>
   <hr />
   <small>
   <!-- auction type -->

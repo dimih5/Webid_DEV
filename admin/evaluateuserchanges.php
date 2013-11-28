@@ -55,6 +55,7 @@ if (isset($_POST['action']) && $_POST['action'] == $MSG['030'])
 					phone='" . $update_data['phone'] . "',
 					timecorrection='" . $update_data['timecorrection'] . "',
 					emailtype='" . $update_data['emailtype'] . "',
+					active_conditions='" . $update_data['active_conditions'] . "',
 					nletter='" . $update_data['nletter'] . "'";
 					$query .= ", paypal_email='" . $update_data['paypal_email'] . "'";
 					$query .= ", authnet_id='" . $update_data['authnet_id'] . "', authnet_pass = '" . $update_data['authnet_pass'] . "'";

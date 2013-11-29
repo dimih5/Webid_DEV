@@ -99,7 +99,7 @@
   <!-- ENDIF -->
   <div class="control-group">
     <label class="control-label" for="">{L_346}</label>
-    <div class="controls"> {TOMEZONE} </div>
+    <div class="controls"> {TIMEZONE} </div>
   </div>
   <!-- IF B_NLETTER -->
   <div class="control-group">

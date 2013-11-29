@@ -617,7 +617,7 @@ switch ($_SESSION['action'])
 		}
 
 		$CKEditor = new CKEditor();
-		$CKEditor->basePath = $main_path . 'ckeditor/';
+		$CKEditor->basePath = 'ckeditor/';
 		$CKEditor->returnOutput = true;
 
 		// build the fees javascript

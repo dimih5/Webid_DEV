@@ -493,15 +493,12 @@ if (mysql_num_rows($res) > 0) {
     		$emailer->email_uid = 'uid';
     		$emailer->email_sender($reminder['email'], 'reminder.inc.php', $system->SETTINGS['sitename'] . ' - ' . $MSG['522']);
     		
-    		print_r('send email');
-    		
     		$query = "UPDATE " . $DBPrefix . "reminders SET send = 1 WHERE id = " . $reminder['id'];
     		$res_ = mysql_query($query);
     		$system->check_mysql($res_, $query, __LINE__, __FILE__);
         }
 	}
 }
-	die();
 	
 
 // Purging thumbnails cache

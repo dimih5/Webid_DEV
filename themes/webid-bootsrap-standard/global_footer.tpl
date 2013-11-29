@@ -1,5 +1,8 @@
 </div>
 </div>
+
+
+<div class="container">
 <div class="span12" style="margin-left: 0px;">
 	<ul id="webticker" >
 
@@ -14,6 +17,11 @@
 <!-- END companyticker -->
 	</ul>
 </div>
+</div>
+
+
+
+
 <div class="clearfix"></div>
 
 <div class="footer"> <small><span class="muted"> <a href="{SITEURL}index.php?">{L_166}</a>

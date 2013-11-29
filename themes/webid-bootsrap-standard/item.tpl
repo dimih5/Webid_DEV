@@ -28,6 +28,13 @@ $(document).ready(function () {
 	setTimeout(getAuctionData, 1000);
 	
 });
+
+function remind() {
+    var days = $('#select-days').val();
+    if(days > 0 && days < 10) {
+        window.location.href = '{SITEURL}remind.php?id={ID}&days=' + days;
+    }
+}
 </script>
 <!-- ENDIF -->
 <div class="breadcrumb"> {L_041}: {TOPCATSPATH} </div>
@@ -118,19 +125,19 @@ $(document).ready(function () {
     <!-- ENDIF -->
        <b class="icsgen"><a href="{SITEURL}ics.php?id={ID}&title={TITLE}&address=&description={AUCTION_DESCRIPTION}&datestart={ICSSTART}&dateend={ICSENDS}">{L_CM_2026_0031}</a></b><br/>
        <b class="icsgen">
-    		<a href="{SITEURL}{UPLOADEDPATH}download.php?file={SITEURL}{CONTR_URL}&filename=AUCTION_{TITLE}_AUCTION_ID_{ID}" >
+    		<a href="#" onclick="javascript:remind()">
     		    Send email reminder before auction ends
     		</a>
-    		<select style="width: auto;">
-    		    <option>1 day</option>
-    		    <option>2 days</option>
-    		    <option>3 days</option>
-    		    <option>4 days</option>
-    		    <option>5 days</option>
-    		    <option>6 days</option>
-    		    <option>7 days</option>
-    		    <option>8 days</option>
-    		    <option>9 days</option>
+    		<select id="select-days" style="width: auto;">
+    		    <option value="1" selected>1 day</option>
+    		    <option value="2">2 days</option>
+    		    <option value="3">3 days</option>
+    		    <option value="4">4 days</option>
+    		    <option value="5">5 days</option>
+    		    <option value="6">6 days</option>
+    		    <option value="7">7 days</option>
+    		    <option value="8">8 days</option>
+    		    <option value="9">9 days</option>
     		</select>
        </b>
   <hr />

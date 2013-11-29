@@ -468,6 +468,42 @@ for ($i = 0; $i < count($seller_emails); $i++)
 	$emailer->email_sender($seller_emails[$i]['email'], 'final_value_fee.inc.php', $system->SETTINGS['sitename'] . ' - ' . $MSG['523']);
 }
 
+// send reminder emails
+$from = strtotime(date('Y-m-d') . ' 00:00:00');
+$to = strtotime(date('Y-m-d') . ' 23:59:59');
+$query = "
+    SELECT u.*, a.*, r.*
+    FROM " . $DBPrefix . "reminders r 
+    LEFT JOIN " . $DBPrefix . "users u ON u.id = r.user_id 
+    LEFT JOIN " . $DBPrefix . "auctions a ON a.id = r.auction_id 
+    WHERE 
+        r.date >= " . $from . " AND r.date <= " . $to;
+$res = mysql_query($query);
+$system->check_mysql($res, $query, __LINE__, __FILE__);
+if (mysql_num_rows($res) > 0) {
+	while($reminder = mysql_fetch_assoc($res)) {
+
+	    if(!$reminder['send']) {
+    	    $emailer = new email_handler();
+            $emailer->assign_vars(array(
+    			'USER_NAME' => $reminder['nick'],
+    			'AUCTION_NAME' => $reminder['title'],
+    			'LINK' => $system->SETTINGS['siteurl'] . 'item.php?id='.$Auction['id']
+    		));
+    		$emailer->email_uid = 'uid';
+    		$emailer->email_sender($reminder['email'], 'reminder.inc.php', $system->SETTINGS['sitename'] . ' - ' . $MSG['522']);
+    		
+    		print_r('send email');
+    		
+    		$query = "UPDATE " . $DBPrefix . "reminders SET send = 1 WHERE id = " . $reminder['id'];
+    		$res_ = mysql_query($query);
+    		$system->check_mysql($res_, $query, __LINE__, __FILE__);
+        }
+	}
+}
+	die();
+	
+
 // Purging thumbnails cache
 if (!file_exists($upload_path . 'cache'))
 {

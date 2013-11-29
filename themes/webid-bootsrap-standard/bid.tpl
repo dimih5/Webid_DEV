@@ -48,9 +48,6 @@ $(document).ready(function(){
           <div class="well">
             <label>{L_156}</label>
             <input type="text" size="5" name="bid" id="bid" value="{BID}">
-            <!-- IF ATYPE eq 1 -->
-            <span class="help-block"><small>({L_283}: {NEXT_BID})</small></span>
-            <!-- ENDIF -->
           </div>
           <!-- IF TQTY gt 1 -->
           <label>{L_284}:</label>

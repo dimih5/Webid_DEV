@@ -128,6 +128,7 @@ $ERRMSG['606'] = "Invalid auction";
 $ERRMSG['607'] = "Your bid is below the minimum bid";
 $ERRMSG['608'] = "The specified quantity is not valid, you cannot bid for more items than are available";
 $ERRMSG['608a'] = "The specified quantity is not valid, please enter a valid amount";
+$ERRMSG['608b'] = "Someone beat you to it! Please try again.";
 $ERRMSG['609'] = "User does not exist";
 $ERRMSG['610'] = "Fill in your username and password";
 $ERRMSG['611'] = "Password incorrect";

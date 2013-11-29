@@ -116,7 +116,23 @@ $(document).ready(function () {
     <!-- IF B_HASCONDITIONS -->
        <b class="icsgen"><a href="{CONDITIONSURL}">{L_CM_2026_0037}</a></b><br/>
     <!-- ENDIF -->
-       <b class="icsgen"><a href="{SITEURL}ics.php?id={ID}&title={TITLE}&address=&description={AUCTION_DESCRIPTION}&datestart={ICSSTART}&dateend={ICSENDS}">{L_CM_2026_0031}</a></b>
+       <b class="icsgen"><a href="{SITEURL}ics.php?id={ID}&title={TITLE}&address=&description={AUCTION_DESCRIPTION}&datestart={ICSSTART}&dateend={ICSENDS}">{L_CM_2026_0031}</a></b><br/>
+       <b class="icsgen">
+    		<a href="{SITEURL}{UPLOADEDPATH}download.php?file={SITEURL}{CONTR_URL}&filename=AUCTION_{TITLE}_AUCTION_ID_{ID}" >
+    		    Send email reminder before auction ends
+    		</a>
+    		<select style="width: auto;">
+    		    <option>1 day</option>
+    		    <option>2 days</option>
+    		    <option>3 days</option>
+    		    <option>4 days</option>
+    		    <option>5 days</option>
+    		    <option>6 days</option>
+    		    <option>7 days</option>
+    		    <option>8 days</option>
+    		    <option>9 days</option>
+    		</select>
+       </b>
   <hr />
   <small>
   <!-- auction type -->
@@ -160,10 +176,6 @@ $(document).ready(function () {
     <input type="hidden" name="id" value="{ID}">
     <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
     <input type="submit" name="" value="{L_30_0208}" class="btn btn-primary btn-place-bid">
-    <!-- IF ATYPE eq 1 -->
-    <br />
-    <span class="help-block"><small> {L_124}: {NEXTBID}</small> </span>
-    <!-- ENDIF -->
   </form>
   <hr />
   <!-- IF B_BUY_NOW -->

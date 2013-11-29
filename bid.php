@@ -16,6 +16,9 @@ include 'common.php';
 include $include_path . 'datacheck.inc.php';
 
 $NOW = time();
+$window = 60; // 60 second window for duplicate bidding
+$bidwhen = 0;
+
 $id = intval($_REQUEST['id']);
 $bid = $_POST['bid'];
 $qty = (isset($_POST['qty'])) ? intval($_POST['qty']) : 1;
@@ -144,13 +147,14 @@ if ($aquantity < $qty)
 	$errmsg = $ERRMSG['608'];
 }
 
-$query = "SELECT bid, bidder FROM " . $DBPrefix . "bids WHERE auction = " . $id . " ORDER BY bid DESC, id DESC LIMIT 1";
+$query = "SELECT bid, bidder, bidwhen FROM " . $DBPrefix . "bids WHERE auction = " . $id . " ORDER BY bid DESC, id DESC LIMIT 1";
 $res = mysql_query($query);
 $system->check_mysql($res, $query, __LINE__, __FILE__);
 if (mysql_num_rows($res) > 0)
 {
-	$high_bid = mysql_result($res, 0, 'bid');
+	$high_bid = mysql_result($res, 0, 'bid');	
 	$WINNING_BIDDER = mysql_result($res, 0, 'bidder');
+	$bidwhen = mysql_result($res, 0, 'bidwhen');
 	$ARETHEREBIDS = ' | <a href="' . $system->SETTINGS['siteurl'] . 'item.php?id=' . $id . '&history=view#history">' . $MSG['105'] . '</a>';
 }
 else
@@ -366,8 +370,15 @@ if (isset($_POST['action']) && !isset($errmsg))
 				}
 				if ($proxy_max_bid == $bid)
 				{
+
 					$cbid = $proxy_max_bid;
-					$errmsg = $MSG['701'];
+					
+                    if($bidwhen > ($NOW - $window)) {
+                        $errmsg = $ERRMSG['608b'];
+                    } else {
+                        $errmsg = $MSG['701'];
+                    }				
+					
 					// Update bids table
 					$query = "INSERT INTO " . $DBPrefix . "bids VALUES (NULL, " . $id . ", " . $bidder_id . ", " . floatval($bid) . ", '" . $NOW . "', " . $qty . ")";
 					$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);

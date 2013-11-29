@@ -1,4 +1,6 @@
-<div class="span13">
+</div>
+</div>
+<div class="span12" style="margin-left: 0px;">
 	<ul id="webticker" >
 
 <!-- BEGIN companyticker -->
@@ -11,8 +13,6 @@
         </li>
 <!-- END companyticker -->
 	</ul>
-</div>
-</div>
 </div>
 <div class="clearfix"></div>
 

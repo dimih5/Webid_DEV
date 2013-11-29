@@ -99,3 +99,6 @@
 	float: right;
 	padding-bottom: 0.7em;	
 }
+
+#lightbox-container-image img { width:auto; max-height:520px; }
+#lightbox-container-image { width:auto; max-height:520px; }

@@ -573,7 +573,7 @@ switch ($_SESSION['action'])
 			if (isset($gateways_data[$v . '_active']) && $gateways_data[$v . '_active'] == 1 && check_gateway($v))
 			{
 				$v = strtolower($v);
-				$checked = (in_array($v, $payment)) ? '' : '';
+				$checked = (in_array($v, $payment)) ? 'checked' : '';
 				$payment_methods .= '<label class="checkbox"><input type="checkbox" name="payment[]" value="' . $v . '" ' . $checked . '>' . $system->SETTINGS['gatways'][$v] . '</label>';
 			}
 		}

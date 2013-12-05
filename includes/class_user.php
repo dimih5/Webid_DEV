@@ -143,5 +143,48 @@ class user
             exit; 
         } 
     }
+    
+    function setMessage($section, $message, $class = 'success') {
+        $_SESSION['user_messages'][$section] = array(
+            'msg' => $message,
+            'class' => $class
+        );
+    }
+    
+    function getMessage($section) {
+        $msg = false;
+        if($this->hasMessage($section)) {
+            $msg = $_SESSION['user_messages'][$section];
+            unset($_SESSION['user_messages'][$section]);
+        }
+        return $msg;
+    }
+    
+    function getMessageVars($section) {
+        $rtn = array();
+        
+        if(isset($_SESSION['user_messages'][$section])) {
+            $rtn = array(
+                'B_FLASH_MSG' => true,
+                'FLASH_MSG' => $_SESSION['user_messages'][$section]['msg'],
+                'FLASH_MSG_CLASS' => $_SESSION['user_messages'][$section]['class']
+            );
+            unset($_SESSION['user_messages'][$section]);
+        }        
+        
+        
+        return $rtn;
+    }
+    
+    function hasMessage($section) {
+        return isset($_SESSION['user_messages'][$section]);
+    }
+    
+    function redirect($loc, $die = true) {
+        header('Location: ' . $loc);
+        if($die) {
+            die();
+        }
+    }
 }
 ?>

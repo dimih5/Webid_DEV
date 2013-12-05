@@ -1293,6 +1293,9 @@ $MSG['5506'] = "Positive feedback: ";
 $MSG['5507'] = '<span style="color:#CD0000;">Negative feedback:</span> ';
 $MSG['5508'] = "Member since ";
 $MSG['5509'] = "Feedback times ";
+
+$MSG['5510'] = "Edit your groups";
+
 $MSG['_0001'] = "Under Maintenance Page";
 $MSG['_0002'] = "You can temporary disable the access to your site if necessary.<br>
 			In Maintenance mode only one user will have access to it. After you registered a user via <a target=\"_new\" href=\"../register.php\">the usual users registration page</a>

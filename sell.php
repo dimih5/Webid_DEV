@@ -142,6 +142,18 @@ switch ($_SESSION['action'])
 			}
 
 			$addcounter = true;
+			
+			// add auction_user
+			$count = count($_SESSION['SELL_auction_user']);        
+            if($count > 0) {
+                $query = "INSERT INTO " . $DBPrefix . "auction_user (auction_id, user_id) VALUES ";
+                foreach($_SESSION['SELL_auction_user'] as $userid) {
+                    $query .=  "(" . $auction_id . ", " . $userid . "),";
+                }
+                $result = mysql_query(rtrim($query, ','));
+                $system->check_mysql($result, $query, __LINE__, __FILE__);
+            }
+			
 
 			// work out & add fee
 			if ($system->SETTINGS['fees'] == 'y')
@@ -699,6 +711,57 @@ switch ($_SESSION['action'])
         while($rates_data = mysql_fetch_assoc($res)) {
             $selected = $rates_data['symbol'] == $contract_currency ? 'selected' : '';
             $contract_currency_list .= '<option value="'.$rates_data['symbol'].'" ' . $selected . '>'.$rates_data['symbol'].'</option>';   
+        }
+
+        
+        
+        
+        // usergroup users
+        $usergroup_users = array();
+        $query = "
+            SELECT
+            	uu.*
+            FROM
+            	webid_usergroup_user uu
+            LEFT JOIN
+            	webid_usergroups u ON u.id = uu.usergroup_id
+            WHERE
+            	u.user_id = " . $user->user_data['id'];
+        $result = mysql_query($query);
+        $system->check_mysql($result, $query, __LINE__, __FILE__);
+        while($row = mysql_fetch_assoc($result)) {
+            if(!isset($usergroup_users[$row['usergroup_id']])) {
+                $usergroup_users[$row['usergroup_id']] = array();
+            }
+            $usergroup_users[$row['usergroup_id']][] = $row['user_id'];
+        }
+        
+        // user groups
+        $query = "SELECT * FROM " . $DBPrefix . "usergroups WHERE user_id=" . $user->user_data['id'];
+        $result = mysql_query($query);
+        $system->check_mysql($result, $query, __LINE__, __FILE__);
+        while($row = mysql_fetch_assoc($result)) {
+            $template->assign_block_vars('usergroups', array(
+                'ID' => $row['id'],
+                'NAME' => $row['name'],
+                'USERCOUNT' => $row['userCount'],
+                'IDS' => isset($usergroup_users[$row['id']]) ? implode(',', $usergroup_users[$row['id']]) : '',
+            ));
+        }
+	
+        // all users
+        $query = "SELECT * FROM " . $DBPrefix . "users";
+        $result = mysql_query($query);
+        $system->check_mysql($result, $query, __LINE__, __FILE__);
+        while($row = mysql_fetch_assoc($result)) {
+            $template->assign_block_vars('users', array(
+                'ID' => $row['id'],
+                'COMPANY' => 'NOT YET IMPLEMENTED',
+                'NAME' => $row['name'],
+                'EMAIL' => $row['email'],
+                'COUNTRY' => $row['country'],
+                'CHECKED' => in_array($row['id'], $users) ? 'checked' : ''
+            ));
         }
 
 		$template->assign_vars(array(

@@ -36,6 +36,10 @@ function setvars()
 	global $_POST, $_SESSION, $system, $invited_emails, $extra_message;
 	global $contract_products, $contract_specs_brands, $contract_quantity, $contract_price_unit, $contract_currency, $contract_amount, $contract_origin, $contract_packing, $contract_incoterms, $contract_delivery_dates, $contract_delivery_address, $contract_delivery_details, $contract_payment_condition, $contract_remarks_disclaimers;
 
+    global $auction_user, $enableusergroups;
+    
+    $auction_user = (isset($_POST['auction_user'])) ? $_POST['auction_user'] : $_SESSION['SELL_auction_user'];
+    $enableusergroups = (isset($_POST['enableusergroups'])) ? $_POST['enableusergroups'] : $_SESSION['SELL_enableusergroups'];
 	$with_reserve = (isset($_POST['with_reserve'])) ? $_POST['with_reserve'] : $_SESSION['SELL_with_reserve'];
 	$reserve_price = (isset($_POST['reserve_price'])) ? $_POST['reserve_price'] : $_SESSION['SELL_reserve_price'];
 	$minimum_bid = (isset($_POST['minimum_bid'])) ? $_POST['minimum_bid'] : $_SESSION['SELL_minimum_bid'];
@@ -113,6 +117,10 @@ function makesessions()
 	global $duration, $relist, $increments, $customincrement, $shipping, $shipping_terms, $payment, $international, $sendemail, $buy_now_only, $a_starts, $shipping_cost, $is_bold, $is_highlighted, $is_featured, $start_now, $_SESSION, $invited_emails, $extra_message;
 	global $contract_products, $contract_specs_brands, $contract_quantity, $contract_price_unit, $contract_currency, $contract_amount, $contract_origin, $contract_packing, $contract_incoterms, $contract_delivery_dates, $contract_delivery_address, $contract_delivery_details, $contract_payment_condition, $contract_remarks_disclaimers;
 	
+	global $auction_user, $enableusergroups;
+	
+    $_SESSION['SELL_auction_user'] = $auction_user;
+    $_SESSION['SELL_enableusergroups'] = $enableusergroups;
 	$_SESSION['SELL_with_reserve'] = $with_reserve;
 	$_SESSION['SELL_reserve_price'] = $reserve_price;
 	$_SESSION['SELL_minimum_bid'] = $minimum_bid;
@@ -167,6 +175,8 @@ function unsetsessions()
 {
 	global $_SESSION, $system;
 
+    $_SESSION['SELL_auction_user'] = '';
+    $_SESSION['SELL_enableusergroups'] = 0;
 	$_SESSION['SELL_with_reserve'] = '';
 	$_SESSION['SELL_reserve_price'] = '';
 	$_SESSION['SELL_minimum_bid'] = ($system->SETTINGS['moneyformat'] == 1) ? 0.99 : '0,99';
@@ -278,6 +288,10 @@ function updateauction($type)
 		if($_SESSION['SELL_contract_delivery_details']) $query .= ', contract_delivery_details = "' . $_SESSION['SELL_contract_delivery_details'] . '"';
 		if($_SESSION['SELL_contract_payment_condition']) $query .= ', contract_payment_condition = "' . $_SESSION['SELL_contract_payment_condition'] . '"';
 		if($_SESSION['SELL_contract_remarks_disclaimers']) $query .= ', contract_remarks_disclaimers = "' . $_SESSION['SELL_contract_remarks_disclaimers'] . '"';
+		
+		$query .= ', enableusergroups = ' . ($_SESSION['SELL_enableusergroups'] == 'on' ? 1 : 9) . '"';
+		
+		// TODO auction_user table
 
 		
 		$query .= $extraquery;
@@ -344,6 +358,8 @@ function addauction()
     		if($_SESSION['SELL_contract_payment_condition']) $query .= ', contract_payment_condition';
     		if($_SESSION['SELL_contract_remarks_disclaimers']) $query .= ', contract_remarks_disclaimers';
     		
+    		$query .= ', enableusergroups';
+    		
     $query .= "
         ) VALUES (" . 
             $user->user_data['id'] .
@@ -393,7 +409,9 @@ function addauction()
 	if($_SESSION['SELL_contract_delivery_details']) $query .= ', "' . $_SESSION['SELL_contract_delivery_details'] . '"';
 	if($_SESSION['SELL_contract_payment_condition']) $query .= ', "' . $_SESSION['SELL_contract_payment_condition'] . '"';
 	if($_SESSION['SELL_contract_remarks_disclaimers']) $query .= ', "' . $_SESSION['SELL_contract_remarks_disclaimers'] . '"';
-    		
+    	
+    $query .= ', "' . ($_SESSION['SELL_enableusergroups'] == 'on' ? 1 : 0) . '"';    	
+	
     $query .= ")";
         
     return $query;

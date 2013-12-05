@@ -106,6 +106,8 @@ function CheckSellData()
 	
 	global $contract_products, $contract_specs_brands, $contract_quantity, $contract_price_unit, $contract_currency, $contract_amount, $contract_origin, $contract_packing, $contract_incoterms, $contract_delivery_dates, $contract_delivery_address, $contract_delivery_details, $contract_payment_condition, $contract_remarks_disclaimers;
 
+    global $auction_user, $enableusergroups;
+    
     if (!$system->CheckMoney($contract_price_unit))
 	{
 		return '058';

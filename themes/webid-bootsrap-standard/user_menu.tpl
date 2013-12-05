@@ -9,6 +9,7 @@
         <li class="active"><a href="#">{L_25_0080}</a></li>
         <li class="nav-header">{L_25_0081}</li>
         <li><a href="edit_data.php">{L_621}</a></li>
+        <li><a href="edit_usergroups.php">{L_5510}</a></li>
         <li><a href="yourfeedback.php">{L_208}</a></li>
         <li><a href="buysellnofeedback.php">{L_207}</a> <small><span class="muted"><em>{FBTOLEAVE}</em></span></small></li>
         <li><a href="mail.php">{L_623}</a> <small><span class="muted"><em>{NEWMESSAGES}</em></span></small></li>

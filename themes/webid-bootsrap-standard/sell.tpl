@@ -178,7 +178,7 @@ function updatefee(newfee) {
   <legend> {TITLE}</legend>
   <a name="goto"></a>
   <!-- IF PAGE eq 0 -->
-  <form name="sell" class="form-horizontal"  action="{ASSLURL}sell.php" method="post" enctype="multipart/form-data">
+  <form name="sell" class="form-horizontal"  action="{ASSLURL}sell.php" method="post" enctype="multipart/form-data" id="sell_form">
     <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
     <!-- IF ERROR ne '' -->
     <div class="alert">{ERROR}</div>
@@ -510,9 +510,64 @@ function updatefee(newfee) {
 		<textarea type="text" row="10" cols="34" id="extra_message" name="extra_message"></textarea>
 		</div>
 	</div>
+	
+	
+	
+	
+	
+	<hr>
+	<legend>Groups</legend>
+	<div>
+	    <div class="control-group">
+	        <label class="control-label">Enabled group filter</label>
+	        <div class="controls">
+	            <input type="checkbox" id="enableusergroups" name="enableusergroups"> 
+	        </div>
+	    </div>
+	</div>
+	<div>
+	    <div class="control-group">
+	        <label class="control-label">Select groups</label>
+	        <div class="span3" style="margin-left: 20px;">            
+                <!-- BEGIN usergroups -->
+                    <label class="checkbox">
+                        <input type="checkbox" name="usergroups[]" value="{usergroups.ID}" data-ids="[{usergroups.IDS}]" onclick="filterform('sell_form', this)">{usergroups.NAME}<br/>
+                    </label>
+                <!-- END usergroups -->
+	        </div>
+	        <div class="span6">
+	            <table class="table table-striped" id="usertable">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;"></th>
+                            <th>Company</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Country</th>        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- BEGIN users -->
+                        <tr>
+                            <td><input type="checkbox" name="auction_user[]" value="{users.ID}" {users.CHECKED}></td>
+                            <td>{users.COMPANY}</td>
+                            <td>{users.NAME}</td>
+                            <td>{users.EMAIL}</td>
+                            <td>{users.COUNTRY}</td>
+                        </tr>
+                        <!-- END users -->
+                    </tbody>
+                </table>
+	        </div>
+	    </div>
+	</div>
+	
+	
+	
+	
     <div class="form-actions">
       <input type="hidden" value="3" name="action">
-      <button type="submit" class="btn btn-primary">{L_5189}</button>
+      <button type="button" class="btn btn-primary" onclick="javascript:submitform('sell_form')">{L_5189}</button>
       <button type="reset" class="btn">{L_5190}</button>
     </div>
   </form>
@@ -652,3 +707,58 @@ function updatefee(newfee) {
 </div>
 </div>
 </div>
+
+<script type="text/javascript">
+    
+    var oTable;
+    var aFilter = {};
+    
+    $(document).ready(function() {
+        oTable = $('#usertable').dataTable( {
+            "sDom": "<'row'<'span3'l><'span3'f>r>t<'row'<'span3'i><'span3'p>>",
+            "aoColumnDefs" : [ {'bSortable' : false,'aTargets' : [ 0 ]} ] // disable sorting on checkboxes
+        } );
+    } );
+    
+    // This function will gather all checkbox data from all pages before submitting
+    function submitform(id) {
+        var form = $('#'+id);
+        
+        // Append data to the form, hidden
+        $('input:checked', oTable.fnGetNodes()).each(function() {
+            $(this).css('display', 'none');
+            form.append($(this));
+        });
+        
+        // Submit form now that it has all fields
+        form.submit();
+    }
+    
+    // We use a filter array to filter the table because a user can appear in multiple groups
+    function filterform(id, el) {
+        el = $(el);
+        var form = $('#'+id);
+        var data = el.data('ids');
+        var checked = el.is(":checked");
+
+        $('input', oTable.fnGetNodes()).each(function() {
+            var userid = parseInt($(this).val());
+        
+            if(aFilter[userid] == undefined) {
+                aFilter[userid] = [];
+            }
+
+            if(jQuery.inArray(userid, data) != -1) {
+                if(checked) {
+                    aFilter[userid].push(el.val());
+                } else {
+                    var index = aFilter[userid].indexOf(el.val());
+                    aFilter[userid].splice(index, 1);
+                }
+                
+                $(this).attr('checked', aFilter[userid].length > 0);
+            }       
+        });
+        
+    }
+</script>

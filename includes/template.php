@@ -67,7 +67,7 @@ class template
 		}
 
 		$this->_rootref = &$this->_tpldata['.'][0];
-
+        
 		return true;
 	}
 

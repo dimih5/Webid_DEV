@@ -51,6 +51,12 @@
     <label>{L_005}</label>
     <input type="password" name="TPL_repeat_password" size=20 maxlength=20 />
     <span class="help-block">{L_617}</span>
+    
+    <label>Company</label>
+    <input type="text" name="TPL_company" size=50 maxlength=50 value="{COMPANY}">
+    <label>VAT</label>
+    <input type="text" name="TPL_vat" size=50 maxlength=50 value="{VAT}">
+    
     <label>{L_006}</label>
     <input type="text" name="TPL_email" size=50 maxlength=50 value="{EMAIL}">
     <label>{L_252}</label>

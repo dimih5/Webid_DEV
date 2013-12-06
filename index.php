@@ -84,10 +84,27 @@ while ($row = mysql_fetch_assoc($res))
 
 // get featured items
 $query = "SELECT id, title, current_bid, pict_url, ends, num_bids, minimum_bid, bn_only, buy_now
-        FROM " . $DBPrefix . "auctions
-        WHERE closed = 0 AND suspended = 0 AND starts <= " . $NOW . "
-		AND featured = 'y'
-        ORDER BY RAND() DESC LIMIT 12";
+        FROM " . $DBPrefix . "auctions";
+        if($user->user_data['id']) {
+            $query .= "
+                LEFT JOIN
+                	webid_auction_user u ON u.auction_id = id
+                WHERE
+                	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
+                ";
+        } else {
+            $query .= " 
+                LEFT JOIN
+                    webid_auction_user u ON u.auction_id = id
+                WHERE
+                    enableusergroups = 0
+            ";
+        }
+        $query .= "
+            AND closed = 0 AND suspended = 0 AND starts <= " . $NOW . "
+    		AND featured = 'y'
+            ORDER BY RAND() DESC LIMIT 12";
+            
 $res = mysql_query($query);
 $system->check_mysql($res, $query, __LINE__, __FILE__);
 while($row = mysql_fetch_assoc($res))
@@ -114,8 +131,25 @@ while($row = mysql_fetch_assoc($res))
 }
 
 // get last created auctions
-$query = "SELECT id, title, pict_url, starts from " . $DBPrefix . "auctions
-		 WHERE closed = 0 AND suspended = 0
+$query = "SELECT id, title, pict_url, starts from " . $DBPrefix . "auctions";
+if($user->user_data['id']) {
+    $query .= "
+        LEFT JOIN
+        	webid_auction_user u ON u.auction_id = id
+        WHERE
+        	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
+        ";
+} else {
+    $query .= " 
+        LEFT JOIN
+            webid_auction_user u ON u.auction_id = id
+        WHERE
+            enableusergroups = 0
+    ";
+}
+
+$query .= "
+         AND closed = 0 AND suspended = 0
 		 AND starts <= " . $NOW . "
 		 ORDER BY starts DESC
 		 LIMIT " . $system->SETTINGS['lastitemsnumber'];
@@ -139,8 +173,24 @@ while ($row = mysql_fetch_assoc($res))
 
 $auc_last = ($i > 0) ? true : false;
 // get ending soon auctions
-$query = "SELECT ends, id, pict_url, title FROM " . $DBPrefix . "auctions
-		 WHERE closed = 0 AND suspended = 0 AND starts <= " . $NOW . "
+$query = "SELECT ends, id, pict_url, title FROM " . $DBPrefix . "auctions";
+if($user->user_data['id']) {
+    $query .= "
+        LEFT JOIN
+        	webid_auction_user u ON u.auction_id = id
+        WHERE
+        	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
+        ";
+} else {
+    $query .= " 
+        LEFT JOIN
+            webid_auction_user u ON u.auction_id = id
+        WHERE
+            enableusergroups = 0
+    ";
+}
+$query .= "
+		 AND closed = 0 AND suspended = 0 AND starts <= " . $NOW . "
 		 ORDER BY ends LIMIT " . $system->SETTINGS['endingsoonnumber'];
 $res = mysql_query($query);
 $system->check_mysql($res, $query, __LINE__, __FILE__);
@@ -175,8 +225,24 @@ $end_soon = ($i > 0) ? true : false;
 // get hot items
 $query = "SELECT a.id, a.title, a.current_bid, a.pict_url, a.ends, a.num_bids, a.minimum_bid 
         FROM " . $DBPrefix . "auctions a 
-        LEFT JOIN " . $DBPrefix . "auccounter c ON (a.id = c.auction_id) 
-        WHERE closed = 0 AND suspended = 0 AND starts <= " . $NOW . " 
+        LEFT JOIN " . $DBPrefix . "auccounter c ON (a.id = c.auction_id)";
+if($user->user_data['id']) {
+    $query .= "
+        LEFT JOIN
+        	webid_auction_user u ON u.auction_id = id
+        WHERE
+        	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
+        ";
+} else {
+    $query .= " 
+        LEFT JOIN
+            webid_auction_user u ON u.auction_id = id
+        WHERE
+            enableusergroups = 0
+    ";
+}
+$query .= "
+        AND closed = 0 AND suspended = 0 AND starts <= " . $NOW . " 
         ORDER BY c.counter DESC LIMIT " . $system->SETTINGS['hotitemsnumber'];
 $res = mysql_query($query);
 $system->check_mysql($res, $query, __LINE__, __FILE__);
@@ -210,8 +276,24 @@ $hot_items = ($i > 0) ? true : false;
 //finished auctions
 $query = "SELECT a.id, a.title, a.current_bid, a.pict_url, a.ends, a.num_bids, a.minimum_bid 
         FROM " . $DBPrefix . "auctions a 
-        LEFT JOIN " . $DBPrefix . "auccounter c ON (a.id = c.auction_id) 
-        WHERE closed = 1 AND suspended = 0
+        LEFT JOIN " . $DBPrefix . "auccounter c ON (a.id = c.auction_id)";
+if($user->user_data['id']) {
+    $query .= "
+        LEFT JOIN
+        	webid_auction_user u ON u.auction_id = id
+        WHERE
+        	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
+        ";
+} else {
+    $query .= " 
+        LEFT JOIN
+            webid_auction_user u ON u.auction_id = id
+        WHERE
+            enableusergroups = 0
+    ";
+}
+$query .= "
+        AND closed = 1 AND suspended = 0
         LIMIT " . 10;
 $res = mysql_query($query);
 $system->check_mysql($res, $query, __LINE__, __FILE__);

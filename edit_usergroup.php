@@ -68,7 +68,7 @@ $system->check_mysql($result, $query, __LINE__, __FILE__);
 while($row = mysql_fetch_assoc($result)) {
     $template->assign_block_vars('users', array(
         'ID' => $row['id'],
-        'COMPANY' => 'NOT YET IMPLEMENTED',
+        'COMPANY' => $row['company'],
         'NAME' => $row['name'],
         'EMAIL' => $row['email'],
         'COUNTRY' => $row['country'],

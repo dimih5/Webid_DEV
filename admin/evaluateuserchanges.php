@@ -45,6 +45,8 @@ if (isset($_POST['action']) && $_POST['action'] == $MSG['030'])
 	{
 */
 		$query = "UPDATE " . $DBPrefix . "users SET 
+		            company='" . $update_data['company']  . "', 
+		            vat='" . $update_data['vat']  . "', 
 					email='" . $update_data['email']  . "', 
 					birthdate='" . $update_data['birthdate'] . "', 
 					address='" . $update_data['address'] . "',

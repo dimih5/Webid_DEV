@@ -129,7 +129,7 @@ if ($system->SETTINGS['spam_register'] == 1)
 
 // missing check bools
 $missing = array();
-$missing['birthday'] = $missing['address'] = $missing['city'] = $missing['prov'] = $missing['country'] = $missing['zip'] = $missing['tel'] = $missing['paypal'] = $missing['authnet'] = $missing['worldpay'] = $missing['toocheckout'] = $missing['moneybookers'] = $missing['name'] = $missing['nick'] = $missing['password'] = $missing['repeat_password'] = $missing['email'] = false;
+$missing['birthday'] = $missing['address'] = $missing['city'] = $missing['prov'] = $missing['country'] = $missing['zip'] = $missing['tel'] = $missing['paypal'] = $missing['authnet'] = $missing['worldpay'] = $missing['toocheckout'] = $missing['moneybookers'] = $missing['name'] = $missing['password'] = $missing['repeat_password'] = $missing['email'] = $missing['company'] = false;
 if (isset($_POST['action']) && $_POST['action'] == 'first')
 {
 	if (!isset($_POST['terms_check']))
@@ -139,10 +139,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 	if (empty($_POST['TPL_name']))
 	{
 		$missing['name'] = true;
-	}
-	if (empty($_POST['TPL_nick']))
-	{
-		$missing['nick'] = true;
 	}
 	if (empty($_POST['TPL_password']))
 	{
@@ -155,6 +151,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 	if (empty($_POST['TPL_email']))
 	{
 		$missing['email'] = true;
+	}
+	if (empty($_POST['TPL_company'])) {
+    	$missing['company'] = true;
 	}
 	if (empty($_POST['TPL_address']) && $MANDATORY_FIELDS['address'] == 'y')
 	{
@@ -228,10 +227,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 		{
 			$ERR .= '<br/>' . $MSG['752'];
 		}
-		elseif (strlen($_POST['TPL_nick']) < 6)
-		{
-			$ERR .= '<br/>' . $ERRMSG['107'];
-		}
 		elseif (strlen ($_POST['TPL_password']) < 6)
 		{
 			$ERR .= '<br/>' . $ERRMSG['108'];
@@ -243,6 +238,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 		elseif (strlen($_POST['TPL_email']) < 5)
 		{
 			$ERR .= '<br/>' . $ERRMSG['110'];
+		}
+		elseif (strlen($_POST['TPL_company']) < 3)
+		{
+    		$ERR .= '<br/>' . $ERRMSG['_110'];
 		}
 		elseif (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+([\.][a-z0-9-]+)+$/i', $_POST['TPL_email']))
 		{
@@ -262,13 +261,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 		}
 		else
 		{
-			$sql = "SELECT nick FROM " . $DBPrefix . "users WHERE nick = '" . $system->cleanvars($_POST['TPL_nick']) . "'";
-			$res = mysql_query($sql);
-			$system->check_mysql($res, $sql, __LINE__, __FILE__);
-			if (mysql_num_rows($res) > 0)
-			{
-				$ERR .= '<br/>' . $ERRMSG['111']; // Selected user already exists
-			}
 			$query = "SELECT email FROM " . $DBPrefix . "users WHERE email = '" . $system->cleanvars($_POST['TPL_email']) . "'";
 			$res = mysql_query($query);
 			$system->check_mysql($res, $query, __LINE__, __FILE__);
@@ -279,7 +271,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 
 			if (!isset($ERR))
 			{
-				$TPL_nick_hidden = $_POST['TPL_nick'];
 				$TPL_password_hidden = $_POST['TPL_password'];
 				$TPL_name_hidden = $_POST['TPL_name'];
 				$TPL_email_hidden = $_POST['TPL_email'];
@@ -319,8 +310,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 				$hash = get_hash();
 				$query = "INSERT INTO " . $DBPrefix . "users
 						(nick, password, hash, name, address, city, prov, country, zip, phone, nletter, email, reg_date, 
-						birthdate, suspended, language, groups, balance, timecorrection, paypal_email, worldpay_id, moneybookers_email, toocheckout_id, authnet_id, authnet_pass)
-						VALUES ('" . $system->cleanvars($TPL_nick_hidden) . "',
+						birthdate, suspended, language, groups, balance, timecorrection, paypal_email, worldpay_id, moneybookers_email, toocheckout_id, authnet_id, authnet_pass, company, vat)
+						VALUES (
+						'deprecated',
 						'" . md5($MD5_PREFIX . $TPL_password_hidden) . "',
 						'" . $hash . "',
 						'" . $system->cleanvars($TPL_name_hidden) . "',
@@ -344,7 +336,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'first')
 						'" . ((isset($_POST['TPL_moneybookers_email'])) ? $system->cleanvars($_POST['TPL_moneybookers_email']) : '') . "',
 						'" . ((isset($_POST['toocheckout_id'])) ? $system->cleanvars($_POST['toocheckout_id']) : '') . "',
 						'" . ((isset($_POST['TPL_authnet_id'])) ? $system->cleanvars($_POST['TPL_authnet_id']) : '') . "',
-						'" . ((isset($_POST['TPL_authnet_pass'])) ? $system->cleanvars($_POST['TPL_authnet_pass']) : '') . "')";
+						'" . ((isset($_POST['TPL_authnet_pass'])) ? $system->cleanvars($_POST['TPL_authnet_pass']) : '') . "',
+						'" . ((isset($_POST['TPL_company'])) ? $system->cleanvars($_POST['TPL_company']) : '') . "',
+						'" . ((isset($_POST['TPL_vat'])) ? $system->cleanvars($_POST['TPL_vat']) : '') . "')";
 				$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
 				$TPL_id_hidden = mysql_insert_id();
 				$query = "INSERT INTO " . $DBPrefix . "usersips VALUES
@@ -485,10 +479,10 @@ $template->assign_vars(array(
 					($gateway_data['moneybookers_required'] == 1) ? ' *' : ''
 					),
 		'MISSING0' => ($missing['name']) ? 1 : 0,
-		'MISSING1' => ($missing['nick']) ? 1 : 0,
 		'MISSING2' => ($missing['password']) ? 1 : 0,
 		'MISSING3' => ($missing['repeat_password']) ? 1 : 0,
 		'MISSING4' => ($missing['email']) ? 1 : 0,
+		'MISSING17' => ($missing['company']) ? 1 : 0, 
 		'MISSING5' => ($missing['birthday']) ? 1 : 0,
 		'MISSING6' => ($missing['address']) ? 1 : 0,
 		'MISSING7' => ($missing['city']) ? 1 : 0,
@@ -505,14 +499,16 @@ $template->assign_vars(array(
 		'V_YNEWSL' => ((isset($_POST['TPL_nletter']) && $_POST['TPL_nletter'] == 1) || !isset($_POST['TPL_nletter'])) ? 'checked=true' : '',
 		'V_NNEWSL' => (isset($_POST['TPL_nletter']) && $_POST['TPL_nletter'] == 2) ? 'checked=true' : '',
 		'V_YNAME' => (isset($_POST['TPL_name'])) ? $_POST['TPL_name'] : '',
-		'V_UNAME' => (isset($_POST['TPL_nick'])) ? $_POST['TPL_nick'] : '',
 		'V_EMAIL' => (isset($_POST['TPL_email'])) ? $_POST['TPL_email'] : '',
 		'V_YEAR' => (isset($_POST['TPL_year'])) ? $_POST['TPL_year'] : '',
 		'V_ADDRE' => (isset($_POST['TPL_address'])) ? $_POST['TPL_address'] : '',
 		'V_CITY' => (isset($_POST['TPL_city'])) ? $_POST['TPL_city'] : '',
 		'V_PROV' => (isset($_POST['TPL_prov'])) ? $_POST['TPL_prov'] : '',
 		'V_POSTCODE' => (isset($_POST['TPL_zip'])) ? $_POST['TPL_zip'] : '',
-		'V_PHONE' => (isset($_POST['TPL_phone'])) ? $_POST['TPL_phone'] : ''
+		'V_PHONE' => (isset($_POST['TPL_phone'])) ? $_POST['TPL_phone'] : '',
+		
+		'V_COMPANY' => (isset($_POST['TPL_company'])) ? $_POST['TPL_company'] : '',
+		'V_VAT' => (isset($_POST['TPL_vat'])) ? $_POST['TPL_vat'] : '',
 		));
 
 include 'header.php';

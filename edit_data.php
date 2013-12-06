@@ -74,6 +74,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 		{
 			$ERR .= '<br/>' . $ERRMSG['109'];
 		}
+		elseif (strlen($_POST['TPL_company']) < 3)
+		{
+			$ERR .= '<br/>' . $ERRMSG['_110'];
+		}
 		elseif (strlen($_POST['TPL_email']) < 5)
 		{
 			$ERR .= '<br/>' . $ERRMSG['110'];
@@ -145,6 +149,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 				if(isset($row['userid']) && $row['userid'] == $user->user_data['id'])
 				{
 					$queryin = "UPDATE " . $DBPrefix . "usersupdate SET 
+					company='" . $system->cleanvars($_POST['TPL_company']) . "', 
+					vat='" . $system->cleanvars($_POST['TPL_vat']) . "', 
 					email='" . $system->cleanvars($_POST['TPL_email']) . "', 
 					birthdate='" . (empty($TPL_birthdate) ? 0 : $TPL_birthdate) . "', 
 					address='" . $system->cleanvars($_POST['TPL_address']) . "',
@@ -232,8 +238,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'update')
 				else
 				{
 					$querystart = "INSERT INTO " . $DBPrefix . "usersupdate";
-					$querymiddle = "(id, email, userid, birthdate, address, city, prov, country, zip, phone, timecorrection, emailtype, nletter";
-					$queryend = " VALUES (NULL, '" . $system->cleanvars($_POST['TPL_email']) . "', '" . $user->user_data['id'] . "', '" . (empty($TPL_birthdate) ? 0 : $TPL_birthdate) . "', '" . $system->cleanvars($_POST['TPL_address']) . "', '" . $system->cleanvars($_POST['TPL_city']) . "', '" . $system->cleanvars($_POST['TPL_prov']) . "', '" . $system->cleanvars($_POST['TPL_country']) . "', '" . $system->cleanvars($_POST['TPL_zip']) . "', '" . $system->cleanvars($_POST['TPL_phone']) . "', '" . $system->cleanvars($_POST['TPL_timezone']) . "', '" . $system->cleanvars($_POST['TPL_emailtype']) . "', '" . $system->cleanvars($_POST['TPL_nletter']);
+					$querymiddle = "(id, company, vat, email, userid, birthdate, address, city, prov, country, zip, phone, timecorrection, emailtype, nletter";
+					$queryend = " VALUES (NULL, '" . $system->cleanvars($_POST['TPL_company']) . "', '" . $system->cleanvars($_POST['TPL_vat']) . "', '" . $system->cleanvars($_POST['TPL_email']) . "', '" . $user->user_data['id'] . "', '" . (empty($TPL_birthdate) ? 0 : $TPL_birthdate) . "', '" . $system->cleanvars($_POST['TPL_address']) . "', '" . $system->cleanvars($_POST['TPL_city']) . "', '" . $system->cleanvars($_POST['TPL_prov']) . "', '" . $system->cleanvars($_POST['TPL_country']) . "', '" . $system->cleanvars($_POST['TPL_zip']) . "', '" . $system->cleanvars($_POST['TPL_phone']) . "', '" . $system->cleanvars($_POST['TPL_timezone']) . "', '" . $system->cleanvars($_POST['TPL_emailtype']) . "', '" . $system->cleanvars($_POST['TPL_nletter']);
 
 					if ($gateway_data['paypal_active'] == 1)
 					{
@@ -396,6 +402,8 @@ $template->assign_vars(array(
 		'COUNTRYLIST' => $country,
 		'NAME' => $USER['name'],
 		'NICK' => $USER['nick'],
+		'COMPANY' => $USER['company'],
+		'VAT' => $USER['vat'],
 		'EMAIL' => $USER['email'],
 		'YEAR' => $TPL_year,
 		'ADDRESS' => $USER['address'],

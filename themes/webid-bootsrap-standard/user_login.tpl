@@ -5,11 +5,11 @@
     <div class="alert">{ERROR}</div>
     <!-- ENDIF -->
     <div class="control-group">
-      <label class="control-label" for="inputEmail">{L_187}</label>
+      <label class="control-label" for="inputEmail">{L__187}</label>
       <div class="controls">
-        <input type="text" name="username" size="20" maxlength="20" value="{USER}">
+        <input type="text" name="email" value="{USER}">
       </div>
-    </div>
+    </div>        
     <div class="control-group">
       <label class="control-label" for="inputEmail">{L_004}</label>
       <div class="controls">

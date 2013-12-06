@@ -13,10 +13,10 @@
     </div>
   </div>
   <div class="control-group">
-    <label class="control-label" >{L_003}</b> *</label>
+    <label class="control-label" for="">{L_006} *</label>
     <div class="controls">
-      <input type="text" name="TPL_nick" size=20 maxlength=20  value="{V_UNAME}">
-      {L_050} </div>
+      <input type="text" name="TPL_email" size=50 maxlength=50 value="{V_EMAIL}">
+    </div>
   </div>
   <div class="control-group">
     <label class="control-label" >{L_004}</b> *</label>
@@ -30,12 +30,24 @@
       <input type="password" name="TPL_repeat_password" size=20 maxlength=20 value="">
     </div>
   </div>
+  
+  
+  
   <div class="control-group">
-    <label class="control-label" for="">{L_006} *</label>
+    <label class="control-label" for="">Company *</label>
     <div class="controls">
-      <input type="text" name="TPL_email" size=50 maxlength=50 value="{V_EMAIL}">
+      <input type="text" name="TPL_company" size=50 maxlength=50 value="{V_COMPANY}">
     </div>
   </div>
+  <div class="control-group">
+    <label class="control-label" for="">VAT</label>
+    <div class="controls">
+      <input type="text" name="TPL_vat" size=50 maxlength=50 value="{V_VAT}">
+    </div>
+  </div>  
+  
+  
+  
   <!-- IF BIRTHDATE -->
   <div class="control-group">
     <label class="control-label" for="">{L_252} {REQUIRED(0)}</label>

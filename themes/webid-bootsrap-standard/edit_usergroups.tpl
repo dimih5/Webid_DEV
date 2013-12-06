@@ -5,8 +5,8 @@
                 <li class="nav-header">{L_205}</li>
                 <li><a href="{SITEURL}user_menu.php?cptab=summary">{L_25_0080}</a></li>
                 <li class="nav-header">{L_25_0081}</li>
-                <li><a href="#">{L_621}</a></li>
-                <li class="active"><a href="edit_usergroups.php">{L_5510}</a></li>
+                <li><a href="edit_data.php">{L_621}</a></li>
+                <li class="active"><a href="#">{L_5510}</a></li>
                 <li><a href="yourfeedback.php">{L_208}</a></li>
                 <li><a href="buysellnofeedback.php">{L_207}</a> <small><span class="muted">{FBTOLEAVE}</span></small></li>
                 <li><a href="mail.php">{L_623}</a> <small><span class="muted">{NEWMESSAGES}</span></small></li>
@@ -41,6 +41,9 @@
         <div style="margin: 10px;">
             <a href="{SITEURL}create_usergroup.php"><button class="btn" type="button">New group</button></a>
         </div>
+        <p>
+            <b>Notice: Active auctions will ignore changes to groups.</b>
+        </p>
         <table class="table table-striped">
             <tr>
                 <th>Name</th>
@@ -52,7 +55,7 @@
                 <td>{usergroups.NAME} ({usergroups.USERCOUNT})</td>
                 <td>
                     <a href="{SITEURL}edit_usergroup.php?id={usergroups.ID}" alt="edit"><i class="icon-edit"></i></a>
-                    <a href="#" alt="delete"><i class="icon-remove"></i></a>
+                    <a href="#" id="{usergroups.ID}" alt="delete" onclick="javascript: deleteGroup(this);"><i class="icon-remove"></i></a>
                 </td>
             </tr>
             <!-- END usergroups -->
@@ -61,3 +64,22 @@
     </div>
     
 </div>
+
+<script type="text/javascript">
+    function deleteGroup(el) {
+        var id = $(el).attr('id');
+        if(confirm('Are you sure you want to delete this group?')) {
+            var data = {
+                'action': 'delete',
+                'id': id,
+                "csrftoken": "{_CSRFTOKEN}"
+            };
+            $.post( "{SITEURL}edit_usergroups.php", data, function() {
+                location.reload();
+            });
+        }
+    }
+</script>
+
+
+

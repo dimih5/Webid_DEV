@@ -24,11 +24,11 @@ if ($system->SETTINGS['https'] == 'y' && $_SERVER['HTTPS'] != 'on')
 	exit;
 }
 
-if (isset($_POST['action']) && isset($_POST['username']) && isset($_POST['password']))
+if (isset($_POST['action']) && isset($_POST['email']) && isset($_POST['password']))
 {
 	$password = md5($MD5_PREFIX . $_POST['password']);
 	$query = "SELECT id, hash, suspended FROM " . $DBPrefix . "users WHERE
-			nick = '" . $system->cleanvars($_POST['username']) . "'
+			email = '" . $system->cleanvars($_POST['email']) . "'
 			AND password = '" . $password . "'";
 	$res = mysql_query($query);
 	$system->check_mysql($res, $query, __LINE__, __FILE__);
@@ -117,7 +117,7 @@ if (isset($_POST['action']) && isset($_POST['username']) && isset($_POST['passwo
 
 $template->assign_vars(array(
 		'ERROR' => (isset($ERR)) && !is_array($ERR) ? $ERR : '',
-		'USER' => (isset($_POST['username'])) ? $_POST['username'] : ''
+		'USER' => (isset($_POST['email'])) ? $_POST['email'] : ''
 		));
 
 include 'header.php';

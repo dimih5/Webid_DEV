@@ -55,8 +55,24 @@ else
 		}
 		$catSQL .= ")";
 	}
-	$query = "SELECT * FROM " . $DBPrefix . "auctions WHERE
-			(title LIKE '%" . $term . "%' OR id = " . intval($term) . ")
+	$query = "SELECT * FROM " . $DBPrefix . "auctions";
+if($user->user_data['id']) {
+    $query .= "
+        LEFT JOIN
+        	webid_auction_user u ON u.auction_id = id
+        WHERE
+        	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
+        ";
+} else {
+    $query .= " 
+        LEFT JOIN
+            webid_auction_user u ON u.auction_id = id
+        WHERE
+            enableusergroups = 0
+    ";
+}
+$query .= "
+			AND (title LIKE '%" . $term . "%' OR id = " . intval($term) . ")
 			" . $catSQL . "
 			AND closed = 0 AND suspended = 0 AND starts <= " . $NOW . " AND ends > " . $NOW;
 

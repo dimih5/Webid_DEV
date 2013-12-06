@@ -195,8 +195,24 @@ while ($row = mysql_fetch_assoc($res))
 	$insql = (!$all_items) ? $insql . ") AND" : '';
 
 	// get total number of records
-	$query = "SELECT count(*) as COUNT FROM " . $DBPrefix . "auctions
-			WHERE " . $insql . " starts <= " . $NOW . "
+	$query = "SELECT count(*) as COUNT FROM " . $DBPrefix . "auctions";
+if($user->user_data['id']) {
+    $query .= "
+        LEFT JOIN
+        	webid_auction_user u ON u.auction_id = id
+        WHERE
+        	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
+        ";
+} else {
+    $query .= " 
+        LEFT JOIN
+            webid_auction_user u ON u.auction_id = id
+        WHERE
+            enableusergroups = 0
+    ";
+}
+$query .= "
+			AND " . $insql . " starts <= " . $NOW . "
 			AND closed = 0
 			AND suspended = 0";
 	if (!empty($_POST['catkeyword']))
@@ -221,8 +237,24 @@ while ($row = mysql_fetch_assoc($res))
 	}
 	$PAGES = ceil($TOTALAUCTIONS / $system->SETTINGS['perpage']);
 
-	$query = "SELECT * FROM " . $DBPrefix . "auctions
-			WHERE " . $insql . " starts <= " . $NOW . "
+	$query = "SELECT * FROM " . $DBPrefix . "auctions";
+if($user->user_data['id']) {
+    $query .= "
+        LEFT JOIN
+        	webid_auction_user u ON u.auction_id = id
+        WHERE
+        	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
+        ";
+} else {
+    $query .= " 
+        LEFT JOIN
+            webid_auction_user u ON u.auction_id = id
+        WHERE
+            enableusergroups = 0
+    ";
+}
+$query .= "
+			AND " . $insql . " starts <= " . $NOW . "
 			AND closed = 0
 			AND suspended = 0";
 	if (!empty($_POST['catkeyword']))
@@ -234,8 +266,24 @@ while ($row = mysql_fetch_assoc($res))
 	$system->check_mysql($res, $query, __LINE__, __FILE__);
 
 	// get featured items
-	$query = "SELECT * FROM " . $DBPrefix . "auctions
-			WHERE " . $insql . " starts <= " . $NOW . "
+	$query = "SELECT * FROM " . $DBPrefix . "auctions";
+if($user->user_data['id']) {
+    $query .= "
+        LEFT JOIN
+        	webid_auction_user u ON u.auction_id = id
+        WHERE
+        	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
+        ";
+} else {
+    $query .= " 
+        LEFT JOIN
+            webid_auction_user u ON u.auction_id = id
+        WHERE
+            enableusergroups = 0
+    ";
+}
+$query .= "
+			AND " . $insql . " starts <= " . $NOW . "
 			AND closed = 0
 			AND suspended = 0
 			AND featured = 'y'";

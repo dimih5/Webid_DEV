@@ -605,6 +605,7 @@
 					'B_CANCONTACTSELLER' => (($system->SETTINGS['contactseller'] == 'always' || ($system->SETTINGS['contactseller'] == 'logged' && $user->logged_in)) && (!$user->logged_in || $user->user_data['id'] != $auction_data['user'])),
 					'B_HASIMAGE' => (!empty($auction_data['pict_url'])),
 					'B_NOTBNONLY' => ($auction_data['bn_only'] == 'n'),
+					'B_ORCHECK' => $auction_data['user'] == $user->user_data['id'] ? false : true,
 					'B_HASRESERVE' => ($auction_data['reserve_price'] > 0 && $auction_data['reserve_price'] > $auction_data['current_bid']),
 					'B_BNENABLED' => ($system->SETTINGS['buy_now'] == 2),
 					'B_HASGALELRY' => (count($UPLOADED_PICTURES) > 0),

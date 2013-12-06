@@ -166,36 +166,40 @@ function remind() {
 <small><a href="{SITEURL}active_auctions.php?user_id={SELLER_ID}">{L_213}</a> </small><br>
 <br>
 <!-- IF B_HASENDED eq false -->
-<!-- IF B_NOTBNONLY -->
-<div class="well" style="padding:8px;">
-  <form name="bid" action="{BIDURL}bid.php" method="post">
-    <!-- IF QTY gt 1 -->
-    <label>{L_284}:</label>
-    <input type="text" name="qty" size=15 />
-    <span class="help-block">{QTY} {L_5408}</span>
+
+<!-- IF B_ORCHECK -->
+    <!-- IF B_NOTBNONLY -->
+    <div class="well" style="padding:8px;">
+      <form name="bid" action="{BIDURL}bid.php" method="post">
+        <!-- IF QTY gt 1 -->
+        <label>{L_284}:</label>
+        <input type="text" name="qty" size=15 />
+        <span class="help-block">{QTY} {L_5408}</span>
+        <!-- ENDIF -->
+        <br />
+        {L_121}
+        <input type="text" name="bid" size="15">
+        <input type="hidden" name="seller_id" value="{SELLER_ID}">
+        <input type="hidden" name="title" value="{TITLE}" >
+        <input type="hidden" name="category" value="{CAT_ID}" >
+        <input type="hidden" name="id" value="{ID}">
+        <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
+        <input type="submit" name="" value="{L_30_0208}" class="btn btn-primary btn-place-bid">
+      </form>
+      <hr />
+      <!-- IF B_BUY_NOW -->
+      <div style=" text-align:center"> <em>
+        <p><small>{L_496}: 
+          
+          {BUYNOW2}</small></p>
+        </em> </span> </div>
+      <!-- ENDIF -->
+    </div>
+    <!-- ELSE -->
+    {BUYNOW} <a href="{BIDURL}buy_now.php?id={ID}"><img border="0" align="absbottom" alt="{L_496}" src="{BNIMG}"></a>
     <!-- ENDIF -->
-    <br />
-    {L_121}
-    <input type="text" name="bid" size="15">
-    <input type="hidden" name="seller_id" value="{SELLER_ID}">
-    <input type="hidden" name="title" value="{TITLE}" >
-    <input type="hidden" name="category" value="{CAT_ID}" >
-    <input type="hidden" name="id" value="{ID}">
-    <input type="hidden" name="csrftoken" value="{_CSRFTOKEN}">
-    <input type="submit" name="" value="{L_30_0208}" class="btn btn-primary btn-place-bid">
-  </form>
-  <hr />
-  <!-- IF B_BUY_NOW -->
-  <div style=" text-align:center"> <em>
-    <p><small>{L_496}: 
-      
-      {BUYNOW2}</small></p>
-    </em> </span> </div>
-  <!-- ENDIF -->
-</div>
-<!-- ELSE -->
-{BUYNOW} <a href="{BIDURL}buy_now.php?id={ID}"><img border="0" align="absbottom" alt="{L_496}" src="{BNIMG}"></a>
 <!-- ENDIF -->
+
 <!-- ENDIF -->
 <div style="text-align:right"> <small class="muted">{L_113}: {ID}</small> </div>
 </div>

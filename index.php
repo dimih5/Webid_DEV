@@ -82,56 +82,8 @@ while ($row = mysql_fetch_assoc($res))
 			));
 }
 
-// get featured items
-$query = "SELECT id, title, current_bid, pict_url, ends, num_bids, minimum_bid, bn_only, buy_now
-        FROM " . $DBPrefix . "auctions";
-        if($user->user_data['id']) {
-            $query .= "
-                LEFT JOIN
-                	webid_auction_user u ON u.auction_id = id
-                WHERE
-                	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
-                ";
-        } else {
-            $query .= " 
-                LEFT JOIN
-                    webid_auction_user u ON u.auction_id = id
-                WHERE
-                    enableusergroups = 0
-            ";
-        }
-        $query .= "
-            AND closed = 0 AND suspended = 0 AND starts <= " . $NOW . "
-    		AND featured = 'y'
-            ORDER BY RAND() DESC LIMIT 12";
-            
-$res = mysql_query($query);
-$system->check_mysql($res, $query, __LINE__, __FILE__);
-while($row = mysql_fetch_assoc($res))
-{
-	$ends = $row['ends'];
-	$difference = $ends - time();
-	if ($difference > 0)
-	{
-		$ends_string = FormatTimeLeft($difference);
-	}
-	else
-	{
-		$ends_string = $MSG['911'];
-	}
-	$high_bid = ($row['num_bids'] == 0) ? $row['minimum_bid'] : $row['current_bid'];
-	$high_bid = ($row['bn_only'] == 'y') ? $row['buy_now'] : $high_bid;
-	$template->assign_block_vars('featured', array(
-			'ENDS' => $ends_string,
-			'ID' => $row['id'],
-			'BID' => $system->print_money($high_bid),
-			'IMAGE' => (!empty($row['pict_url'])) ? 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'] : 'images/email_alerts/default_item_img.jpg',
-			'TITLE' => $row['title']
-			));
-}
-
-// get last created auctions
-$query = "SELECT id, title, pict_url, starts from " . $DBPrefix . "auctions";
+// get auctions
+$query = "SELECT * from " . $DBPrefix . "auctions";
 if($user->user_data['id']) {
     $query .= "
         LEFT JOIN
@@ -151,178 +103,27 @@ if($user->user_data['id']) {
 $query .= "
          AND closed = 0 AND suspended = 0
 		 AND starts <= " . $NOW . "
-		 ORDER BY starts DESC
-		 LIMIT " . $system->SETTINGS['lastitemsnumber'];
+		 ORDER BY starts DESC";
 $res = mysql_query($query);
 $system->check_mysql($res, $query, __LINE__, __FILE__);
 
 $i = 0;
 while ($row = mysql_fetch_assoc($res))
 {
-	$template->assign_block_vars('auc_last', array(
-			'BGCOLOUR' => (!($i % 2)) ? '' : 'class="alt-row"',
-			'DATE' => ArrangeDateNoCorrection($row['starts'] + $system->tdiff),
-			//added by L
-			'IMAGE' => (!empty($row['pict_url'])) ? 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'] : 'images/email_alerts/default_item_img.jpg',
-					//
-			'ID' => $row['id'],
-			'TITLE' => $row['title']
-			));
+	$template->assign_block_vars('auctions', array(
+		'BGCOLOUR' => (!($i % 2)) ? '' : 'class="alt-row"',
+		'DATE' => ArrangeDateNoCorrection($row['starts'] + $system->tdiff),
+		'IMAGE' => (!empty($row['pict_url'])) ? 'getthumb.php?w=480&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'] : 'images/email_alerts/default_item_img.jpg',				//
+		'ID' => $row['id'],
+		'TITLE' => $row['title'],
+		'STARTS' => ArrangeDateNoCorrection($row['starts']),
+		'ENDS' => ArrangeDateNoCorrection($row['ends']),
+		'BID' => $system->print_money($row['current_bid'])
+		));
 	$i++;
 }
 
 $auc_last = ($i > 0) ? true : false;
-// get ending soon auctions
-$query = "SELECT ends, id, pict_url, title FROM " . $DBPrefix . "auctions";
-if($user->user_data['id']) {
-    $query .= "
-        LEFT JOIN
-        	webid_auction_user u ON u.auction_id = id
-        WHERE
-        	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
-        ";
-} else {
-    $query .= " 
-        LEFT JOIN
-            webid_auction_user u ON u.auction_id = id
-        WHERE
-            enableusergroups = 0
-    ";
-}
-$query .= "
-		 AND closed = 0 AND suspended = 0 AND starts <= " . $NOW . "
-		 ORDER BY ends LIMIT " . $system->SETTINGS['endingsoonnumber'];
-$res = mysql_query($query);
-$system->check_mysql($res, $query, __LINE__, __FILE__);
-
-$i = 0;
-while ($row = mysql_fetch_assoc($res))
-{
-	$ends = $row['ends'];
-    $difference = $ends - time();
-	if ($difference > 0)
-	{
-		$ends_string = FormatTimeLeft($difference);
-	}
-	else
-	{
-		$ends_string = $MSG['911'];
-	}
-	$template->assign_block_vars('end_soon', array(
-			'BGCOLOUR' => (!($i % 2)) ? '' : 'class="alt-row"',
-			'DATE' => $ends_string, //Used for customers not using any javascript. 
-			'TIMELEFT' => $difference, //Used for customers that are using javascript.
-			'ID' => $row['id'],
-			//added by L
-			'IMAGE' => (!empty($row['pict_url'])) ? 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'] : 'images/email_alerts/default_item_img.jpg',
-					//
-			'TITLE' => $row['title']
-			));
-	$i++;
-}
-$end_soon = ($i > 0) ? true : false;
-
-// get hot items
-$query = "SELECT a.id, a.title, a.current_bid, a.pict_url, a.ends, a.num_bids, a.minimum_bid 
-        FROM " . $DBPrefix . "auctions a 
-        LEFT JOIN " . $DBPrefix . "auccounter c ON (a.id = c.auction_id)";
-if($user->user_data['id']) {
-    $query .= "
-        LEFT JOIN
-        	webid_auction_user u ON u.auction_id = id
-        WHERE
-        	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
-        ";
-} else {
-    $query .= " 
-        LEFT JOIN
-            webid_auction_user u ON u.auction_id = id
-        WHERE
-            enableusergroups = 0
-    ";
-}
-$query .= "
-        AND closed = 0 AND suspended = 0 AND starts <= " . $NOW . " 
-        ORDER BY c.counter DESC LIMIT " . $system->SETTINGS['hotitemsnumber'];
-$res = mysql_query($query);
-$system->check_mysql($res, $query, __LINE__, __FILE__);
-
-$i = 0;
-while ($row = mysql_fetch_assoc($res))
-{
-	$i++;
-	$ends = $row['ends'];
-    $difference = $ends - time();
-    if ($difference > 0)
-	{
-        $ends_string = FormatTimeLeft($difference); 
-    }
-	else
-	{
-        $ends_string = $MSG['911'];
-    }
-    $high_bid = ($row['num_bids'] == 0) ? $row['minimum_bid'] : $row['current_bid'];
-    $template->assign_block_vars('hotitems', array(
-            'ENDS' => $ends_string,
-			'TIMELEFT' => $difference,
-            'ID' => $row['id'],
-            'BID' => $system->print_money($high_bid),
-            'IMAGE' => (!empty($row['pict_url'])) ? 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'] : 'images/email_alerts/default_item_img.jpg',
-            'TITLE' => $row['title']
-            ));
-}
-$hot_items = ($i > 0) ? true : false;
-
-//finished auctions
-$query = "SELECT a.id, a.title, a.current_bid, a.pict_url, a.ends, a.num_bids, a.minimum_bid 
-        FROM " . $DBPrefix . "auctions a 
-        LEFT JOIN " . $DBPrefix . "auccounter c ON (a.id = c.auction_id)";
-if($user->user_data['id']) {
-    $query .= "
-        LEFT JOIN
-        	webid_auction_user u ON u.auction_id = id
-        WHERE
-        	(enableusergroups = 0 OR (enableusergroups = 1 AND " . $user->user_data['id'] . " = u.user_id))
-        ";
-} else {
-    $query .= " 
-        LEFT JOIN
-            webid_auction_user u ON u.auction_id = id
-        WHERE
-            enableusergroups = 0
-    ";
-}
-$query .= "
-        AND closed = 1 AND suspended = 0
-        LIMIT " . 10;
-$res = mysql_query($query);
-$system->check_mysql($res, $query, __LINE__, __FILE__);
-
-
-$i = 0;
-while ($row = mysql_fetch_assoc($res))
-{
-	$i++;
-	$ends = $row['ends'];
-    $difference = $ends - time();
-    if ($difference > 0)
-	{
-        $ends_string = FormatTimeLeft($difference); 
-    }
-	else
-	{
-        $ends_string = $MSG['911'];
-    }
-    $high_bid = ($row['num_bids'] == 0) ? $row['minimum_bid'] : $row['current_bid'];
-    $template->assign_block_vars('ended', array(
-            'ENDS' => $ends_string,
-			'TIMELEFT' => $difference,
-            'ID' => $row['id'],
-            'BID' => $system->print_money($high_bid),
-            'IMAGE' => (!empty($row['pict_url'])) ? 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'] : 'images/email_alerts/default_item_img.jpg',
-            'TITLE' => $row['title']
-            ));
-}
 
 // Build list of help topics
 $query = "SELECT id, category FROM " . $DBPrefix . "faqscat_translated WHERE lang = '" . $language . "' ORDER BY category ASC";
@@ -360,10 +161,6 @@ if ($system->SETTINGS['newsbox'] == 1)
 
 $template->assign_vars(array(
 		'FLAGS' => ShowFlags(),
-
-		'B_AUC_LAST' => $auc_last,
-		'B_HOT_ITEMS' => $hot_items,
-		'B_AUC_ENDSOON' => $end_soon,
 		'B_HELPBOX' => ($helpbox && $system->SETTINGS['helpbox'] == 1),
 		'B_MULT_LANGS' => (count($LANGUAGES) > 1),
 		'B_LOGIN_BOX' => ($system->SETTINGS['loginbox'] == 1),

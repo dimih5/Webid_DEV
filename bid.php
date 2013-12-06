@@ -118,6 +118,12 @@ if (!$system->CheckMoney($bid) && !isset($errmsg))
 $bid = $system->input_money($bid);
 
 $Data = mysql_fetch_array($res);
+
+if($Data['user'] == $user->user_data['id']) {
+    header('location: item.php?id=' . $Data['id']);
+	exit;
+}
+
 $item_title = $Data['title'];
 $item_id = $Data['id'];
 $seller_name = $Data['nick']; 

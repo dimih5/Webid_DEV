@@ -31,52 +31,39 @@ if (!$user->is_logged_in())
 	exit;
 }
 
-$query = "SELECT id, email, nick FROM " . $DBPrefix . "users WHERE id = " . intval($_REQUEST['user_id']);
+$query = "SELECT id, email, nick, company FROM " . $DBPrefix . "users WHERE id = " . intval($_REQUEST['user_id']);
 $result = mysql_query($query);
 $system->check_mysql($result, $query, __LINE__, __FILE__);
 $user_id = mysql_result($result, 0, 'id');
 $email = mysql_result($result, 0, 'email');
 $username = mysql_result($result, 0, 'nick');
+$company = mysql_result($result, 0, 'company');
 
 $sent = false;
-if (isset($_POST['action']) && $_POST['action'] == 'proceed')
+if (isset($_POST['action']) && $_POST['action'] == 'pvt_msg')
 {
-	if (empty($_POST['TPL_text']))
-	{
-		$ERR .= '<br/>' . $ERRMSG['031'];
-	}
-	elseif ($auction_id < 0 || empty($auction_id))
-	{
-		$ERR .= '<br/>' . $ERRMSG['622'];
-	}
-	else
-	{
-		$query = "SELECT title FROM " . $DBPrefix . "auctions WHERE id = " . $auction_id;
-		$res = mysql_query($query);
-		$system->check_mysql($res, $query, __LINE__, __FILE__);
-		if (mysql_num_rows($res) == 0)
-		{
-			$ERR .= '<br/>' . $ERRMSG['622'];
-		}
-		else
-		{
-			$item_title = mysql_result($res, 0, 'title');
-			$item_title = $system->uncleanvars($item_title);
-			$from_email = ($system->SETTINGS['users_email'] == 'n') ? $user->user_data['email'] : $system->SETTINGS['adminmail'];
-			// Send e-mail message
-			$subject = $MSG['335'] . ' ' . $system->SETTINGS['sitename'] . ' ' . $MSG['336'] . ' ' . $item_title;
-			$message = $MSG['084'] . ' ' . $MSG['240'] . ': ' . $from_email . "\n\n" . $_POST['TPL_text'];
-			$emailer = new email_handler();
-			$emailer->email_uid = $user_id;
-			$emailer->email_basic($subject, $email, nl2br($message), $user->user_data['name'] . '<'. $from_email . '>'); //send the email :D
-			// send a copy to their mesasge box
-			$nowmessage = nl2br($system->cleanvars($message));
-			$query = "INSERT INTO " . $DBPrefix . "messages (sentto, sentfrom, sentat, message, subject)
-					VALUES (" . $user_id . ", " . $user->user_data['id'] . ", '" . time() . "', '" . $nowmessage . "', '" . $system->cleanvars(sprintf($MSG['651'], $item_title)) . "')";
-			$system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
-			$sent = true;
-		}
-	}
+    
+    $query = "SELECT id, email, nick, company FROM " . $DBPrefix . "users WHERE id = " . intval($user->user_data['id']);
+    $result = mysql_query($query);
+    $system->check_mysql($result, $query, __LINE__, __FILE__);
+
+    $item_title = $system->uncleanvars('Message from ' . mysql_result($result, 0, 'company'));
+    $from_email = ($system->SETTINGS['users_email'] == 'n') ? $user->user_data['email'] : $system->SETTINGS['adminmail'];
+    // Send e-mail message
+    //$subject = $MSG['335'] . ' ' . $system->SETTINGS['sitename'] . ' ' . $MSG['336'] . ' ' . $item_title;
+//    $subject = $system->uncleanvars($_POST['sender_question']);
+    $subject = $item_title;
+    $message = $system->uncleanvars($_POST['sender_question']);
+    $emailer = new email_handler();
+    $emailer->email_uid = $user_id;
+    $emailer->email_basic($subject, $email, nl2br($message), $user->user_data['name'] . '<'. $from_email . '>'); //send the email :D
+    // send a copy to their mesasge box
+    $nowmessage = nl2br($system->cleanvars($message));
+    $query = "INSERT INTO " . $DBPrefix . "messages (sentto, sentfrom, sentat, message, subject)
+    		VALUES (" . $user_id . ", " . $user->user_data['id'] . ", '" . time() . "', '" . $nowmessage . "', '" . $system->cleanvars(sprintf($item_title)) . "')";
+    $system->check_mysql(mysql_query($query), $query, __LINE__, __FILE__);
+    $sent = true;
+    $user->setMessage('email_request', 'Message successfully send');
 }
 
 $template->assign_vars(array(
@@ -85,8 +72,11 @@ $template->assign_vars(array(
 		'USERID' => $user_id,
 		'USERNAME' => $username,
 		'AUCTION_ID' => $auction_id,
-		'MSG_TEXT' => (isset($_POST['TPL_text'])) ? $_POST['TPL_text'] : ''
+		'MSG_TEXT' => (isset($_POST['TPL_text'])) ? $_POST['TPL_text'] : '',
+		'COMPANY' => $company
 		));
+
+$template->assign_vars($user->getMessageVars('email_request'));
 
 include 'header.php';
 $template->set_filenames(array(

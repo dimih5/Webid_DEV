@@ -1105,6 +1105,11 @@ $MSG['1101'] = 'Admin accounts deleted';
 $MSG['1102'] = 'Charge Tax';
 $MSG['1103'] = 'Include tax in final sell price';
 
+$MSG['2000'] = 'Back to profile';
+$MSG['2001'] = 'Message ';
+$MSG['2002'] = 'Message:';
+$MSG['2003'] = 'pvt_msg';
+
 $MSG['5003'] = "Site Settings";
 $MSG['5004'] = "Currencies Settings";
 $MSG['5005'] = "General Layout Settings";

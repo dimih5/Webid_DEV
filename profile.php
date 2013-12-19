@@ -43,96 +43,135 @@ if (!empty($_GET['user_id']))
 
 if (@mysql_num_rows($res) == 1)
 {
-	$arr = mysql_fetch_assoc($res);
-	$TPL_user_id = $arr['id'];
-	$TPL_rate_ratio_value = '';
-	foreach ($memtypesarr as $k => $l)
-	{
-		if ($k >= $arr['rate_sum'] || $i++ == (count($memtypesarr) - 1))
-		{
-			$TPL_rate_ratio_value = '<img src="' . $system->SETTINGS['siteurl'] . 'images/icons/' . $l['icon'] . '" alt="' . $l['icon'] . '" class="fbstar">';
-			break;
-		}
-	}
-	$sql = "SELECT f.*, a.user FROM " . $DBPrefix . "feedbacks f
-			LEFT JOIN " . $DBPrefix . "auctions a ON (a.id = f.auction_id)
-			WHERE f.rated_user_id = " . $TPL_user_id;
-	$res_ = mysql_query($sql);
-	$system->check_mysql($res_, $sql, __LINE__, __FILE__);
-
-	$total_fb = 0;
-	$fb = array(-1 => 0, 0 => 0, 1 => 0);
-	$fb_as_seller = array(-1 => 0, 0 => 0, 1 => 0);
-	$fb_as_buyer = array(-1 => 0, 0 => 0, 1 => 0);
-	$fb_last_year = array(-1 => 0, 0 => 0, 1 => 0);
-	$fb_last_3month = array(-1 => 0, 0 => 0, 1 => 0);
-	$fb_last_month = array(-1 => 0, 0 => 0, 1 => 0);
-	if (mysql_num_rows($res_) > 0)
-	{
-		while ($ratesum = mysql_fetch_array($res_))
-		{
-			$fb[$ratesum['rate']]++;
-			$total_fb++;
-			if ($ratesum['user'] == $TPL_user_id)
-			{
-				$fb_as_seller[$ratesum['rate']]++;
-			}
-			else
-			{
-				$fb_as_buyer[$ratesum['rate']]++;
-			}
-			if ($ratesum['feedbackdate'] > time() - (3600 * 24 * 365))
-			{
-				$fb_last_year[$ratesum['rate']]++;
-			}
-			if ($ratesum['feedbackdate'] > time() - (3600 * 24 * 90))
-			{
-				$fb_last_3month[$ratesum['rate']]++;
-			}
-			if ($ratesum['feedbackdate'] > time() - (3600 * 24 * 30))
-			{
-				$fb_last_month[$ratesum['rate']]++;
-			}
-		}
-	}
-
-	$DATE = $arr['reg_date'] + $system->tdiff;
+    $arr = mysql_fetch_assoc($res);
+    $user_id = $arr['id'];
+    
+    $DATE = $arr['reg_date'] + $system->tdiff;
 	$mth = 'MON_0'.gmdate('m', $DATE);
-
-	$feedback_rate = ($arr['rate_sum'] == 0) ? 1 : $arr['rate_sum'];
-	$feedback_rate = ($feedback_rate < 0) ? $feedback_rate * - 1 : $feedback_rate;
-	$total_fb = ($total_fb < 1) ? 1 : $total_fb;
-	$variables = array(
-		'RATE_VAL' => $TPL_rate_ratio_value,
-		'NUM_FB' => $arr['rate_num'],
-		'SUM_FB' => $arr['rate_sum'],
-		'FB_POS' => (isset($fb[1])) ? $MSG['500'] . $fb[1] . ' (' . ceil($fb[1] * 100 / $total_fb) . '%)<br>' : '',
-		'FB_NEUT' => (isset($fb[0])) ? $MSG['499'] . $fb[0] . ' (' . ceil($fb[0] * 100 / $total_fb) . '%)<br>' : '',
-		'FB_NEG' => (isset($fb[ - 1])) ? '<span style="color:red">' . $MSG['501'] . $fb[ - 1] . ' (' . ceil($fb[ - 1] * 100 / $total_fb) . '%)</span>' : '',
-		'FB_SELLER_POS' => $fb_as_seller[1],
-		'FB_BUYER_POS' => $fb_as_buyer[1],
-		'FB_LASTYEAR_POS' => $fb_last_year[1],
-		'FB_LAST3MONTH_POS' => $fb_last_3month[1],
-		'FB_LASTMONTH_POS' => $fb_last_month[1],
-		'FB_SELLER_NEUT' => $fb_as_seller[0],
-		'FB_BUYER_NEUT' => $fb_as_buyer[0],
-		'FB_LASTYEAR_NEUT' => $fb_last_year[0],
-		'FB_LAST3MONTH_NEUT' => $fb_last_3month[0],
-		'FB_LASTMONTH_NEUT' => $fb_last_month[0],
-		'FB_SELLER_NEG' => $fb_as_seller[-1],
-		'FB_BUYER_NEG' => $fb_as_buyer[-1],
-		'FB_LASTYEAR_NEG' => $fb_last_year[-1],
-		'FB_LAST3MONTH_NEG' => $fb_last_3month[-1],
-		'FB_LASTMONTH_NEG' => $fb_last_month[-1],
+	
+    $variables = array(
 		'REGSINCE' => $MSG[$mth].' '.gmdate('d, Y', $DATE),
 		'COUNTRY' => $arr['country'],
 		'AUCTION_ID' => (isset($_GET['auction_id'])) ? $_GET['auction_id'] : '',
 		'USER' => $arr['nick'],
-		'USER_ID' => $TPL_user_id,
+		'USER_ID' => $user_id,
 		'B_VIEW' => true,
 		'B_AUCID' => (isset($_GET['auction_id'])),
 		'B_CONTACT' => (($system->SETTINGS['contactseller'] == 'always' || ($system->SETTINGS['contactseller'] == 'logged' && $user->logged_in)) && (!$user->logged_in || $user->user_data['id'] != $TPL_user_id))
 		);
+
+    $auctions_count = 0;
+    
+    // Active auctions
+    $NOW = time();
+    $query = "SELECT * FROM " . $DBPrefix . "auctions
+		WHERE user = " . $user_id . "
+		AND closed = 0
+		AND starts <= '" . $NOW . "'
+		ORDER BY ends ASC";
+    $res = mysql_query($query);
+    $system->check_mysql($res, $query, __LINE__, __FILE__);
+    
+    while ($row = mysql_fetch_assoc($res))
+    {
+    	$bid = $row['current_bid'];
+    	$starting_price = $row['current_bid'];
+    
+    	if (strlen($row['pict_url']) > 0)
+    	{
+    		$row['pict_url'] = $system->SETTINGS['siteurl'] . 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'];
+    	}
+    	else
+    	{
+    		$row['pict_url'] = get_lang_img('nopicture.gif');
+    	}
+    
+    	// number of bids for this auction
+    	$query_ = "SELECT bid FROM " . $DBPrefix . "bids WHERE auction=" . $row['id'];
+    	$tmp_res = mysql_query($query_);
+    	$system->check_mysql($tmp_res, $query_, __LINE__, __FILE__);
+    	$num_bids = mysql_num_rows($tmp_res);
+    
+    	$difference = time() - $row['ends'];
+    	$days_difference = intval($difference / 86400);
+    	$difference = $difference - ($days_difference * 86400);
+    
+    	if (intval($difference / 3600) > 12) $days_difference++;
+    
+    	$template->assign_block_vars('auctionsa', array(
+    			'BGCOLOUR' => (!($TOTALAUCTIONS % 2)) ? '' : 'class="alt-row"',
+    			'ID' => $row['id'],
+    			'PIC_URL' => $row['pict_url'],
+    			'TITLE' => $row['title'],
+    			'BNIMG' => get_lang_img(($row['bn_only'] == 'n') ? 'buy_it_now.gif' : 'bn_only.png'),
+    			'BNVALUE' => $row['buy_now'],
+    			'BNFORMAT' => $system->print_money($row['buy_now']),
+    			'BIDVALUE' => $row['minimum_bid'],
+    			'BIDFORMAT' => $system->print_money($row['minimum_bid']),
+    			'NUM_BIDS' => $num_bids,
+    			'TIMELEFT' => $days_difference . ' ' . $MSG['126a'],
+    
+    			'B_BUY_NOW' => ($row['buy_now'] > 0 && ($row['bn_only'] == 'y' || $row['bn_only'] == 'n' && ($row['num_bids'] == 0 || ($row['reserve_price'] > 0 && $row['current_bid'] < $row['reserve_price'])))),
+    			'B_BNONLY' => ($row['bn_only'] == 'y')
+    			));
+    
+    	$auctions_count++;
+    }
+    
+    // Closed auctions
+    $query = "SELECT * FROM " . $DBPrefix . "auctions
+    		WHERE user = " . intval($user_id) . "
+    		AND closed = 1
+    		ORDER BY ends ASC";
+    $res = mysql_query($query);
+    $system->check_mysql($res, $query, __LINE__, __FILE__);
+    
+    while ($row = mysql_fetch_assoc($res))
+    {
+    	$bid = $row['current_bid'];
+    	$starting_price = $row['current_bid'];
+    
+    	if (strlen($row['pict_url']) > 0)
+    	{
+    		$row['pict_url'] = $system->SETTINGS['siteurl'] . 'getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $row['id'] . '/' . $row['pict_url'];
+    	}
+    	else
+    	{
+    		$row['pict_url'] = get_lang_img('nopicture.gif');
+    	}
+    
+    	// number of bids for this auction
+    	$query_ = "SELECT bid FROM " . $DBPrefix . "bids WHERE auction=" . $row['id'];
+    	$tmp_res = mysql_query($query_);
+    	$system->check_mysql($tmp_res, $query_, __LINE__, __FILE__);
+    	$num_bids = mysql_num_rows($tmp_res);
+    
+    	$difference = time() - $row['ends'];
+    	$days_difference = intval($difference / 86400);
+    	$difference = $difference - ($days_difference * 86400);
+    
+    	if (intval($difference / 3600) > 12) $days_difference++;
+    
+    	$template->assign_block_vars('auctions', array(
+    			'BGCOLOUR' => (!($TOTALAUCTIONS % 2)) ? '' : 'class="alt-row"',
+    			'ID' => $row['id'],
+    			'PIC_URL' => $row['pict_url'],
+    			'TITLE' => $row['title'],
+    			'BNIMG' => get_lang_img(($row['bn_only'] == 'n') ? 'buy_it_now.gif' : 'bn_only.png'),
+    			'BNVALUE' => $row['buy_now'],
+    			'BNFORMAT' => $system->print_money($row['buy_now']),
+    			'BIDVALUE' => $row['minimum_bid'],
+    			'BIDFORMAT' => $system->print_money($row['minimum_bid']),
+    			'NUM_BIDS' => $num_bids,
+    			'TIMELEFT' => $days_difference . ' ' . $MSG['126a'],
+    
+    			'B_BUY_NOW' => ($row['buy_now'] > 0 && ($row['bn_only'] == 'y' || $row['bn_only'] == 'n' && ($row['num_bids'] == 0 || ($row['reserve_price'] > 0 && $row['current_bid'] < $row['reserve_price'])))),
+    			'B_BNONLY' => ($row['bn_only'] == 'y')
+    			));
+    
+    	$auctions_count++;
+    }
+
 }
 else
 {
@@ -142,6 +181,7 @@ else
 		);
 }
 
+$variables['SUM_FB'] = $auctions_count;
 $template->assign_vars($variables);
 
 include 'header.php';

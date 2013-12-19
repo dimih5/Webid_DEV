@@ -164,7 +164,8 @@ $template->assign_vars(array(
 		'B_HELPBOX' => ($helpbox && $system->SETTINGS['helpbox'] == 1),
 		'B_MULT_LANGS' => (count($LANGUAGES) > 1),
 		'B_LOGIN_BOX' => ($system->SETTINGS['loginbox'] == 1),
-		'B_NEWS_BOX' => ($system->SETTINGS['newsbox'] == 1)
+		'B_NEWS_BOX' => ($system->SETTINGS['newsbox'] == 1),
+		'B_LIST' => (isset($_GET['view']) && $_GET['view'] == 'list')
 		));
 		
 $template->assign_vars(array('B_USER_AUTHENTICATED' => (isset($_SESSION['WEBID_LOGGED_IN']) && $_SESSION['WEBID_LOGGED_IN'] > 0)));

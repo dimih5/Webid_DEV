@@ -118,7 +118,9 @@ while ($row = mysql_fetch_assoc($res))
 		'TITLE' => $row['title'],
 		'STARTS' => ArrangeDateNoCorrection($row['starts']),
 		'ENDS' => ArrangeDateNoCorrection($row['ends']),
-		'BID' => $system->print_money($row['current_bid'])
+		'BID' => $system->print_money($row['current_bid']),
+		'CAT' => $row['category'],
+		'CAT_COLOR' => $row['category'] == 198 ? 'green' : 'red'
 		));
 	$i++;
 }

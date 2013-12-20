@@ -315,6 +315,7 @@
 			}
 
 			$high_bid = ($num_bids == 0) ? $minimum_bid : $high_bid;
+			$high_bid = abs($high_bid);
 
 			if ($customincrement == 0)
 			{
@@ -539,7 +540,6 @@
 				$shipping = $MSG['032'];
 			elseif ($auction_data['shipping'] == 3)
 				$shipping = $MSG['867'];
-			
 				
 			$vararray = array(
 					'ID' => $auction_data['id'],

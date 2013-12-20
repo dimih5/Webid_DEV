@@ -217,6 +217,8 @@ class global_class
 
 	function CheckMoney($amount)
 	{
+	    $amount = substr($amount, 0, 1) == '-' ? substr($amount, 1, count($amount)) : $amount;
+	    
 		if ($this->SETTINGS['moneyformat'] == 1)
 		{
 			if (!preg_match('#^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(\.[0-9]{0,3})?$#', $amount))

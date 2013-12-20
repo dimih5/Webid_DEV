@@ -114,10 +114,14 @@ if (!$system->CheckMoney($bid) && !isset($errmsg))
 	$errmsg = $ERRMSG['058'];
 }
 
+$Data = mysql_fetch_array($res);
+
 // reformat bid to valid number
 $bid = $system->input_money($bid);
+if($Data['category'] == 199) {
+    $bid = '-' . $bid;
+}
 
-$Data = mysql_fetch_array($res);
 
 if($Data['user'] == $user->user_data['id']) {
     header('location: item.php?id=' . $Data['id']);
@@ -203,7 +207,8 @@ if ($customincrement > 0)
 }
 else
 {
-	$increment = get_increment($high_bid, false);
+	//$increment = get_increment($high_bid, false);
+	$increment = 0;
 }
 
 if (ceil($high_bid) == 0 || $atype == 2)
@@ -405,7 +410,7 @@ if (isset($_POST['action']) && !isset($errmsg))
 				}
 				if ($proxy_max_bid == $bid)
 				{
-
+                    var_dump($proxy_max_bid);die();
 					$cbid = $proxy_max_bid;
 					
                     if($bidwhen > ($NOW - $window)) {
@@ -561,11 +566,12 @@ if (isset($_POST['action']) && !isset($errmsg))
 			'PAGE' => 2,
 			'BID_HISTORY' => (isset($ARETHEREBIDS)) ? $ARETHEREBIDS : '',
 			'ID' => $id,
-			'BID' => $system->print_money($bid)
+			'BID' => $system->print_money(abs($bid))
 			));
 }
 if (!isset($_POST['action']) || isset($errmsg))
 {
+    
 	// just set the needed template variables
 	$template->assign_vars(array(
 			'PAGE' => 1,
@@ -575,9 +581,9 @@ if (!isset($_POST['action']) || isset($errmsg))
 			'ID' => $id,
 			'IMAGE' => (!empty($pict_url_plain)) ? '<img src="getthumb.php?w=' . $system->SETTINGS['thumb_show'] . '&fromfile=' . $uploaded_path . $id . '/' . $pict_url_plain . '" border="0" align="center">' : '&nbsp;',
 			'TITLE' => $item_title,
-			'CURRENT_BID' => $system->print_money($cbid),
+			'CURRENT_BID' => $system->print_money(abs($cbid)),
 			'ATYPE' => $atype,
-			'BID' => $system->print_money_nosymbol($bid),
+			'BID' => $system->print_money_nosymbol(abs($bid)),
 			'NEXT_BID' => $system->print_money($next_bid),
 			'QTY' => $qty,
 			'TQTY' => $aquantity,

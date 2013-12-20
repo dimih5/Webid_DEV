@@ -5,6 +5,7 @@
                         	<li><a href="{SITEURL}admin/listusers.php">{L_045}</a></li>
                         	<li><a href="{SITEURL}admin/usergroups.php">{L_448}</a></li>
                         	<li><a href="{SITEURL}admin/profile.php">{L_048}</a></li>
+                        	<li><a href="{SITEURL}admin/duplicates.php">{L_P10}</a></li>
                         	<li><a href="{SITEURL}admin/activatenewsletter.php">{L_25_0079}</a></li>
                         	<li><a href="{SITEURL}admin/newsletter.php">{L_607}</a></li>
                         	<li><a href="{SITEURL}admin/banips.php">{L_2_0017}</a></li>

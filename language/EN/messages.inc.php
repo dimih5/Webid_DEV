@@ -1756,6 +1756,16 @@ $MSG['P6'] = 'Invitation request has been send';
 $MSG['P7'] = 'The Rules';
 $MSG['P8'] = 'Rules';
 $MSG['P9'] = "Rules Updated";
+$MSG['P10'] = "User Duplicates";
+$MSG['P11'] = "Company A";
+$MSG['P12'] = "Email A";
+$MSG['P13'] = "Company B";
+$MSG['P14'] = "Email B";
+$MSG['P15'] = "User - User relation deleted.";
+$MSG['P16'] = "Something went wrong, please refresh the page and try again.";
+$MSG['P17'] = "User A cannot be equal to User B.";
+$MSG['P18'] = "Relation already exists.";
+$MSG['P19'] = "Duplicate relation successfully added."
 
 
 ?>

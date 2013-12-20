@@ -124,6 +124,35 @@ if($Data['user'] == $user->user_data['id']) {
 	exit;
 }
 
+// Check if duplicate of owner
+$query = "
+    SELECT
+    	uu.id,
+    	ua.id as user_a_id,
+    	ua.company as user_a_company,
+    	ua.email as user_a_email,
+    	ub.id as user_b_id,
+    	ub.company as user_b_company,
+    	ub.email as user_b_email
+    FROM
+    	" . $DBPrefix . "user_user uu
+    LEFT JOIN
+    	" . $DBPrefix . "users ua ON ua.id = user_a_id
+    LEFT JOIN
+    	" . $DBPrefix . "users ub ON ub.id = user_b_id";
+$res = mysql_query($query);
+$system->check_mysql($res, $query, __LINE__, __FILE__);
+while ($row = mysql_fetch_assoc($res)) {
+    if($row['user_a_id'] == $Data['user'] && $row['user_b_id'] == $user->user_data['id']) {
+        header('location: item.php?id=' . $Data['id']);
+        exit;
+    }
+    if($row['user_a_id'] == $user->user_data['id'] && $row['user_b_id'] == $Data['user']) {
+        header('location: item.php?id=' . $Data['id']);
+        exit;
+    }
+}
+
 $item_title = $Data['title'];
 $item_id = $Data['id'];
 $seller_name = $Data['nick']; 

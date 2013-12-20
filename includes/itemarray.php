@@ -539,7 +539,7 @@
 				$shipping = $MSG['032'];
 			elseif ($auction_data['shipping'] == 3)
 				$shipping = $MSG['867'];
-				
+			
 				
 			$vararray = array(
 					'ID' => $auction_data['id'],

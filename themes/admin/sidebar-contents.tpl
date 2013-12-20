@@ -2,6 +2,7 @@
                 	<h4 class="rounded-top">{L_25_0018}</h4>
                     <div class="rounded-bottom">
                     	<ul class="menu">
+                        	<li><a href="{SITEURL}admin/rules.php">{L_P8}</a></li>
                         	<li><a href="{SITEURL}admin/news.php">{L_516}</a></li>
                         	<li><a href="{SITEURL}admin/aboutus.php">{L_5074}</a></li>
                         	<li><a href="{SITEURL}admin/terms.php">{L_5075}</a></li>

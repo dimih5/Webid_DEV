@@ -11,6 +11,7 @@
       <li><a href="buysellnofeedback.php">{L_207}</a> <small><span class="muted"><em>{FBTOLEAVE}</em></span></small></li>
       <li class="active"><a href="#">{L_623}</a> <small><span class="muted"><em>{NEWMESSAGES}</em></span></small></li>
       <li><a href="outstanding.php">{L_422}</a></li>
+      <li class="important"><a href="contents.php?show=rules">{L_P7}</a></li>
       <!-- IF B_CAN_SELL -->
       <li class="nav-header">{L_25_0082}</li>
       <li><a href="select_category.php">{L_028}</a></li>

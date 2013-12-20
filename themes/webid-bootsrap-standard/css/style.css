@@ -33,7 +33,7 @@ if you wish to change image sizes modyfi css rules in media queries section at t
 
  */
 
-.nav-list>li>a.important {
+.nav-list>li.important>a {
     color: red;
 }
 

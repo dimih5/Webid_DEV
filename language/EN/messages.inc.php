@@ -1753,7 +1753,9 @@ $MSG['P3'] = 'Contact details';
 $MSG['P4'] = 'Contact description';
 $MSG['P5'] = 'Invite';
 $MSG['P6'] = 'Invitation request has been send';
-
+$MSG['P7'] = 'The Rules';
+$MSG['P8'] = 'Rules';
+$MSG['P9'] = "Rules Updated";
 
 
 ?>

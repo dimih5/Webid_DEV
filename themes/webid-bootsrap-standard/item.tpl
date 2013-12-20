@@ -48,7 +48,7 @@ function remind() {
 <div class="span12">
 <ul class="inline pull-right" style="margin-bottom:8px;">
   <!-- IF B_USER_AUTHENTICATED -->
-      <li><small><a class="btn btn-mini" href="{SITEURL}friend.php?id={ID}"><i class="icon-user"></i> {L_106}</a></small></li>
+      <li><small><a class="btn btn-mini" href="{SITEURL}friend.php?id={ID}"><i class="icon-user"></i> {L_P5}</a></small></li>
       <li><small><a class="btn btn-mini" href="{SITEURL}send_email.php?auction_id={ID}"><i class="icon-question-sign"></i> {L_922}</a></small> </li>
       <li><small><a class="btn btn-mini" href="{SITEURL}item_watch.php?{WATCH_VAR}={ID}"><i class="icon-eye-open"></i> {WATCH_STRING}</a></small></li>
   <!-- ELSE -->

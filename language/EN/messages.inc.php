@@ -1746,4 +1746,14 @@ $MSG['CM_2026_0035'] = 'Upload your Terms and Conditions';
 $MSG['CM_2026_0036'] = "You can upload up to %s documents. Each document must be smaller than %s bytes.";
 $MSG['CM_2026_0037'] = 'Download Terms & Conditions';
 
+
+$MSG['P1'] = 'Company name';
+$MSG['P2'] = 'Contact email';
+$MSG['P3'] = 'Contact details';
+$MSG['P4'] = 'Contact description';
+$MSG['P5'] = 'Invite';
+$MSG['P6'] = 'Invitation request has been send';
+
+
+
 ?>

@@ -33,6 +33,10 @@ if you wish to change image sizes modyfi css rules in media queries section at t
 
  */
 
+.nav-list>li>a.important {
+    color: red;
+}
+
 .flash-msg.success {
     background-color: lightgreen;
 }
